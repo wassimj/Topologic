@@ -1,0 +1,11 @@
+C:/Users/wassimj/topologicbim/Topologic/build/CMakeFiles/install/local.dir
+C:/Users/wassimj/topologicbim/Topologic/build/CMakeFiles/install.dir
+C:/Users/wassimj/topologicbim/Topologic/build/CMakeFiles/edit_cache.dir
+C:/Users/wassimj/topologicbim/Topologic/build/CMakeFiles/rebuild_cache.dir
+C:/Users/wassimj/topologicbim/Topologic/build/CMakeFiles/list_install_components.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/list_install_components.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/TopologicCore.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/install/local.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/install.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/edit_cache.dir
+C:/Users/wassimj/topologicbim/Topologic/build/TopologicCore/CMakeFiles/rebuild_cache.dir

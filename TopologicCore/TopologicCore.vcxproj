@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C2B53661-6D1F-4C1D-9F8D-909737CA2142}</ProjectGuid>
+    <RootNamespace>TopologicCore</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)output\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)output\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)output\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)output\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include/;$(SolutionDir)references\opencascade-7.2.0\inc;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TOPOLOGIC_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>TKCAF.lib;TKLCAF.lib;TKOffset.lib;TKIGES.lib;TKPrim.lib;TKMesh.lib;TKXSBase.lib;TKStep.lib;TKBool.lib;TKBO.lib;TKShHealing.lib;TKG3d.lib;TKG2d.lib;TKGeomBase.lib;TKGeomAlgo.lib;TKTopAlgo.lib;TKernel.lib;TKBrep.lib;TKMath.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)references\opencascade-7.2.0\win32\vc14\libd</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include/;$(SolutionDir)references\opencascade-7.4.0\inc</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TOPOLOGICCORE_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>TKCAF.lib;TKLCAF.lib;TKOffset.lib;TKIGES.lib;TKPrim.lib;TKMesh.lib;TKXSBase.lib;TKStep.lib;TKBool.lib;TKBO.lib;TKShHealing.lib;TKG3d.lib;TKG2d.lib;TKGeomBase.lib;TKGeomAlgo.lib;TKTopAlgo.lib;TKernel.lib;TKBrep.lib;TKMath.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)references\opencascade-7.4.0\win64\vc14\libd</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)references\opencascade-7.4.0\win64\vc14\bind\TK*.dll" "$(SolutionDir)output\$(Platform)\$(Configuration)"
+
+copy "$(SolutionDir)references\opencascade-7.4.0\win64\vc14\bind\tbb*.dll" "$(SolutionDir)output\$(Platform)\$(Configuration)"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include/;$(SolutionDir)references\opencascade-7.2.0\inc;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TOPOLOGIC_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>TKCAF.lib;TKLCAF.lib;TKOffset.lib;TKIGES.lib;TKPrim.lib;TKMesh.lib;TKXSBase.lib;TKStep.lib;TKBool.lib;TKBO.lib;TKShHealing.lib;TKG3d.lib;TKG2d.lib;TKGeomBase.lib;TKGeomAlgo.lib;TKTopAlgo.lib;TKernel.lib;TKBrep.lib;TKMath.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)references\opencascade-7.2.0\win32\vc14\lib</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)references\opencascade-7.2.0\win32\vc14\bin\*.dll" "$(SolutionDir)output\$(Platform)\$(Configuration)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>include/;$(SolutionDir)references\opencascade-7.4.0\inc</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TOPOLOGICCORE_EXPORTS;_WINDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>TKCAF.lib;TKLCAF.lib;TKOffset.lib;TKIGES.lib;TKPrim.lib;TKMesh.lib;TKXSBase.lib;TKStep.lib;TKBool.lib;TKBO.lib;TKShHealing.lib;TKG3d.lib;TKG2d.lib;TKGeomBase.lib;TKGeomAlgo.lib;TKTopAlgo.lib;TKernel.lib;TKBrep.lib;TKMath.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)references\opencascade-7.4.0\win64\vc14\lib</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)references\opencascade-7.4.0\win64\vc14\bin\TK*.dll" "$(SolutionDir)output\$(Platform)\$(Configuration)"
+copy "$(SolutionDir)references\opencascade-7.4.0\win64\vc14\bin\tbb*.dll" "$(SolutionDir)output\$(Platform)\$(Configuration)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\About.h" />
+    <ClInclude Include="include\Aperture.h" />
+    <ClInclude Include="include\ApertureFactory.h" />
+    <ClInclude Include="include\Attribute.h" />
+    <ClInclude Include="include\AttributeManager.h" />
+    <ClInclude Include="include\Bitwise.h" />
+    <ClInclude Include="include\Cell.h" />
+    <ClInclude Include="include\CellComplex.h" />
+    <ClInclude Include="include\CellComplexFactory.h" />
+    <ClInclude Include="include\CellFactory.h" />
+    <ClInclude Include="include\Cluster.h" />
+    <ClInclude Include="include\ClusterFactory.h" />
+    <ClInclude Include="include\ContentManager.h" />
+    <ClInclude Include="include\Context.h" />
+    <ClInclude Include="include\ContextManager.h" />
+    <ClInclude Include="include\Dictionary.h" />
+    <ClInclude Include="include\DoubleAttribute.h" />
+    <ClInclude Include="include\Geometry.h" />
+    <ClInclude Include="include\GlobalCluster.h" />
+    <ClInclude Include="include\Edge.h" />
+    <ClInclude Include="include\EdgeFactory.h" />
+    <ClInclude Include="include\Face.h" />
+    <ClInclude Include="include\FaceFactory.h" />
+    <ClInclude Include="include\Graph.h" />
+    <ClInclude Include="include\InstanceGUIDManager.h" />
+    <ClInclude Include="include\IntAttribute.h" />
+    <ClInclude Include="include\Line.h" />
+    <ClInclude Include="include\ListAttribute.h" />
+    <ClInclude Include="include\NurbsCurve.h" />
+    <ClInclude Include="include\NurbsSurface.h" />
+    <ClInclude Include="include\PlanarSurface.h" />
+    <ClInclude Include="include\Shell.h" />
+    <ClInclude Include="include\ShellFactory.h" />
+    <ClInclude Include="include\StringAttribute.h" />
+    <ClInclude Include="include\Surface.h" />
+    <ClInclude Include="include\TopologicalQuery.h" />
+    <ClInclude Include="include\Topology.h" />
+    <ClInclude Include="include\TopologyFactory.h" />
+    <ClInclude Include="include\TopologyFactoryManager.h" />
+    <ClInclude Include="include\Utilities.h" />
+    <ClInclude Include="include\Utilities\CellUtility.h" />
+    <ClInclude Include="include\Utilities\Direction.h" />
+    <ClInclude Include="include\Utilities\EdgeUtility.h" />
+    <ClInclude Include="include\Utilities\FaceUtility.h" />
+    <ClInclude Include="include\Utilities\ShellUtility.h" />
+    <ClInclude Include="include\Utilities\TopologyUtility.h" />
+    <ClInclude Include="include\Utilities\TransformationMatrix2D.h" />
+    <ClInclude Include="include\Utilities\Vector.h" />
+    <ClInclude Include="include\Utilities\VertexUtility.h" />
+    <ClInclude Include="include\Utilities\WireUtility.h" />
+    <ClInclude Include="include\Vertex.h" />
+    <ClInclude Include="include\VertexFactory.h" />
+    <ClInclude Include="include\Wire.h" />
+    <ClInclude Include="include\WireFactory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\About.cpp" />
+    <ClCompile Include="src\Aperture.cpp" />
+    <ClCompile Include="src\ApertureFactory.cpp" />
+    <ClCompile Include="src\AttributeManager.cpp" />
+    <ClCompile Include="src\Bitwise.cpp" />
+    <ClCompile Include="src\Cell.cpp" />
+    <ClCompile Include="src\CellComplex.cpp" />
+    <ClCompile Include="src\CellComplexFactory.cpp" />
+    <ClCompile Include="src\CellFactory.cpp" />
+    <ClCompile Include="src\Cluster.cpp" />
+    <ClCompile Include="src\ClusterFactory.cpp" />
+    <ClCompile Include="src\ContentManager.cpp" />
+    <ClCompile Include="src\Context.cpp" />
+    <ClCompile Include="src\ContextManager.cpp" />
+    <ClCompile Include="src\Dictionary.cpp" />
+    <ClCompile Include="src\DoubleAttribute.cpp" />
+    <ClCompile Include="src\Geometry.cpp" />
+    <ClCompile Include="src\GlobalCluster.cpp" />
+    <ClCompile Include="src\Edge.cpp" />
+    <ClCompile Include="src\EdgeFactory.cpp" />
+    <ClCompile Include="src\Face.cpp" />
+    <ClCompile Include="src\FaceFactory.cpp" />
+    <ClCompile Include="src\Graph.cpp" />
+    <ClCompile Include="src\InstanceGUIDManager.cpp" />
+    <ClCompile Include="src\IntAttribute.cpp" />
+    <ClCompile Include="src\Line.cpp" />
+    <ClCompile Include="src\ListAttribute.cpp" />
+    <ClCompile Include="src\NurbsCurve.cpp" />
+    <ClCompile Include="src\NurbsSurface.cpp" />
+    <ClCompile Include="src\PlanarSurface.cpp" />
+    <ClCompile Include="src\Shell.cpp" />
+    <ClCompile Include="src\ShellFactory.cpp" />
+    <ClCompile Include="src\StringAttribute.cpp" />
+    <ClCompile Include="src\Surface.cpp" />
+    <ClCompile Include="src\Topology.cpp" />
+    <ClCompile Include="src\TopologyFactoryManager.cpp" />
+    <ClCompile Include="src\Utilities.cpp" />
+    <ClCompile Include="src\Utilities\CellUtility.cpp" />
+    <ClCompile Include="src\Utilities\Direction.cpp" />
+    <ClCompile Include="src\Utilities\EdgeUtility.cpp" />
+    <ClCompile Include="src\Utilities\FaceUtility.cpp" />
+    <ClCompile Include="src\Utilities\ShellUtility.cpp" />
+    <ClCompile Include="src\Utilities\TopologyUtility.cpp" />
+    <ClCompile Include="src\Utilities\TransformationMatrix2D.cpp" />
+    <ClCompile Include="src\Utilities\Vector.cpp" />
+    <ClCompile Include="src\Utilities\VertexUtility.cpp" />
+    <ClCompile Include="src\Utilities\WireUtility.cpp" />
+    <ClCompile Include="src\Vertex.cpp" />
+    <ClCompile Include="src\VertexFactory.cpp" />
+    <ClCompile Include="src\Wire.cpp" />
+    <ClCompile Include="src\WireFactory.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
