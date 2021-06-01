@@ -70,7 +70,7 @@ C:/OpenCASCADE-7.5.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
-8. **Install Topologic**
+7. **Install Topologic**
 
 Go to the Start Menu in the lower left corner
 Search for the Visual Studio 2017 Folder and expand it
@@ -82,7 +82,7 @@ git clone https://github.com/NonManifoldTopology/Topologic.git
 cd Topologic
 WindowsBuild.bat
 ```
-9. **Set the Environment Variable**
+8. **Set the Environment Variable**
 
 A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
 ```
