@@ -48,15 +48,15 @@ Download from https://cmake.org/download/
 
 Scroll down and look for the latest release and choose the *Windows win64-x64 Installer* 
 
-5. **Install Opencascade 7.5.0**
+5. **Install Opencascade 7.4.0**
 
-Download from https://old.opencascade.com/content/latest-release
+Download from https://old.opencascade.com/content/previous-releases
 
-Choose  *Windows installer VC++ 2017 64 bit: opencascade-7.5.0-vc14-64.exe (258 336 552 bytes)*
+Choose  *Windows installer VC++ 2017 64 bit: opencascade-7.4.0-vc14-64.exe (258 336 552 bytes)*
 
 This will automatically install opencascade in:
 ```
-C:/OpenCASCADE-7.5.0-vc14-64
+C:/OpenCASCADE-7.4.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
