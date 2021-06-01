@@ -62,10 +62,10 @@ Do **NOT** change the location and name of this folder.
 
 6. **Install Topologic**
 
-Go to the Start Menu in the lower left corner
-Search for the Visual Studio 2017 Folder and expand it
-Choose *x64 Native Tools Command Prompt*
-In the window that appears type:
+* Go to the Start Menu in the lower left corner
+* Search for the Visual Studio 2017 Folder and expand it
+* Choose *x64 Native Tools Command Prompt*
+* In the window that appears type:
 ```
 cd C:/Users/*homefolder*/topologicbim
 git clone https://github.com/NonManifoldTopology/Topologic.git
