@@ -25,3 +25,68 @@ TopologicCore contains the following main classes:
 * Cell: A Cell is a three-dimensional region defined by a collection of closed Shells. It may be manifold or non- manifold.
 * CellComplex: A CellComplex is a contiguous collection of Cells where adjacent Cells are connected by shared Faces. It is non- manifold.
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
+
+### Installation Instructions for Windows 10
+This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
+
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.5.0* and *python3.9.X*. We also assume that your account has Adminstrator priviliges.
+
+1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
+
+2. **Install Visual Studio Community 2017**
+
+Download from https://visualstudio.microsoft.com/vs/older-downloads/
+Make sure you check the box for Desktop Development with C++ 
+
+3. **Install Git**
+
+Download from https://git-scm.com/download/win
+
+4. **Install Python 3.9.X**
+
+**WARNING:** Do not install from the Microsoft Store.
+
+Download from https://www.python.org/downloads/windows/
+
+**WARNING:** When installing python make sure you tick the box on the installation screen to **Add Python 3.9 to PATH**. For example see the image below:
+
+![python installation window](https://www.techruzz.com/images/How_to_Download_and_Install_Python_3_on_windows_10.png)
+
+5. **Install cmake 3.19.5**
+
+Download from https://cmake.org/download/
+
+Scroll down and look for the latest release and choose the *Windows win64-x64 Installer* 
+
+6. **Install Opencascade 7.5.0**
+
+Download from https://old.opencascade.com/content/latest-release
+
+Choose  *Windows installer VC++ 2017 64 bit: opencascade-7.5.0-vc14-64.exe (258 336 552 bytes)*
+
+This will automatically install opencascade in:
+```
+C:/OpenCASCADE-7.5.0-vc14-64
+```
+Do **NOT** change the location and name of this folder.
+
+8. **Install Topologic**
+
+Go to the Start Menu in the lower left corner
+Search for the Visual Studio 2017 Folder and expand it
+Choose *x64 Native Tools Command Prompt*
+In the window that appears type:
+```
+cd C:/Users/*homefolder*/topologicbim
+git clone https://github.com/NonManifoldTopology/Topologic.git
+cd Topologic
+WindowsBuild.bat
+```
+9. **Set the Environment Variable**
+
+A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
+```
+. In Search, search for and then select: System (Control Panel)
+. Click the Advanced system settings link.
+. Click Environment Variables. ...
+. In the Edit System Variable (or New System Variable) window, add the folder to the PATH environment variable.
