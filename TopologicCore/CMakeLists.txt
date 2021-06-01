@@ -224,12 +224,12 @@ FIND_FILE(gp_Pnt_hxx "gp_Pnt.hxx" ${OCC_INCLUDE_DIR})
 IF(gp_Pnt_hxx)
         MESSAGE(STATUS "Header files found")
 ELSE()
-    SET(OCC_INCLUDE_DIR "C:/OpenCASCADE-7.5.0-vc14-64/opencascade-7.5.0/inc/" CACHE FILEPATH "Open CASCADE header files" FORCE)
+    SET(OCC_INCLUDE_DIR "C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/inc/" CACHE FILEPATH "Open CASCADE header files" FORCE)
     MESSAGE(STATUS "Looking for Open CASCADE include files in: ${OCC_INCLUDE_DIR}")
     FIND_FILE(gp_Pnt_hxx "gp_Pnt.hxx" ${OCC_INCLUDE_DIR})
     IF(gp_Pnt_hxx)
         MESSAGE(STATUS "Header files found")
-        link_directories("C:/OpenCASCADE-7.5.0-vc14-64/opencascade-7.5.0/win64/vc14/lib")
+        link_directories("C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/win64/vc14/lib")
     ELSE()
         SET (OCC_INCLUDE_DIR "/usr/local/include/opencascade/")
         MESSAGE(STATUS "Looking for Open CASCADE include files in: ${OCC_INCLUDE_DIR}")
@@ -383,36 +383,36 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Any CPU")
         TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMANDS
-        COMMAND $<CONFIG:Release> copy "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>references\\opencascade-7.5.0\\win32\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>references\\opencascade-7.4.0\\win32\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     add_custom_command_if(
         TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMANDS
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\opencascade-7.5.0\\win64\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\ffmpeg-3.3.4-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\freeimage-3.17.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\tbb_2017.0.100\\bin\\intel64\\vc14\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\vtk-6.1.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\tcltk-86-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\qt5.11.2-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\freetype-2.5.5-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\opencascade-7.5.0\\win64\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\ffmpeg-3.3.4-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\freeimage-3.17.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\tbb_2017.0.100\\bin\\intel64\\vc14\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\vtk-6.1.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\tcltk-86-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\qt5.11.2-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
-        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.5.0-vc14-64\\freetype-2.5.5-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\opencascade-7.4.0\\win64\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\ffmpeg-3.3.4-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\freeimage-3.17.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\tbb_2017.0.100\\bin\\intel64\\vc14\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\vtk-6.1.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\tcltk-86-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\qt5.11.2-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND   $<CONFIG:Debug> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\freetype-2.5.5-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\opencascade-7.4.0\\win64\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\ffmpeg-3.3.4-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\freeimage-3.17.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\tbb_2017.0.100\\bin\\intel64\\vc14\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\vtk-6.1.0-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\tcltk-86-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\qt5.11.2-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "C:\\OpenCASCADE-7.4.0-vc14-64\\freetype-2.5.5-vc14-64\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
     add_custom_command_if(
         TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMANDS
-        COMMAND $<CONFIG:Release> copy "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>references\\opencascade-7.5.0\\win32\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
+        COMMAND $<CONFIG:Release> copy "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>references\\opencascade-7.4.0\\win32\\vc14\\bin\\*.dll" "$<SHELL_PATH:${CMAKE_SOURCE_DIR}/>output\\${CMAKE_VS_PLATFORM_NAME}\\$<CONFIG>"
     )
 endif()
 
@@ -493,7 +493,7 @@ endif()
 #target_link_libraries(${PROJECT_NAME} PUBLIC "${TEST_LIB};${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if(MSVC)
-    SET (CUSTOM_LIB_PATH "C:/OpenCASCADE-7.5.0-vc14-64/opencascade-7.5.0/win64/vc14/lib")
+    SET (CUSTOM_LIB_PATH "C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/win64/vc14/lib")
 ELSE()
     SET (CUSTOM_LIB_PATH "/usr/lib64")
     
