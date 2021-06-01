@@ -29,7 +29,7 @@ TopologicCore contains the following main classes:
 ### Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.5.0* and *python3.9.X*. We also assume that your account has Adminstrator priviliges.
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.5.0*. We also assume that your account has Adminstrator priviliges.
 
 1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
 
@@ -42,23 +42,13 @@ Make sure you check the box for Desktop Development with C++
 
 Download from https://git-scm.com/download/win
 
-4. **Install Python 3.9.X**
-
-**WARNING:** Do not install from the Microsoft Store.
-
-Download from https://www.python.org/downloads/windows/
-
-**WARNING:** When installing python make sure you tick the box on the installation screen to **Add Python 3.9 to PATH**. For example see the image below:
-
-![python installation window](https://www.techruzz.com/images/How_to_Download_and_Install_Python_3_on_windows_10.png)
-
-5. **Install cmake 3.19.5**
+4. **Install cmake 3.19.5**
 
 Download from https://cmake.org/download/
 
 Scroll down and look for the latest release and choose the *Windows win64-x64 Installer* 
 
-6. **Install Opencascade 7.5.0**
+5. **Install Opencascade 7.5.0**
 
 Download from https://old.opencascade.com/content/latest-release
 
@@ -70,7 +60,7 @@ C:/OpenCASCADE-7.5.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
-7. **Install Topologic**
+6. **Install Topologic**
 
 Go to the Start Menu in the lower left corner
 Search for the Visual Studio 2017 Folder and expand it
@@ -82,7 +72,7 @@ git clone https://github.com/NonManifoldTopology/Topologic.git
 cd Topologic
 WindowsBuild.bat
 ```
-8. **Set the Environment Variable**
+7. **Set the Environment Variable**
 
 A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
 ```
