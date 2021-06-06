@@ -805,7 +805,7 @@ namespace TopologicCore
 		const int kTimeLimit,
 		std::list<std::shared_ptr<Wire>>& rPaths) const
 	{
-		return ShortestPaths(kpStartVertex->GetOcctVertex(), kpEndVertex->GetOcctVertex(), rkVertexKey, rkEdgeKey, kUseTimeLimit, kUseTimeLimit, rPaths);
+		return ShortestPaths(kpStartVertex->GetOcctVertex(), kpEndVertex->GetOcctVertex(), rkVertexKey, rkEdgeKey, kUseTimeLimit, kTimeLimit, rPaths);
 	}
 
 	void Graph::ShortestPaths(
