@@ -40,10 +40,14 @@ Make sure you check the box for Desktop Development with C++
 Make sure you install the correct version of python
 Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
 
-3. **Install cmake**
+3. **Install cmake and cppyy**
 
 ```
-pip install cmake
+python -m venv topologic
+topologic\Scripts\activate
+(topologic) > python -m pip install cmake cppyy --upgrade
+(topologic) >
+python -m pip install cmake cppyy --upgrade
 ```
 
 4. **Install Opencascade 7.4.0**
