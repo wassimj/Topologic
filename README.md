@@ -33,22 +33,20 @@ The instructions below are for Microsoft Windows 10. In these instructions we as
 
 1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
 
-2. **Install Visual Studio Community 2017**
+2. **Install Visual Studio Community 2019 with python and git**
 
-Download from https://visualstudio.microsoft.com/vs/older-downloads/
-Make sure you check the box for Desktop Development with C++ 
+Download from https://visualstudio.microsoft.com/downloads/
+Make sure you check the box for Desktop Development with C++
+Make sure you install the correct version of python
+Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
 
-3. **Install Git**
+3. **Install cmake**
 
-Download from https://git-scm.com/download/win
+```
+pip install cmake
+```
 
-4. **Install cmake 3.19.5**
-
-Download from https://cmake.org/download/
-
-Scroll down and look for the latest release and choose the *Windows win64-x64 Installer* 
-
-5. **Install Opencascade 7.4.0**
+4. **Install Opencascade 7.4.0**
 
 Download from https://old.opencascade.com/content/previous-releases
 
@@ -60,7 +58,7 @@ C:/OpenCASCADE-7.4.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
-6. **Install Topologic**
+5. **Install Topologic**
 
 * Go to the Start Menu in the lower left corner
 * Search for the Visual Studio 2017 Folder and expand it
@@ -72,7 +70,7 @@ git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 WindowsBuild.bat
 ```
-7. **Set the Environment Variable**
+6. **Set the Environment Variable**
 
 A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
 ```
