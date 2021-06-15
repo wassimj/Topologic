@@ -29,7 +29,7 @@ TopologicCore contains the following main classes:
 ### Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.5.0*. We also assume that your account has Adminstrator priviliges.
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
 
 1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
 
