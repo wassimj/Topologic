@@ -36,8 +36,8 @@ The instructions below are for Microsoft Windows 10. In these instructions we as
 2. **Install Visual Studio Community 2017 with python and git**
 
 Download from https://visualstudio.microsoft.com/downloads/
-Make sure you check the box for Desktop Development with C++
-Make sure you install the correct version of python
+Make sure you check the box for Desktop Development with C++ (Windows category)
+Make sure you install the correct version of Python (Web Development category)
 Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
 
 3. **Install cmake and cppyy**
