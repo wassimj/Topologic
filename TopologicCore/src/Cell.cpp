@@ -136,12 +136,16 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			Cell::Ptr nullCell = nullptr;
+			return nullCell;
 		}
 
 		if (rkFaces.empty())
 		{
-			throw std::runtime_error("The input Face list is empty.");
+			// throw std::runtime_error("The input Face list is empty.");
+			Cell::Ptr nullCell = nullptr;
+			return nullCell;
 		}
 
 		BOPAlgo_MakerVolume occtMakerVolume;
@@ -160,7 +164,9 @@ namespace TopologicCore
 
 		occtMakerVolume.Perform();
 		if (occtMakerVolume.HasErrors()) {
-			throw std::runtime_error("The input Faces do not form a Cell.");
+			// throw std::runtime_error("The input Faces do not form a Cell.");
+			Cell::Ptr nullCell = nullptr;
+			return nullCell;
 		}
 
 		const TopoDS_Shape& rkOcctResult = occtMakerVolume.Shape();
@@ -189,13 +195,17 @@ namespace TopologicCore
 				}
 				else
 				{
-					throw std::runtime_error("The input Faces do not form a Cell.");
+					// throw std::runtime_error("The input Faces do not form a Cell.");
+					Cell::Ptr nullCell = nullptr;
+					return nullCell;
 				}
 			}
 
 			if (occtShape.IsNull())
 			{
-				throw std::runtime_error("The input Faces do not form a Cell.");
+				// throw std::runtime_error("The input Faces do not form a Cell.");
+				Cell::Ptr nullCell = nullptr;
+				return nullCell;
 			}
 			else
 			{
@@ -229,7 +239,9 @@ namespace TopologicCore
 	{
 		if (!kpShell->IsClosed())
 		{
-			throw std::runtime_error("The input Shell is open.");
+			// throw std::runtime_error("The input Shell is open.");
+			Cell::Ptr nullCell = nullptr;
+			return nullCell;
 		}
 
 		BRepBuilderAPI_MakeSolid occtMakeSolid;
@@ -238,7 +250,9 @@ namespace TopologicCore
 		}
 		catch (StdFail_NotDone&)
 		{
-			throw std::runtime_error("The input Shell does not form a valid Cell.");
+			// throw std::runtime_error("The input Shell does not form a valid Cell.");
+			Cell::Ptr nullCell = nullptr;
+			return nullCell;
 		}
 
 		// Create a cell from the shell. The faces are the same and the contents
@@ -374,7 +388,8 @@ namespace TopologicCore
 	{
 		// TODO: check for internal Faces
 		// NOTE: it is not enough to check Edges bordering > 3 Faces
-		throw std::runtime_error("Not implemented yet");
+		// throw std::runtime_error("Not implemented yet");
+		return false;
 	}
 
 	TopoDS_Shape& Cell::GetOcctShape()

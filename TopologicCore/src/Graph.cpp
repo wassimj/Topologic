@@ -105,7 +105,9 @@ namespace TopologicCore
 				kUseFaceInternalVertex,
 				kTolerance);
 		default:
-			throw std::runtime_error("Fails to create a graph due to an unknown type of topology.");
+			// throw std::runtime_error("Fails to create a graph due to an unknown type of topology.");
+			Graph::Ptr nullGraph = nullptr;
+			return nullGraph;
 		}
 	}
 
@@ -319,7 +321,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return;
 		}
 
 		for (const Vertex::Ptr& kpVertex : rkVertices)
@@ -335,7 +338,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return;
 		}
 
 		for (const Edge::Ptr& kpEdge : rkEdges)
@@ -411,7 +415,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return;
 		}
 
         std::list<Vertex::Ptr>::const_iterator vertex1Iterator = rkVertices1.begin();
@@ -476,7 +481,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return false;
 		}
 
 		TopoDS_Vertex occtStartCoincidentVertex = GetCoincidentVertex(rkVertex1, kTolerance);
@@ -819,7 +825,8 @@ namespace TopologicCore
 	{
 		if (kTimeLimit <= 0.0)
 		{
-			throw std::runtime_error("The time limit must have a positive value.");
+			// throw std::runtime_error("The time limit must have a positive value.");
+			return;
 		}
 
 		auto startingTime = std::chrono::system_clock::now();
@@ -973,7 +980,8 @@ namespace TopologicCore
 	{
         if (kTolerance <= 0.0)
         {
-            throw std::runtime_error("The tolerance must have a positive value.");
+            // throw std::runtime_error("The tolerance must have a positive value.");
+			return -1;
         }
 
         // Use Breadth-First Search
@@ -1152,7 +1160,8 @@ namespace TopologicCore
 	{
         if (kTolerance <= 0.0)
         {
-            throw std::runtime_error("The tolerance must have a positive value.");
+            // throw std::runtime_error("The tolerance must have a positive value.");
+			return;
         }
 
 		for (const Edge::Ptr& kpEdge : rkEdges)
@@ -1205,7 +1214,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return;
 		}
 
         gp_Pnt occtQueryPoint(kX, kY, kZ);
@@ -1255,7 +1265,8 @@ namespace TopologicCore
 	{
 		if (kTolerance <= 0.0)
 		{
-			throw std::runtime_error("The tolerance must have a positive value.");
+			// throw std::runtime_error("The tolerance must have a positive value.");
+			return nullptr;
 		}
 
 		TopoDS_Vertex occtQueryVertex1 = GetCoincidentVertex(kpVertex1->GetOcctVertex(), kTolerance);
@@ -1821,7 +1832,8 @@ namespace TopologicCore
 				catch (...)
 				{
 					assert(false);
-					throw std::runtime_error("No Cell internal vertex pre-computed.");
+					// throw std::runtime_error("No Cell internal vertex pre-computed.");
+					return nullptr;
 				}
 				const TopTools_ListOfShape& rkOcctAdjacentCells = occtCellAdjacencyIterator.Value();
 
@@ -1839,7 +1851,8 @@ namespace TopologicCore
 					catch (...)
 					{
 						assert(false);
-						throw std::runtime_error("No Cell internal vertex pre-computed.");
+						// throw std::runtime_error("No Cell internal vertex pre-computed.");
+						return nullptr;
 					}
 					TopologicCore::Edge::Ptr pEdge = TopologicCore::Edge::ByStartVertexEndVertex(
 						pCellInternalVertex,

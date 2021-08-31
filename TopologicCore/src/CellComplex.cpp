@@ -101,20 +101,23 @@ namespace TopologicCore
 		return pCopyCellComplex;
 	}
 
-	TopoDS_CompSolid CellComplex::ByOcctSolids(const TopTools_ListOfShape & rkOcctSolids)
+	TopoDS_CompSolid CellComplex::ByOcctSolids(const TopTools_ListOfShape& rkOcctSolids)
 	{
+		BRep_Builder occtBuilder;
+		TopoDS_CompSolid occtCompSolid;
+
 		if (rkOcctSolids.IsEmpty())
 		{
-			throw std::runtime_error("No cell is passed.");
+			// throw std::runtime_error("No cell is passed.");
+			occtBuilder.MakeCompSolid(occtCompSolid);
+			return occtCompSolid;
 		}
 
-		TopoDS_CompSolid occtCompSolid;
-		BRep_Builder occtBuilder;
 		occtBuilder.MakeCompSolid(occtCompSolid);
 
 		TopTools_ListOfShape::iterator occtSolidIterator = rkOcctSolids.begin();
 		CellComplex::Ptr pCellComplex = nullptr;
-		
+
 		// If there is only one solid, create a CellComplex with only that cells
 		if (rkOcctSolids.Size() == 1)
 		{
@@ -123,13 +126,18 @@ namespace TopologicCore
 			}
 			catch (TopoDS_FrozenShape&)
 			{
-				throw std::runtime_error("The Cell is not free and cannot be modified.");
+				// throw std::runtime_error("The Cell is not free and cannot be modified.");
+				TopoDS_CompSolid occtCompSolid;
+				occtBuilder.MakeCompSolid(occtCompSolid);
+				return occtCompSolid;
 			}
 			catch (TopoDS_UnCompatibleShapes&)
 			{
-				throw std::runtime_error("The Cell and Face are not compatible.");
+				// throw std::runtime_error("The Cell and Face are not compatible.");
+				occtBuilder.MakeCompSolid(occtCompSolid);
+				return occtCompSolid;
 			}
-			
+
 			pCellComplex = std::make_shared<CellComplex>(occtCompSolid);
 		}
 		else
@@ -137,7 +145,7 @@ namespace TopologicCore
 			// Merge the first cell with the rest.
 			Topology::Ptr firstTopology = Topology::ByOcctShape(*occtSolidIterator, "");
 			std::list<std::shared_ptr<Topology>> topologies;
-			
+
 			occtSolidIterator++;
 			for (; occtSolidIterator != rkOcctSolids.end(); occtSolidIterator++)
 			{
@@ -148,9 +156,11 @@ namespace TopologicCore
 
 			if (pMergeTopology->GetType() != TOPOLOGY_CELLCOMPLEX)
 			{
-				throw std::runtime_error("The input Cells do not form a CellComplex.");
+				// throw std::runtime_error("The input Cells do not form a CellComplex.");
+				occtBuilder.MakeCompSolid(occtCompSolid);
+				return occtCompSolid;
 			}
-			
+
 			pCellComplex = TopologicalQuery::Downcast<CellComplex>(pMergeTopology);
 		}
 
@@ -179,7 +189,9 @@ namespace TopologicCore
 			throw std::runtime_error("Warnings.");
 		}
 		if (occtMakerVolume.HasErrors()) {
-			throw std::runtime_error("The input Faces do not form a CellComplex.");
+			// throw std::runtime_error("The input Faces do not form a CellComplex.");
+			CellComplex::Ptr cellComplex = nullptr;
+			return cellComplex;
 		}
 
 		const TopoDS_Shape& rkOcctResult = occtMakerVolume.Shape();
