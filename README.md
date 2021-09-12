@@ -47,8 +47,6 @@ Make sure you install git: https://www.oreilly.com/library/view/mastering-visual
 python -m venv topologic
 topologic\Scripts\activate
 (topologic) > python -m pip install cmake cppyy --upgrade
-(topologic) >
-python -m pip install cmake cppyy --upgrade
 ```
 
 4. **Install Opencascade 7.4.0**
