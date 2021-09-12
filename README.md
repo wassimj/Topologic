@@ -34,7 +34,7 @@ The instructions below are for Microsoft Windows 10. In these instructions we as
 
 1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
 
-2. **Install Visual Studio Community 2017 with python and git**
+2. **Install Visual Studio Community 2019 with python and git**
 
 Download from https://visualstudio.microsoft.com/downloads/
 Make sure you check the box for Desktop Development with C++ (Windows category)
