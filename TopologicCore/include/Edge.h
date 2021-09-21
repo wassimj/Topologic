@@ -52,7 +52,7 @@ namespace TopologicCore
 	public:
 		TOPOLOGIC_API Edge(const TopoDS_Edge& rkOcctEdge, const std::string& rkGuid = "");
 
-		virtual ~Edge();
+		TOPOLOGIC_API virtual ~Edge();
 
 		/// <summary>
 		/// Returns the Edges adjacent to the Edge.
@@ -71,14 +71,14 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkOcctEdge">An OCCT Edge</param>
 		/// <returns name="TopoDS_Vertex">The start OCCT Vertex of the OCCT Edge</returns>
-		static TopoDS_Vertex StartVertex(const TopoDS_Edge& rkOcctEdge);
+		TOPOLOGIC_API static TopoDS_Vertex StartVertex(const TopoDS_Edge& rkOcctEdge);
 		
 		/// <summary>
 		/// Returns the end OCCT Vertex of the OCCT Edge.
 		/// </summary>
 		/// <param name="rkOcctEdge">An OCCT Edge</param>
 		/// <returns>The end OCCT Vertex of the OCCT Edge</returns>
-		static TopoDS_Vertex EndVertex(const TopoDS_Edge& rkOcctEdge);
+		TOPOLOGIC_API static TopoDS_Vertex EndVertex(const TopoDS_Edge& rkOcctEdge);
 
 		/// <summary>
 		/// Returns the end Vertex of the Edge.
@@ -153,51 +153,51 @@ namespace TopologicCore
 		/// Returns True if this Edge is a manifold, otherwise a False.
 		/// </summary>
 		/// <returns name="bool">True if this Edge is a manifold, otherwise a False</returns>
-		virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold() const;
 
-        virtual bool IsManifold(const TopologicCore::Topology::Ptr& rkParentTopology) const;
+		TOPOLOGIC_API virtual bool IsManifold(const TopologicCore::Topology::Ptr& rkParentTopology) const;
 
 		/// <summary>
 		/// Creates a geometry from Edge.
 		/// </summary>
 		/// <param name="rOcctGeometries">The created geometry</param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
 
 		/// <summary>
 		/// Returns the underlying OCCT shape.
 		/// </summary>
 		/// <returns name="TopoDS_Shape">The underlying OCCT shape</returns>
-		virtual TopoDS_Shape& GetOcctShape();
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape();
 
 		/// <summary>
 		/// Returns the underlying OCCT shape.
 		/// </summary>
 		/// <returns name="TopoDS_Shape">The underlying OCCT shape</returns>
-		virtual const TopoDS_Shape& GetOcctShape() const;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const;
 
 		/// <summary>
 		/// Returns the underlying OCCT Edge.
 		/// </summary>
 		/// <returns name="TopoDS_Edge">The underlying OCCT Edge</returns>
-		virtual TopoDS_Edge& GetOcctEdge();
+		TOPOLOGIC_API virtual TopoDS_Edge& GetOcctEdge();
 
 		/// <summary>
 		/// Returns the underlying OCCT Edge.
 		/// </summary>
 		/// <returns name="TopoDS_Edge">The underlying OCCT Edge</returns>
-		virtual const TopoDS_Edge& GetOcctEdge() const;
+		TOPOLOGIC_API virtual const TopoDS_Edge& GetOcctEdge() const;
 
 		/// <summary>
 		/// Sets the underlying OCCT shape.
 		/// </summary>
 		/// <param name="rkOcctShape">A new OCCT shape</param>
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// Sets the underlying OCCT Edge.
 		/// </summary>
 		/// <param name="rkOcctEdge">A new OCCT Edge</param>
-		void SetOcctEdge(const TopoDS_Edge& rkOcctEdge);
+		TOPOLOGIC_API void SetOcctEdge(const TopoDS_Edge& rkOcctEdge);
 
 		/// <summary>
 		/// 
@@ -217,31 +217,31 @@ namespace TopologicCore
 		/// Returns the center of mass of this Edge.
 		/// </summary>
 		/// <returns name="Vertex">The center of mass of this Edge</returns>
-		virtual std::shared_ptr<Vertex> CenterOfMass() const;
+		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
 		/// <summary>
 		/// Returns the center of mass of this an OCCT Edge.
 		/// </summary>
 		/// <returns name="Vertex">The center of mass of this an OCCT Edge</returns>
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Edge& rkOcctEdge);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Edge& rkOcctEdge);
 
 		/// <summary>
 		/// Returns the type associated to Edge.
 		/// </summary>
 		/// <returns name="TopologyType">The type associated to Edge</returns>
-		virtual TopologyType GetType() const { return TOPOLOGY_EDGE; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_EDGE; }
 
 		/// <summary>
 		/// Returns the type of the Edge as a String.
 		/// </summary>
 		/// <returns name="String">The type of the Edge as a String</returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
 		/// <summary>
 		/// Returns the class GUID.
 		/// </summary>
 		/// <returns name="String">The class GUID</returns>
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return EdgeGUID::Get();
 		}
 
@@ -279,14 +279,14 @@ namespace TopologicCore
 		/// Checks if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster).
 		/// </summary>
 		/// <returns name="bool">True if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster), otherwise False</returns>
-		virtual bool IsContainerType() { return false; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return false; }
 
 		/// <summary>
 		/// Fixes the input OCCT Edge.
 		/// </summary>
 		/// <param name="rkOcctInputEdge">An input OCCT Edge</param>
 		/// <returns name="TopoDS_Edge">The fixed OCCT Edge</returns>
-		static TopoDS_Edge OcctShapeFix(const TopoDS_Edge& rkOcctInputEdge);
+		TOPOLOGIC_API static TopoDS_Edge OcctShapeFix(const TopoDS_Edge& rkOcctInputEdge);
 
 	protected:
 		/// <summary>

@@ -54,7 +54,7 @@ namespace TopologicCore
 		/// <param name="rkOcctVertex">An OCCT vertex</param>
 		TOPOLOGIC_API Vertex(const TopoDS_Vertex& rkOcctVertex, const std::string& rkGuid = "");
 
-		virtual ~Vertex();
+		TOPOLOGIC_API virtual ~Vertex();
 
 		/// <summary>
 		/// Creates a vertex by a point.
@@ -106,50 +106,50 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold() const;
 
 		/// <summary>
 		/// Return the corresponding point of this vertex. The output list only contains one vertex.
 		/// </summary>
 		/// <exception cref="std::runtime_error">Null OCCT vertex</exception>
 		/// <param name="rOcctGeometries">The output parameter, containing only one point corresponding to this vertex.</param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Shape& GetOcctShape();
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Shape& GetOcctShape() const;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctShape"></param>
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Vertex& GetOcctVertex();
+		TOPOLOGIC_API virtual TopoDS_Vertex& GetOcctVertex();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctVertex"></param>
-		void SetOcctVertex(const TopoDS_Vertex& rkOcctVertex);
+		TOPOLOGIC_API void SetOcctVertex(const TopoDS_Vertex& rkOcctVertex);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Vertex& GetOcctVertex() const;
+		TOPOLOGIC_API virtual const TopoDS_Vertex& GetOcctVertex() const;
 
 		/// <summary>
 		/// 
@@ -157,25 +157,25 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API Handle(Geom_Point) Point() const;
 
-		virtual std::shared_ptr<Vertex> CenterOfMass() const;
+		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Vertex& rkOcctVertex);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Vertex& rkOcctVertex);
 
-		virtual TopologyType GetType() const { return TOPOLOGY_VERTEX; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_VERTEX; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return VertexGUID::Get();
 		}
 
 		static TOPOLOGIC_API int Type() { return TopologicCore::TOPOLOGY_VERTEX; }
 
-		virtual bool IsContainerType() { return false; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return false; }
 
 	protected:
 		/// <summary>
