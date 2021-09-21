@@ -70,7 +70,7 @@ namespace TopologicCore
 		typedef std::shared_ptr<Topology> Ptr;
 
 	public:
-		virtual ~Topology();
+		TOPOLOGIC_API virtual ~Topology();
 
 		/// <summary>
 		/// 
@@ -85,14 +85,14 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="pGeometry"></param>
 		/// <returns></returns>
-		static Topology::Ptr ByGeometry(Handle(Geom_Geometry) pGeometry);
+		TOPOLOGIC_API static Topology::Ptr ByGeometry(Handle(Geom_Geometry) pGeometry);
 
 		/// <summary>
 		/// 
 		///		</summary>
 		/// <param name="kpContext"></param>
 		/// <returns></returns>
-		static Topology::Ptr ByContext(const std::shared_ptr<Context>& kpContext);
+		TOPOLOGIC_API static Topology::Ptr ByContext(const std::shared_ptr<Context>& kpContext);
 
 		/// <summary>
 		/// 
@@ -116,7 +116,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkTopology"></param>
 		/// <returns></returns>
-		void AddContent(const Topology::Ptr& rkTopology);
+		TOPOLOGIC_API void AddContent(const Topology::Ptr& rkTopology);
 
 		/// <summary>
 		/// 
@@ -139,7 +139,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkTopology"></param>
 		/// <returns></returns>
-		void RemoveContent(const Topology::Ptr& rkTopology);
+		TOPOLOGIC_API void RemoveContent(const Topology::Ptr& rkTopology);
 
 		/// <summary>
 		/// 
@@ -153,7 +153,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkContext"></param>
 		/// <returns></returns>
-		void AddContext(const std::shared_ptr<Context>& rkContext);
+		TOPOLOGIC_API void AddContext(const std::shared_ptr<Context>& rkContext);
 
 		/// <summary>
 		/// 
@@ -167,7 +167,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkContext"></param>
 		/// <returns></returns>
-		void RemoveContext(const std::shared_ptr<Context>& rkContext);
+		TOPOLOGIC_API void RemoveContext(const std::shared_ptr<Context>& rkContext);
 
 		/// <summary>
 		/// 
@@ -196,7 +196,7 @@ namespace TopologicCore
 			const std::list<std::map<std::string, std::shared_ptr<Attribute>>>& rkDictionaries,
 			const int kTypeFilter = TOPOLOGY_ALL);
 
-        Topology::Ptr SetDictionaries(
+		TOPOLOGIC_API Topology::Ptr SetDictionaries(
             const std::list<std::shared_ptr<Vertex>>& rkSelectors,
             const std::list<std::map<std::string, std::shared_ptr<Attribute>>>& rkDictionaries,
             const std::list<int>& rkTypeFilters,
@@ -207,7 +207,7 @@ namespace TopologicCore
 			const std::list<Dictionary>& rkDictionaries,
 			const int kTypeFilter = TOPOLOGY_ALL);
 
-		Topology::Ptr SetDictionaries(
+		TOPOLOGIC_API Topology::Ptr SetDictionaries(
 			const std::list<std::shared_ptr<Vertex>>& rkSelectors,
 			const std::list<Dictionary>& rkDictionaries,
 			const std::list<int>& rkTypeFilters,
@@ -219,7 +219,7 @@ namespace TopologicCore
 		/// <param name="rkOcctFaces"></param>
 		/// <param name="kTolerance"></param>
 		/// <returns></returns>
-		static TopoDS_Shape OcctSewFaces(const TopTools_ListOfShape& rkOcctFaces, const double kTolerance = 0.001);
+		TOPOLOGIC_API static TopoDS_Shape OcctSewFaces(const TopTools_ListOfShape& rkOcctFaces, const double kTolerance = 0.001);
 
 		/// <summary>
 		/// 
@@ -306,13 +306,13 @@ namespace TopologicCore
 		/// <param name="kpTopology2"></param>
 		TOPOLOGIC_API static void TransferContents(const TopoDS_Shape& rkOcctShape1, const Topology::Ptr& kpTopology2);
 
-		static void TransferContents(const TopoDS_Shape& rkOcctShape1, const Topology::Ptr& kpTopology2, const TopTools_ListOfShape& rkOcctDeletedSubshapes);
+		TOPOLOGIC_API static void TransferContents(const TopoDS_Shape& rkOcctShape1, const Topology::Ptr& kpTopology2, const TopTools_ListOfShape& rkOcctDeletedSubshapes);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rOcctGeometries"></param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const = 0;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const = 0;
 
 		/// <summary>
 		/// 
@@ -320,7 +320,7 @@ namespace TopologicCore
 		/// <param name="rContents"></param>
 		TOPOLOGIC_API void Contents(std::list<Topology::Ptr>& rContents) const;
 
-		static void Contents(const TopoDS_Shape& rkOcctShape, std::list<Topology::Ptr>& rContents);
+		TOPOLOGIC_API static void Contents(const TopoDS_Shape& rkOcctShape, std::list<Topology::Ptr>& rContents);
 
 		/// <summary>
 		/// 
@@ -328,7 +328,7 @@ namespace TopologicCore
 		/// <param name="rApertures"></param>
 		TOPOLOGIC_API void Apertures(std::list<std::shared_ptr<Aperture>>& rApertures) const;
 
-		static void Apertures(const TopoDS_Shape& rkOcctShape, std::list<std::shared_ptr<Aperture>>& rApertures);
+		TOPOLOGIC_API static void Apertures(const TopoDS_Shape& rkOcctShape, std::list<std::shared_ptr<Aperture>>& rApertures);
 
 		/// <summary>
 		/// 
@@ -349,7 +349,7 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API bool Contexts(std::list<std::shared_ptr<Context>>& rContexts) const;
 
-		static bool Contexts(const TopoDS_Shape& rkOcctShape, std::list<std::shared_ptr<Context>>& rContexts);
+		TOPOLOGIC_API static bool Contexts(const TopoDS_Shape& rkOcctShape, std::list<std::shared_ptr<Context>>& rContexts);
 
 		/// <summary>
 		/// Returns True if this Topology is manifold, otherwise a False.
@@ -382,14 +382,14 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rOcctShape"></param>
 		/// <returns></returns>
-		static TopoDS_Shape Simplify(TopoDS_Shape& rOcctShape);
+		TOPOLOGIC_API static TopoDS_Shape Simplify(TopoDS_Shape& rOcctShape);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rOcctShape"></param>
 		/// <returns></returns>
-		static TopoDS_Shape BooleanSubTopologyContainment(TopoDS_Shape& rOcctShape);
+		TOPOLOGIC_API static TopoDS_Shape BooleanSubTopologyContainment(TopoDS_Shape& rOcctShape);
 
 		/// <summary>
 		/// 
@@ -401,7 +401,7 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		int Dimensionality() const
+		TOPOLOGIC_API int Dimensionality() const
 		{
 			return m_dimensionality;
 		}
@@ -410,17 +410,17 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Shape& GetOcctShape() = 0;
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape() = 0;
 
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape) = 0;
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape) = 0;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Shape& GetOcctShape() const = 0;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const = 0;
 
-		virtual TopologyType GetType() const = 0;
+		TOPOLOGIC_API virtual TopologyType GetType() const = 0;
 
 		/// <summary>
 		/// Returns all sub-entities that have no other parents than this topology, i.e. do not belong to other entities.
@@ -428,7 +428,7 @@ namespace TopologicCore
 		/// <param name="rSubTopologies">The sub-topologies</param>
 		TOPOLOGIC_API void SubTopologies(std::list<Topology::Ptr>& rSubTopologies) const;
 
-		int NumOfSubTopologies() const;
+		TOPOLOGIC_API int NumOfSubTopologies() const;
 
 		/// <summary>
 		/// Gets the type of this Topology as a String.
@@ -517,7 +517,7 @@ namespace TopologicCore
 		/// <param name="rkOcctShape"></param>
 		/// <param name="rkShapeEnum"></param>
 		/// <param name="rOcctMembers"></param>
-		static void DownwardNavigation(const TopoDS_Shape& rkOcctShape, const TopAbs_ShapeEnum& rkShapeEnum, TopTools_MapOfShape& rOcctMembers);
+		TOPOLOGIC_API static void DownwardNavigation(const TopoDS_Shape& rkOcctShape, const TopAbs_ShapeEnum& rkShapeEnum, TopTools_MapOfShape& rOcctMembers);
 
 		/// <summary>
 		/// Copy the whole content/context hierarchy.
@@ -536,7 +536,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkOcctShape"></param>
 		/// <returns></returns>
-		static TopoDS_Shape CopyOcct(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API static TopoDS_Shape CopyOcct(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// 
@@ -551,7 +551,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkOcctOriginalSubshape"></param>
 		/// <param name="rkOcctNewSubshape"></param>
-		void ReplaceSubentity(const TopoDS_Shape& rkOcctOriginalSubshape, const TopoDS_Shape& rkOcctNewSubshape);
+		TOPOLOGIC_API void ReplaceSubentity(const TopoDS_Shape& rkOcctOriginalSubshape, const TopoDS_Shape& rkOcctNewSubshape);
 
 		/// <summary>
 		/// 
@@ -564,15 +564,15 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <param name="rOcctMembers"></param>
-		void Members(TopTools_ListOfShape& rOcctMembers) const;
+		TOPOLOGIC_API void Members(TopTools_ListOfShape& rOcctMembers) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rMembers"></param>
-		void Members(std::list<Topology::Ptr>& rMembers) const;
+		TOPOLOGIC_API void Members(std::list<Topology::Ptr>& rMembers) const;
 
-		static void Members(const TopoDS_Shape& rkOcctShape, TopTools_ListOfShape& rOcctMembers);
+		TOPOLOGIC_API static void Members(const TopoDS_Shape& rkOcctShape, TopTools_ListOfShape& rOcctMembers);
 
 		/// <summary>
 		/// 
@@ -589,13 +589,13 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API Topology::Ptr SelectSubtopology(const std::shared_ptr<Vertex>& kpSelector, const int kTypeFilter = TOPOLOGY_ALL) const;
 
-		static TopoDS_Shape SelectSubtopology(
+		TOPOLOGIC_API static TopoDS_Shape SelectSubtopology(
 			const TopoDS_Shape& rkOcctShape, 
 			const TopoDS_Shape& rkOcctSelectorShape, 
 			const int kTypeFilter = TOPOLOGY_ALL, 
 			const double kDistanceThreshold = std::numeric_limits<double>::max());
 
-		static TopoDS_Shape SelectSubtopology(
+		TOPOLOGIC_API static TopoDS_Shape SelectSubtopology(
 			const TopoDS_Shape& rkOcctShape,
 			const TopoDS_Shape& rkOcctSelectorShape,
 			double& rMinDistance,
@@ -608,7 +608,7 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const = 0;
 
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Shape& rkOcctShape);
 
 		TOPOLOGIC_API std::shared_ptr<Vertex> Centroid() const;
 
@@ -627,24 +627,24 @@ namespace TopologicCore
 		/// <returns>The GUID</returns>
 		TOPOLOGIC_API const std::string GetInstanceGUID() const;
 
-		static const std::string GetInstanceGUID(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API static const std::string GetInstanceGUID(const TopoDS_Shape& rkOcctShape);
 
-		void SetInstanceGUID(const TopoDS_Shape& rkOcctShape, const std::string& rkGuid);
+		TOPOLOGIC_API void SetInstanceGUID(const TopoDS_Shape& rkOcctShape, const std::string& rkGuid);
 
-		static TopologyType GetTopologyType(const TopAbs_ShapeEnum& rkOcctType);
+		TOPOLOGIC_API static TopologyType GetTopologyType(const TopAbs_ShapeEnum& rkOcctType);
 
-		static TopAbs_ShapeEnum GetOcctTopologyType(const TopologyType& rkType);
+		TOPOLOGIC_API static TopAbs_ShapeEnum GetOcctTopologyType(const TopologyType& rkType);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkShape"></param>
 		/// <param name="rSubTopologies"></param>
-		static void SubTopologies(const TopoDS_Shape& rkShape, TopTools_ListOfShape& rSubTopologies);
+		TOPOLOGIC_API static void SubTopologies(const TopoDS_Shape& rkShape, TopTools_ListOfShape& rSubTopologies);
 
-		virtual bool IsContainerType() = 0;
+		TOPOLOGIC_API virtual bool IsContainerType() = 0;
 
-		static bool IsContainerType(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API static bool IsContainerType(const TopoDS_Shape& rkOcctShape);
 
 #ifdef _DEBUG
 		TOPOLOGIC_API void GlobalClusterSubTopologies(std::list<Topology::Ptr>& rSubTopologies) const;
@@ -654,17 +654,17 @@ namespace TopologicCore
 
 		TOPOLOGIC_API bool IsReversed();
 
-		Topology::Ptr DeepCopyAttributesFrom(const std::list<Topology::Ptr>& kpOriginTopologies);
+		TOPOLOGIC_API Topology::Ptr DeepCopyAttributesFrom(const std::list<Topology::Ptr>& kpOriginTopologies);
 
 		TOPOLOGIC_API void SetDictionary(const Dictionary& dictionary);
 
 		TOPOLOGIC_API Dictionary GetDictionary();
 
 	protected:
-		Topology(const int kDimensionality, const TopoDS_Shape& rkOcctShape, const std::string& rkGuid = "");
-        void AddUnionInternalStructure(const TopoDS_Shape& rkOcctShape, TopTools_ListOfShape& rUnionArguments);
+		TOPOLOGIC_API Topology(const int kDimensionality, const TopoDS_Shape& rkOcctShape, const std::string& rkGuid = "");
+		TOPOLOGIC_API void AddUnionInternalStructure(const TopoDS_Shape& rkOcctShape, TopTools_ListOfShape& rUnionArguments);
 
-		static TopoDS_Shape FixShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API static TopoDS_Shape FixShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// 
