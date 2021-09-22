@@ -62,7 +62,7 @@ namespace TopologicCore
 		/// <param name="rkOcctFace"></param>
 		TOPOLOGIC_API Face(const TopoDS_Face& rkOcctFace, const std::string& rkGuid = "");
 
-		virtual ~Face();
+		TOPOLOGIC_API virtual ~Face();
 
 		/// <summary>
 		/// 
@@ -105,9 +105,9 @@ namespace TopologicCore
 		/// <summary>
 		/// 
 		/// </summary>
-		virtual std::shared_ptr<Vertex> CenterOfMass() const;
+		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Face& rkOcctFace);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Face& rkOcctFace);
 
 		/// <summary>
 		/// 
@@ -196,7 +196,7 @@ namespace TopologicCore
         /// 
         /// </summary>
         /// <returns></returns>
-        static TopoDS_Wire ExternalBoundary(const TopoDS_Face& rkOcctFace);
+		TOPOLOGIC_API static TopoDS_Wire ExternalBoundary(const TopoDS_Face& rkOcctFace);
 
 		/// <summary>
 		/// 
@@ -223,55 +223,55 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold() const;
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        bool IsManifoldToTopology(const Topology::Ptr& kpTopology = nullptr) const;
+		TOPOLOGIC_API bool IsManifoldToTopology(const Topology::Ptr& kpTopology = nullptr) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rOcctGeometries"></param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Shape& GetOcctShape();
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Shape& GetOcctShape() const;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Face& GetOcctFace();
+		TOPOLOGIC_API virtual TopoDS_Face& GetOcctFace();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Face& GetOcctFace() const;
+		TOPOLOGIC_API virtual const TopoDS_Face& GetOcctFace() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctShape"></param>
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctFace"></param>
-		void SetOcctFace(const TopoDS_Face& rkOcctFace);
+		TOPOLOGIC_API void SetOcctFace(const TopoDS_Face& rkOcctFace);
 
 		/// <summary>
 		/// 
@@ -279,15 +279,15 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API Handle(Geom_Surface) Surface() const;
 
-		virtual TopologyType GetType() const { return TOPOLOGY_FACE; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_FACE; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return FaceGUID::Get();
 		}
 
@@ -299,9 +299,9 @@ namespace TopologicCore
 
 		static TOPOLOGIC_API int Type() { return TopologicCore::TOPOLOGY_FACE; }
 
-		virtual bool IsContainerType() { return false; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return false; }
 
-		void Triangulate(const double kLinearDeflection, const double kAngularDeflection, std::list<TopologicCore::Face::Ptr>& rTriangles) const;
+		TOPOLOGIC_API void Triangulate(const double kLinearDeflection, const double kAngularDeflection, std::list<TopologicCore::Face::Ptr>& rTriangles) const;
 
 
 		/// <summary>
@@ -309,7 +309,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkOcctInputFace">An input OCCT Face</param>
 		/// <returns name="TopoDS_Face">The fixed OCCT Face</returns>
-		static TopoDS_Face OcctShapeFix(const TopoDS_Face& rkOcctInputFace);
+		TOPOLOGIC_API static TopoDS_Face OcctShapeFix(const TopoDS_Face& rkOcctInputFace);
 
 	protected:
 		/// <summary>
