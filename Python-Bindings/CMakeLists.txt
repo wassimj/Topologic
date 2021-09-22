@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.10)
+project(topologic)
+
+set(CMAKE_CXX_STANDARD 17)
+
+find_package(PythonLibs REQUIRED)
+find_package(pybind11 REQUIRED)
+
+include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(../TopologicCore/include)
+include_directories(./include)
+
+# This is a hardcoded path as we expect OpenCASCADE to be exactly
+# in this directory. Revisit if this changes!
+include_directories(C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/inc)
+SET(CUSTOM_LIB_PATH "C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/win64/vc14/lib")
+
+add_library(TopologicCore SHARED IMPORTED)
+set(ADDITIONAL_LIBRARY_DEPENDENCIES
+    "TKernel;"
+)
+
+SET_PROPERTY(TARGET TopologicCore PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../output/${CMAKE_GENERATOR_PLATFORM}/${CMAKE_BUILD_TYPE}/TopologicCore.dll)
+SET_PROPERTY(TARGET TopologicCore PROPERTY IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/../output/${CMAKE_GENERATOR_PLATFORM}/${CMAKE_BUILD_TYPE}/TopologicCore.lib)
+
+set(SRC_FILES 
+  ./src/TopologicalQuery.cppwg.cpp
+  ./src/Topology.cppwg.cpp
+  ./src/Vertex.cppwg.cpp
+  ./src/Edge.cppwg.cpp
+  ./src/main.cpp
+)
+
+pybind11_add_module(${PROJECT_NAME} SHARED ${SRC_FILES})
+target_link_directories(${PROJECT_NAME} PUBLIC ${CUSTOM_LIB_PATH})
+target_link_libraries(${PROJECT_NAME} PRIVATE TopologicCore ${ADDITIONAL_LIBRARY_DEPENDENCIES})
