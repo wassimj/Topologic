@@ -28,6 +28,7 @@ set(SRC_FILES
   ./src/Topology.cppwg.cpp
   ./src/Vertex.cppwg.cpp
   ./src/Edge.cppwg.cpp
+  ./src/Wire.cppwg.cpp
   ./src/main.cpp
 )
 
