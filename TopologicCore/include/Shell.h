@@ -55,7 +55,7 @@ namespace TopologicCore
 		/// <param name="rkOcctShell"></param>
 		TOPOLOGIC_API Shell(const TopoDS_Shell& rkOcctShell, const std::string& rkGuid = "");
 
-		virtual ~Shell();
+		TOPOLOGIC_API virtual ~Shell();
 
 		/// <summary>
 		/// 
@@ -106,73 +106,73 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Shape& GetOcctShape();
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Shape& GetOcctShape() const;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual TopoDS_Shell& GetOcctShell();
+		TOPOLOGIC_API virtual TopoDS_Shell& GetOcctShell();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual const TopoDS_Shell& GetOcctShell() const;
+		TOPOLOGIC_API virtual const TopoDS_Shell& GetOcctShell() const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctShape"></param>
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkOcctShell"></param>
-		void SetOcctShell(const TopoDS_Shell& rkOcctShell);
+		TOPOLOGIC_API void SetOcctShell(const TopoDS_Shell& rkOcctShell);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rOcctGeometries"></param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		virtual std::shared_ptr<Vertex> CenterOfMass() const;
+		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Shell& rkOcctShell);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Shell& rkOcctShell);
 
 
-		virtual TopologyType GetType() const { return TOPOLOGY_SHELL; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_SHELL; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return ShellGUID::Get();
 		}
 
 		static TOPOLOGIC_API int Type() { return TopologicCore::TOPOLOGY_SHELL; }
 
-		virtual bool IsContainerType() { return true; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return true; }
 
 	protected:
 		/// <summary>

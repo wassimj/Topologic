@@ -73,7 +73,18 @@ git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 WindowsBuild.bat
 ```
-6. **Set the Environment Variable**
+6. **Install Python bindings for Topolgic (Optional)**
+
+* Prerequisite: WindowsBuild.bat have to be run without any errors
+* Switch to Python-Bindings folder and create a build folder inside
+* Issue the normal CMake build command from the build folder
+```
+cd Python-Bindings
+mkdir build && cd build
+cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+```
+7. **Set the Environment Variable**
 
 A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
 ```

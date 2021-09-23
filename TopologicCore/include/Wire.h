@@ -86,7 +86,7 @@ namespace TopologicCore
 		/// <returns></returns>
 		static TOPOLOGIC_API std::shared_ptr<Wire> ByEdges(const std::list<std::shared_ptr<Edge>>& rkEdges);
 
-		static TopoDS_Wire ByOcctEdges(const TopTools_ListOfShape& rkOcctEdges);
+		TOPOLOGIC_API static TopoDS_Wire ByOcctEdges(const TopTools_ListOfShape& rkOcctEdges);
 
 		/// <summary>
 		/// 
@@ -144,24 +144,24 @@ namespace TopologicCore
 
 		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Wire& rkOcctWire);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Wire& rkOcctWire);
 
 
-		virtual TopologyType GetType() const { return TOPOLOGY_WIRE; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_WIRE; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return WireGUID::Get();
 		}
 
 		static TOPOLOGIC_API int Type() { return TopologicCore::TOPOLOGY_WIRE; }
 
-		virtual bool IsContainerType() { return true; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return true; }
 
 		/// <summary>
 		/// 
