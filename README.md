@@ -30,26 +30,9 @@ TopologicCore contains the following main classes:
 ### Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2017* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
 
-1. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
-
-2. **Install Visual Studio Community 2019 with python and git**
-
-Download from https://visualstudio.microsoft.com/downloads/
-Make sure you check the box for Desktop Development with C++ (Windows category)
-Make sure you install the correct version of Python (Web Development category)
-Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
-
-3. **Install cmake and cppyy**
-
-```
-python -m venv topologic
-topologic\Scripts\activate
-(topologic) > python -m pip install cmake cppyy --upgrade
-```
-
-4. **Install Opencascade 7.4.0**
+1. **Install Opencascade 7.4.0**
 
 Download from https://old.opencascade.com/content/previous-releases
 
@@ -61,10 +44,19 @@ C:/OpenCASCADE-7.4.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
-5. **Install Topologic**
+2. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
 
-* Go to the Start Menu in the lower left corner
-* Search for the Visual Studio 2017 Folder and expand it
+3. **Install Visual Studio Community 2019 with python 3.9 and git**
+
+Download from https://visualstudio.microsoft.com/downloads/
+Make sure you check the box for Desktop Development with C++ (Windows category)
+Make sure you install the correct version of Python 3.9 (Web Development category)
+Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
+
+4. **Install Topologic**
+
+* Go to the WIndows Start Menu in the lower left corner
+* Search for the Visual Studio 2019 Folder and expand it
 * Choose *x64 Native Tools Command Prompt*
 * In the window that appears type:
 ```
@@ -73,22 +65,43 @@ git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 WindowsBuild.bat
 ```
+5. **Set the Environment Variable**
+
+A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
+
+* In Search, search for and then select: System (Control Panel)
+* Click the Advanced system settings link.
+* Click Environment Variables. ...
+* In the Edit System Variable (or New System Variable) window, add the folder to the PATH environment variable.
+
 6. **Install Python bindings for Topolgic (Optional)**
 
 * Prerequisite: WindowsBuild.bat have to be run without any errors
+* Install Anaconda3 personal edition from https://www.anaconda.com/products/individual
+* Launch Anaconda Navigator and click on the CMD.exe prompt.
+* Within the window that appears Create a python 3.9 virtual environment. We will call it Blender392 because you can use that with Blender later. The name can be anything you want. Just always remember what you named your environment.
+
+```
+conda create --name Blender392 python=3.9.1
+conda activate Blender392
+```
+* Install pybind11 within conda
+
+```
+conda install pybind11 -c conda-forge
+```
+* Install cmake
+
+```
+pip install cmake
+```
 * Switch to Python-Bindings folder and create a build folder inside
 * Issue the normal CMake build command from the build folder
+
 ```
-cd Python-Bindings
+cd C:/Users/*homefolder*/topologicbim/Topologic/Python-Bindings
 mkdir build && cd build
 cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
-7. **Set the Environment Variable**
 
-A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
-```
-. In Search, search for and then select: System (Control Panel)
-. Click the Advanced system settings link.
-. Click Environment Variables. ...
-. In the Edit System Variable (or New System Variable) window, add the folder to the PATH environment variable.
