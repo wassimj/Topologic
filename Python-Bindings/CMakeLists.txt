@@ -32,6 +32,7 @@ set(SRC_FILES
   ./src/Wire.cppwg.cpp
   ./src/Face.cppwg.cpp
   ./src/Shell.cppwg.cpp
+  ./src/Cell.cppwg.cpp
   ./src/main.cpp
 )
 
