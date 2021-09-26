@@ -33,6 +33,7 @@ set(SRC_FILES
   ./src/Face.cppwg.cpp
   ./src/Shell.cppwg.cpp
   ./src/Cell.cppwg.cpp
+  ./src/CellComplex.cppwg.cpp
   ./src/main.cpp
 )
 
