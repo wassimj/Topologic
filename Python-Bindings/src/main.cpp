@@ -9,6 +9,7 @@ namespace py = pybind11;
 #include "Wire.cppwg.hpp"
 #include "Face.cppwg.hpp"
 #include "Cell.cppwg.hpp"
+#include "CellComplex.cppwg.hpp"
 
 
 PYBIND11_MODULE(topologic, m)
@@ -20,4 +21,5 @@ PYBIND11_MODULE(topologic, m)
     register_Wire_class(m);
     register_Face_class(m);
     register_Cell_class(m);
+    register_CellComplex_class(m);
 }
