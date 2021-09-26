@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(topologic)
 
 set(CMAKE_CXX_STANDARD 17)
+list(APPEND CMAKE_PREFIX_PATH "./pybind")
 
 find_package(PythonLibs REQUIRED)
 find_package(pybind11 REQUIRED)
