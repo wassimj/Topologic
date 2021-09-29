@@ -59,7 +59,7 @@ namespace TopologicCore
 		/// <returns name="Cluster">The created Cluster</returns>
 		TOPOLOGIC_API static std::shared_ptr<Cluster> ByTopologies(const std::list<std::shared_ptr<Topology>>& rkTopologies);
 
-		static TopoDS_Compound ByOcctTopologies(const TopTools_MapOfShape& rkOcctShapes);
+		TOPOLOGIC_API static TopoDS_Compound ByOcctTopologies(const TopTools_MapOfShape& rkOcctShapes);
 
 		/// <summary>
 		/// Adds Topology to a Cluster and returns the resulting Topology.
@@ -109,7 +109,7 @@ namespace TopologicCore
 		/// Sets the underlying OCCT Compound.
 		/// </summary>
 		/// <param name="rkOcctCompound">A new OCCT Compound</param>
-		void SetOcctCompound(const TopoDS_Compound& rkOcctCompound);
+		TOPOLOGIC_API void SetOcctCompound(const TopoDS_Compound& rkOcctCompound);
 
 		/// <summary>
 		/// Creates a geometry from this Cluster.
@@ -169,7 +169,7 @@ namespace TopologicCore
 		/// Returns the center of mass of this Cluster.
 		/// </summary>
 		/// <returns name="Vertex">The center of mass of this Cluster</returns>
-		static TopoDS_Vertex CenterOfMass(const TopoDS_Compound& rkOcctCompound);
+		TOPOLOGIC_API static TopoDS_Vertex CenterOfMass(const TopoDS_Compound& rkOcctCompound);
 
 		/// <summary>
 		/// Returns True if this Cluster is a manifold, otherwise a False.
@@ -181,19 +181,19 @@ namespace TopologicCore
 		/// Returns the type associated to Cluster.
 		/// </summary>
 		/// <returns name="TopologyType">The type associated to Cluster</returns>
-		virtual TopologyType GetType() const { return TOPOLOGY_CLUSTER; }
+		TOPOLOGIC_API virtual TopologyType GetType() const { return TOPOLOGY_CLUSTER; }
 
 		/// <summary>
 		/// Returns the type of the Cluster as a String.
 		/// </summary>
 		/// <returns name="String">The type of the Cluster as a String</returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
 		/// <summary>
 		/// Returns the class GUID.
 		/// </summary>
 		/// <returns name="String">The class GUID</returns>
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return ClusterGUID::Get();
 		}
 
@@ -201,13 +201,13 @@ namespace TopologicCore
 		/// Returns the type of the Cluster
 		/// </summary>
 		/// <returns name="int">The type of the Cluster</returns>
-		static TOPOLOGIC_API int Type() { return TopologicCore::TOPOLOGY_CLUSTER; }
+		TOPOLOGIC_API static int Type() { return TopologicCore::TOPOLOGY_CLUSTER; }
 
 		/// <summary>
 		/// Checks if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster).
 		/// </summary>
 		/// <returns name="bool">True if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster), otherwise False</returns>
-		virtual bool IsContainerType() { return true; }
+		TOPOLOGIC_API virtual bool IsContainerType() { return true; }
 
 	protected:
 		/// <summary>
