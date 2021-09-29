@@ -47,8 +47,8 @@ namespace TopologicCore
 		typedef std::shared_ptr<Aperture> Ptr;
 
 	public:
-		Aperture(const Topology::Ptr& kpTopology, const std::shared_ptr<Context>& kpContext, const std::string& rkGuid = "");
-		~Aperture();
+		TOPOLOGIC_API Aperture(const Topology::Ptr& kpTopology, const std::shared_ptr<Context>& kpContext, const std::string& rkGuid = "");
+		TOPOLOGIC_API ~Aperture();
 
 		/// <summary>
 		/// Creates an Aperture by a topology and a context.
@@ -88,55 +88,55 @@ namespace TopologicCore
 		/// Creates a geometry from the underlying Topology.
 		/// </summary>
 		/// <param name="rOcctGeometries">The created geometries</param>
-		virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
+		TOPOLOGIC_API virtual void Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const;
 
 		/// <summary>
 		/// Returns the center of mass of the underlying Topology.
 		/// </summary>
 		/// <returns="Vertex">The center of mass</returns>
-		virtual std::shared_ptr<Vertex> CenterOfMass() const;
+		TOPOLOGIC_API virtual std::shared_ptr<Vertex> CenterOfMass() const;
 
 		/// <summary>
 		/// Checks if the underlying Topology is manifold.
 		/// </summary>
 		/// <returns name="bool">True if the underlying Topology is manifold, otherwise False</returns>
-		virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold() const;
 
 		/// <summary>
 		/// Returns the type of the Aperture as a String.
 		/// </summary>
 		/// <returns name="String">The type of the Aperture as a String</returns>
-		virtual std::string GetTypeAsString() const;
+		TOPOLOGIC_API virtual std::string GetTypeAsString() const;
 
 		/// <summary>
 		/// Returns the underlying OCCT shape.
 		/// </summary>
 		/// <returns name="TopoDS_Shape">The underlying OCCT shape</returns>
-		virtual TopoDS_Shape& GetOcctShape();
+		TOPOLOGIC_API virtual TopoDS_Shape& GetOcctShape();
 
 		/// <summary>
 		/// Sets the underlying OCCT shape.
 		/// </summary>
 		/// <param name="rkOcctShape">A new underlying OCCT shape</param>
-		virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API virtual void SetOcctShape(const TopoDS_Shape& rkOcctShape);
 
 		/// <summary>
 		/// Returns the underlying OCCT shape.
 		/// </summary>
 		/// <returns name="TopoDS_Shape">The underlying OCCT shape</returns>
-		virtual const TopoDS_Shape& GetOcctShape() const;
+		TOPOLOGIC_API virtual const TopoDS_Shape& GetOcctShape() const;
 
 		/// <summary>
 		/// Returns the type of the Aperture.
 		/// </summary>
 		/// <returns name="TopologyType">The type of the underlying Topology</returns>
-		virtual TopologyType GetType() const;
+		TOPOLOGIC_API virtual TopologyType GetType() const;
 
 		/// <summary>
 		/// Returns the class GUID.
 		/// </summary>
 		/// <returns name="String">The class GUID</returns>
-		virtual std::string GetClassGUID() const {
+		TOPOLOGIC_API virtual std::string GetClassGUID() const {
 			return ApertureGUID::Get();
 		}
 
@@ -144,7 +144,7 @@ namespace TopologicCore
 		/// Checks if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster).
 		/// </summary>
 		/// <returns name="bool">True if the underlying Topology is a container type (Wire, Shell, CellComplex, Cluster), otherwise False</returns>
-		virtual bool IsContainerType();
+		TOPOLOGIC_API virtual bool IsContainerType();
 
 
 	protected:
@@ -158,7 +158,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkOcctInputShape">An input OCCT shape</param>
 		/// <returns name="TopoDS_Shape">The fixed OCCT shape</returns>
-		virtual TopoDS_Shape OcctShapeFix(const TopoDS_Shape& rkOcctInputShape);
+		TOPOLOGIC_API virtual TopoDS_Shape OcctShapeFix(const TopoDS_Shape& rkOcctInputShape);
 
 		/// <summary>
 		/// The underlying Topology
