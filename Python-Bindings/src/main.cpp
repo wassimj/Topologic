@@ -11,7 +11,7 @@ namespace py = pybind11;
 #include "Cell.cppwg.hpp"
 #include "CellComplex.cppwg.hpp"
 #include "Cluster.cppwg.hpp"
-
+#include "Aperture.cppwg.hpp"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -24,4 +24,5 @@ PYBIND11_MODULE(topologic, m)
     register_Cell_class(m);
     register_CellComplex_class(m);
     register_Cluster_class(m);
+    register_Aperture_class(m);
 }
