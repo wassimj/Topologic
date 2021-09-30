@@ -35,7 +35,7 @@ set(SRC_FILES
   ./src/Cell.cppwg.cpp
   ./src/CellComplex.cppwg.cpp
   ./src/Cluster.cppwg.cpp
-  ./src/Aperture.cppwg.hpp
+  ./src/Aperture.cppwg.cpp
   ./src/main.cpp
 )
 
