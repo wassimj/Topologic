@@ -13,6 +13,8 @@ namespace py = pybind11;
 #include "Cluster.cppwg.hpp"
 #include "Aperture.cppwg.hpp"
 #include "Graph.cppwg.hpp"
+#include "Attribute.cppwg.hpp"
+#include "Dictionary.cppwg.hpp"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -27,4 +29,6 @@ PYBIND11_MODULE(topologic, m)
     register_Cluster_class(m);
     register_Aperture_class(m);
     register_Graph_class(m);
+    register_Attribute_class(m);
+    register_Dictionary_class(m);
 }

@@ -37,6 +37,8 @@ set(SRC_FILES
   ./src/Cluster.cppwg.cpp
   ./src/Aperture.cppwg.cpp
   ./src/Graph.cppwg.cpp
+  ./src/Attribute.cppwg.cpp
+  ./src/Dictionary.cppwg.cpp
   ./src/main.cpp
 )
 
