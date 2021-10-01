@@ -34,8 +34,8 @@ namespace TopologicCore
 		typedef std::shared_ptr<Context> Ptr;
 
 	public:
-		Context(const std::shared_ptr<TopologicCore::Topology>& kpTopology, const double kU, const double kV, const double kW);
-		virtual ~Context();
+		TOPOLOGIC_API Context(const std::shared_ptr<TopologicCore::Topology>& kpTopology, const double kU, const double kV, const double kW);
+		TOPOLOGIC_API virtual ~Context();
 
 		/// <summary>
 		/// Creates a context by a Topology and three parameters
