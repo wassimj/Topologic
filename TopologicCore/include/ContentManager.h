@@ -31,7 +31,7 @@ namespace TopologicCore
 	/// <summary>
 	/// ContentManager does not deal with ContextManager to prevent cyclic dependency.
 	/// </summary>
-	class ContentManager
+	class TOPOLOGIC_API ContentManager
 	{
 	public:
 		typedef std::shared_ptr<ContentManager> Ptr;

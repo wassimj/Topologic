@@ -39,6 +39,7 @@ set(SRC_FILES
   ./src/Graph.cppwg.cpp
   ./src/Attribute.cppwg.cpp
   ./src/Dictionary.cppwg.cpp
+  ./src/ContentManager.cppwg.cpp
   ./src/main.cpp
 )
 
