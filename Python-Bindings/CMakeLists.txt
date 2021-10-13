@@ -41,6 +41,9 @@ set(SRC_FILES
   ./src/Dictionary.cppwg.cpp
   ./src/ContentManager.cppwg.cpp
   ./src/Context.cppwg.cpp
+  ./src/IntAttribute.cppwg.cpp
+  ./src/StringAttribute.cppwg.cpp
+  ./src/DoubleAttribute.cppwg.cpp
   ./src/main.cpp
 )
 

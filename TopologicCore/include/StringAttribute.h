@@ -37,7 +37,7 @@ namespace TopologicCore
 		typedef std::shared_ptr<StringAttribute> Ptr;
 
 		TOPOLOGIC_API StringAttribute(const std::string& kValue);
-		virtual void* Value();
+		TOPOLOGIC_API virtual void* Value();
 
 	protected:
 		std::string m_value;
