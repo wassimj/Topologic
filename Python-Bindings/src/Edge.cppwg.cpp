@@ -134,10 +134,20 @@ py::class_<Edge , Edge_Overloads , std::shared_ptr<Edge >  , Topology  >(m, "Edg
             "EndVertex", 
             (::std::shared_ptr<TopologicCore::Vertex>(Edge::*)() const ) &Edge::EndVertex, 
             " "  )
-        .def(
+        /*.def(
             "Vertices", 
-            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Edge::Vertices, 
-            " " , py::arg("rVertices") )
+            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Edge::Vertices,            
+            " " , py::arg("rVertices") )*/
+        .def(
+            // Proof of concept for list passed as reference and filled in C++
+            "Vertices",
+            [](const Edge& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
         .def(
             "Wires", 
             (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Edge::Wires, 
