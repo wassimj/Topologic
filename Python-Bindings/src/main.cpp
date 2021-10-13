@@ -18,6 +18,9 @@ namespace py = pybind11;
 #include "Shell.cppwg.hpp"
 #include "ContentManager.cppwg.hpp"
 #include "Context.cppwg.hpp"
+#include "IntAttribute.cppwg.hpp"
+#include "DoubleAttribute.cppwg.hpp"
+#include "StringAttribute.cppwg.hpp"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -37,4 +40,7 @@ PYBIND11_MODULE(topologic, m)
     register_Shell_class(m);
     register_ContentManager_class(m);
     register_Context_class(m);
+    register_IntAttribute_class(m);
+    register_DoubleAttribute_class(m);
+    register_StringAttribute_class(m);
 }
