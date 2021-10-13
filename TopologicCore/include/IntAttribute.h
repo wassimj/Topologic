@@ -37,8 +37,8 @@ namespace TopologicCore
 		typedef std::shared_ptr<IntAttribute> Ptr;
 
 		TOPOLOGIC_API IntAttribute(const long long int kValue);
-		virtual void* Value();
-		long long int IntValue() { return m_value; }
+		TOPOLOGIC_API virtual void* Value();
+		TOPOLOGIC_API long long int IntValue() { return m_value; }
 
 	protected:
 		long long int m_value;

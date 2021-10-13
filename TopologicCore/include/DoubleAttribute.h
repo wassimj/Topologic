@@ -37,8 +37,8 @@ namespace TopologicCore
 		typedef std::shared_ptr<DoubleAttribute> Ptr;
 
 		TOPOLOGIC_API DoubleAttribute(const double kValue);
-		virtual void* Value();
-		double DoubleValue() { return m_value; }
+		TOPOLOGIC_API virtual void* Value();
+		TOPOLOGIC_API double DoubleValue() { return m_value; }
 
 	protected:
 		double m_value;
