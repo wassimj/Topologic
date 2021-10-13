@@ -76,6 +76,16 @@ e19 = Edge.ByStartVertexEndVertex(v7, v11)
 e20 = Edge.ByStartVertexEndVertex(v8, v12)
 print("Done")
 
+# Test getting vertices from edges
+print("Testing Getting Vertices from Edges...")
+edges = [e1, e2, e3, e4, e5]
+for anEdge in edges:
+    print(anEdge)
+    vertices = []
+    anEdge.Vertices(vertices)
+    for aVertex in vertices:
+        print(aVertex.X(), aVertex.Y(), aVertex.Z())
+print("Done")
 # create wires
 print("Creating Wires...")
 w1 = Wire.ByEdges([e1,e4,e3,e2])
