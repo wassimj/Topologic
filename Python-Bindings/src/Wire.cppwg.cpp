@@ -117,9 +117,14 @@ void register_Wire_class(py::module &m){
 py::class_<Wire , Wire_Overloads , std::shared_ptr<Wire >  , Topology  >(m, "Wire")
         .def(py::init<::TopoDS_Wire const &, ::std::string const & >(), py::arg("rkOcctWire"), py::arg("rkGuid") = "")
         .def(
-            "Edges", 
-            (void(Wire::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Wire::Edges, 
-            " " , py::arg("rEdges") )
+            "Edges",
+            [](const Wire& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
         .def(
             "Faces", 
             (void(Wire::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Wire::Faces, 
@@ -129,9 +134,14 @@ py::class_<Wire , Wire_Overloads , std::shared_ptr<Wire >  , Topology  >(m, "Wir
             (bool(Wire::*)() const ) &Wire::IsClosed, 
             " "  )
         .def(
-            "Vertices", 
-            (void(Wire::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Wire::Vertices, 
-            " " , py::arg("rVertices") )
+            "Vertices",
+            [](const Wire& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
         .def_static(
             "ByEdges", 
             (::std::shared_ptr<TopologicCore::Wire>(*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> const &)) &Wire::ByEdges, 

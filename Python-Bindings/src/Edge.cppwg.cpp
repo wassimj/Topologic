@@ -123,9 +123,14 @@ void register_Edge_class(py::module &m){
 py::class_<Edge , Edge_Overloads , std::shared_ptr<Edge >  , Topology  >(m, "Edge")
         .def(py::init<::TopoDS_Edge const &, ::std::string const & >(), py::arg("rkOcctEdge"), py::arg("rkGuid") = "")
         .def(
-            "AdjacentEdges", 
-            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Edge::AdjacentEdges, 
-            " " , py::arg("rAdjacentEdges") )
+            "AdjacentEdges",
+            [](const Edge& obj, py::list& rAdjacentEdges) {
+                std::list<Edge::Ptr> local;
+                obj.AdjacentEdges(local);
+                for (auto& x : local)
+                rAdjacentEdges.append(x);
+            },
+            " ", py::arg("rAdjacentEdges"))
         .def(
             "StartVertex", 
             (::std::shared_ptr<TopologicCore::Vertex>(Edge::*)() const ) &Edge::StartVertex, 
@@ -134,12 +139,7 @@ py::class_<Edge , Edge_Overloads , std::shared_ptr<Edge >  , Topology  >(m, "Edg
             "EndVertex", 
             (::std::shared_ptr<TopologicCore::Vertex>(Edge::*)() const ) &Edge::EndVertex, 
             " "  )
-        /*.def(
-            "Vertices", 
-            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Edge::Vertices,            
-            " " , py::arg("rVertices") )*/
         .def(
-            // Proof of concept for list passed as reference and filled in C++
             "Vertices",
             [](const Edge& obj, py::list& rVertices) {
                 std::list<Vertex::Ptr> local;
@@ -149,13 +149,23 @@ py::class_<Edge , Edge_Overloads , std::shared_ptr<Edge >  , Topology  >(m, "Edg
             },
             " ", py::arg("rVertices"))
         .def(
-            "Wires", 
-            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Edge::Wires, 
-            " " , py::arg("rWires") )
+            "Wires",
+            [](const Edge& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+               },
+            " ", py::arg("rWires"))
         .def(
-            "Faces", 
-            (void(Edge::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Edge::Faces, 
-            " " , py::arg("rFaces") )
+            "Faces",
+            [](const Edge& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
         .def_static(
             "ByCurve", 
             (::TopologicCore::Edge::Ptr(*)(::TColgp_Array1OfPnt const &, ::TColStd_Array1OfReal const &, ::TColStd_Array1OfReal const &, ::TColStd_Array1OfInteger const &, int const, bool const, bool const)) &Edge::ByCurve, 
@@ -169,9 +179,14 @@ py::class_<Edge , Edge_Overloads , std::shared_ptr<Edge >  , Topology  >(m, "Edg
             (::TopologicCore::Edge::Ptr(*)(::std::shared_ptr<TopologicCore::Vertex> const &, ::std::shared_ptr<TopologicCore::Vertex> const &, bool const)) &Edge::ByStartVertexEndVertex, 
             " " , py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("kCopyAttributes") = true )
         .def(
-            "SharedVertices", 
-            (void(Edge::*)(::TopologicCore::Edge::Ptr const &, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Edge::SharedVertices, 
-            " " , py::arg("kpAnotherEdge"), py::arg("rSharedVertices") )
+            "SharedVertices",
+            [](const Edge& obj, ::std::shared_ptr<TopologicCore::Edge> const & kpAnotherEdge, py::list& rSharedVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.SharedVertices(kpAnotherEdge, local);
+                for (auto& x : local)
+                    rSharedVertices.append(x);
+            },
+            " ", py::arg("kpAnotherEdge"), py::arg("rSharedVertices"))
         .def(
             "IsManifold", 
             (bool(Edge::*)() const ) &Edge::IsManifold, 

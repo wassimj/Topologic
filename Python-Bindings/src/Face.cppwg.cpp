@@ -115,30 +115,84 @@ class Face_Overloads : public Face{
 void register_Face_class(py::module &m){
 py::class_<Face , Face_Overloads , std::shared_ptr<Face >  , Topology  >(m, "Face")
         .def(py::init<::TopoDS_Face const &, ::std::string const & >(), py::arg("rkOcctFace"), py::arg("rkGuid") = "")
-        .def(
+        /*.def(
             "AdjacentFaces", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Face::AdjacentFaces, 
-            " " , py::arg("rFaces") )
+            " " , py::arg("rFaces") ) */
         .def(
+            "AdjacentFaces",
+            [](const Face& obj, py::list& rAdjacentFaces) {
+                std::list<Face::Ptr> local;
+                obj.AdjacentFaces(local);
+                   for (auto& x : local)
+                        rAdjacentFaces.append(x);
+            },
+            " ", py::arg("rAdjacentFaces"))
+        /*.def(
             "Cells", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> &) const ) &Face::Cells, 
-            " " , py::arg("rCells") )
+            " " , py::arg("rCells") ) */
         .def(
+            "Cells",
+            [](const Face& obj, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+            " ", py::arg("rCells"))
+        /*.def(
             "Edges", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Face::Edges, 
-            " " , py::arg("rEdges") )
+            " " , py::arg("rEdges") )*/
         .def(
+            "Edges",
+            [](const Face& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+        /*.def(
             "Shells", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &Face::Shells, 
-            " " , py::arg("rShells") )
+            " " , py::arg("rShells") )*/
         .def(
+            "Shells",
+            [](const Face& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
+        /*.def(
             "Vertices", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Face::Vertices, 
-            " " , py::arg("rVertices") )
+            " " , py::arg("rVertices") ) */
         .def(
+            "Vertices",
+            [](const Face& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+        /*.def(
             "Wires", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Face::Wires, 
-            " " , py::arg("rWires") )
+            " " , py::arg("rWires") )*/
+        .def(
+            "Wires",
+            [](const Face& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
         .def(
             "CenterOfMass", 
             (::std::shared_ptr<TopologicCore::Vertex>(Face::*)() const ) &Face::CenterOfMass, 
@@ -163,22 +217,49 @@ py::class_<Face , Face_Overloads , std::shared_ptr<Face >  , Topology  >(m, "Fac
             "BySurface", 
             (::std::shared_ptr<TopologicCore::Face>(*)(::TColgp_Array2OfPnt const &, ::TColStd_Array2OfReal const &, ::TColStd_Array1OfReal const &, ::TColStd_Array1OfReal const &, ::TColStd_Array1OfInteger const &, ::TColStd_Array1OfInteger const &, int const, int const, bool const, bool const, bool const, ::std::shared_ptr<TopologicCore::Wire> const &, ::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> const &)) &Face::BySurface, 
             " " , py::arg("rkOcctPoles"), py::arg("rkOcctWeights"), py::arg("rkOcctUKnots"), py::arg("rkOcctVKnots"), py::arg("rkOcctUMultiplicities"), py::arg("rkOcctVMultiplicities"), py::arg("kUDegree"), py::arg("kVDegree"), py::arg("kIsUPeriodic"), py::arg("kIsVPeriodic"), py::arg("kIsRational"), py::arg("kpOuterWire"), py::arg("rkInnerWires") )
-        .def(
+        /*.def(
             "SharedEdges", 
             (void(Face::*)(::std::shared_ptr<TopologicCore::Face> const &, ::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Face::SharedEdges, 
-            " " , py::arg("kpAnotherFace"), py::arg("rEdges") )
+            " " , py::arg("kpAnotherFace"), py::arg("rEdges") )*/
         .def(
+            "SharedEdges",
+            [](const Face& obj, ::std::shared_ptr<TopologicCore::Face> const& kpAnotherFace, py::list& rSharedEdges) {
+                std::list<Edge::Ptr> local;
+                obj.SharedEdges(kpAnotherFace, local);
+                for (auto& x : local)
+                    rSharedEdges.append(x);
+            },
+            " ", py::arg("kpAnotherFace"), py::arg("rSharedEdges"))
+        /*.def(
             "SharedVertices", 
             (void(Face::*)(::std::shared_ptr<TopologicCore::Face> const &, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Face::SharedVertices, 
-            " " , py::arg("kpAnotherFace"), py::arg("rVertices") )
+            " " , py::arg("kpAnotherFace"), py::arg("rVertices") )*/
+        .def(
+            "SharedVertices",
+            [](const Face& obj, ::std::shared_ptr<TopologicCore::Face> const& kpAnotherFace, py::list& rSharedVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.SharedVertices(kpAnotherFace, local);
+                for (auto& x : local)
+                    rSharedVertices.append(x);
+            },
+            " ", py::arg("kpAnotherFace"), py::arg("rSharedVertices"))
         .def(
             "ExternalBoundary", 
             (::std::shared_ptr<TopologicCore::Wire>(Face::*)() const ) &Face::ExternalBoundary, 
             " "  )
-        .def(
+        /*.def(
             "InternalBoundaries", 
             (void(Face::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Face::InternalBoundaries, 
-            " " , py::arg("rInternalBoundaries") )
+            " " , py::arg("rInternalBoundaries") )*/
+        .def(
+            "InternalBoundaries",
+            [](const Face& obj, py::list& rInternalBoundaries) {
+                std::list<Wire::Ptr> local;
+                obj.InternalBoundaries(local);
+                for (auto& x : local)
+                    rInternalBoundaries.append(x);
+            },
+            " ", py::arg("rInternalBoundaries"))
         .def(
             "AddInternalBoundary", 
             (void(Face::*)(::std::shared_ptr<TopologicCore::Wire> const &)) &Face::AddInternalBoundary, 
@@ -247,10 +328,19 @@ py::class_<Face , Face_Overloads , std::shared_ptr<Face >  , Topology  >(m, "Fac
             "IsContainerType", 
             (bool(Face::*)()) &Face::IsContainerType, 
             " "  )
-        .def(
+        /*.def(
             "Triangulate", 
             (void(Face::*)(double const, double const, ::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Face::Triangulate, 
-            " " , py::arg("kLinearDeflection"), py::arg("kAngularDeflection"), py::arg("rTriangles") )
+            " " , py::arg("kLinearDeflection"), py::arg("kAngularDeflection"), py::arg("rTriangles") ) */
+        .def(
+            "Triangulate",
+            [](const Face& obj, const double kLinearDeflection, const double kAngularDeflection, py::list& rTriangles) {
+                std::list<Face::Ptr> local;
+                obj.Triangulate(kLinearDeflection, kAngularDeflection, local);
+                for (auto& x : local)
+                    rTriangles.append(x);
+            },
+            " ", py::arg("kLinearDeflection"), py::arg("kAngularDeflection"), py::arg("rTriangles"))
         .def_static(
             "OcctShapeFix", 
             (::TopoDS_Face(*)(::TopoDS_Face const &)) &Face::OcctShapeFix, 

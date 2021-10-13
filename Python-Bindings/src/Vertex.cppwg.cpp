@@ -116,10 +116,20 @@ py::class_<Vertex , Vertex_Overloads , std::shared_ptr<Vertex >  , Topology  >(m
             "ByCoordinates", 
             (::std::shared_ptr<TopologicCore::Vertex>(*)(double const, double const, double const)) &Vertex::ByCoordinates, 
             " " , py::arg("kX"), py::arg("kY"), py::arg("kZ") )
-        .def(
+        /*.def(
             "Edges", 
             (void(Vertex::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &)) &Vertex::Edges, 
-            " " , py::arg("rEdges") )
+            " " , py::arg("rEdges") ) */
+        .def(
+            // Proof of concept for list passed as reference and filled in C++
+            "Edges",
+            [](Vertex& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
         .def(
             "X", 
             (double(Vertex::*)() const ) &Vertex::X, 
