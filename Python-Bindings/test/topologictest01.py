@@ -77,7 +77,7 @@ e20 = Edge.ByStartVertexEndVertex(v8, v12)
 print("Done")
 
 # Test getting vertices from edges
-print("Testing Getting Vertices from Edges...")
+print("Testing getting Vertices from Edges...")
 edges = [e1, e2, e3, e4, e5]
 for anEdge in edges:
     print(anEdge)
@@ -101,6 +101,39 @@ w10 = Wire.ByEdges([e7,e20,e15,e19])
 w11 = Wire.ByEdges([e8,e17,e16,e20])
 print("Done")
 
+# Test getting vertices from wires
+print("Testing getting Vertices from Wires...")
+wires = [w1, w2, w3, w4, w5]
+for aWire in wires:
+    print(aWire)
+    vertices = []
+    aWire.Vertices(vertices)
+    for aVertex in vertices:
+        print(aVertex.X(), aVertex.Y(), aVertex.Z())
+        pEdges = []
+        aVertex.Edges(pEdges)
+        for aPEdge in pEdges:
+            print("   "+str(aPEdge))
+print("Done")
+# Test getting Edges from Wires
+print("Testing getting Edges from Wires...")
+wires = [w1, w2, w3, w4, w5]
+for aWire in wires:
+    print(aWire)
+    edges = []
+    aWire.Edges(edges)
+    for anEdge in edges:
+        print("   "+str(anEdge))
+        adjEdges = []
+        anEdge.AdjacentEdges(adjEdges)
+        sharedVertices = []
+        anEdge.SharedVertices(adjEdges[0], sharedVertices)
+        print(len(sharedVertices))
+        for sharedVertex in sharedVertices:
+            print("      Shared Vertices: "+str(sharedVertex))
+        for adjEdge in adjEdges:
+            print("      Adjacent Edges: "+str(adjEdge))
+print("Done")
 # create faces
 print("Creating Faces...")
 f1 = Face.ByExternalBoundary(w1)
