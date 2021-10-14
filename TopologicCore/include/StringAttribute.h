@@ -36,10 +36,11 @@ namespace TopologicCore
 	public:
 		typedef std::shared_ptr<StringAttribute> Ptr;
 
-		TOPOLOGIC_API StringAttribute(const std::string& kValue);
+		TOPOLOGIC_API StringAttribute(const std::wstring& kValue);
 		TOPOLOGIC_API virtual void* Value();
+		TOPOLOGIC_API std::wstring StringValue();
 
 	protected:
-		std::string m_value;
+		std::wstring m_value;
 	};
 }

@@ -12,21 +12,24 @@ typedef void * voidPtr;
 class StringAttribute_Overloads : public StringAttribute{
     public:
     using StringAttribute::StringAttribute;
-    void * Value() override {
+    void* Value() override {
         PYBIND11_OVERLOAD(
             voidPtr,
             StringAttribute,
             Value,
             );
     }
-
 };
 void register_StringAttribute_class(py::module &m){
 py::class_<StringAttribute , StringAttribute_Overloads , std::shared_ptr<StringAttribute >  , Attribute  >(m, "StringAttribute")
-        .def(py::init<::std::string const & >(), py::arg("kValue"))
+        .def(py::init<::std::wstring const & >(), py::arg("kValue"))
         .def(
             "Value", 
             (void *(StringAttribute::*)()) &StringAttribute::Value, 
             " "  )
+        .def(
+            "StringValue",
+            (std::wstring (StringAttribute::*)()) & StringAttribute::StringValue,
+            " ")
     ;
 }
