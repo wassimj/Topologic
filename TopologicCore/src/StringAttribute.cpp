@@ -18,14 +18,18 @@
 
 namespace TopologicCore
 {
-	StringAttribute::StringAttribute(const std::string& kValue)
+	StringAttribute::StringAttribute(const std::wstring& kValue)
 		: m_value(kValue)
 	{
-
 	}
 
 	void * StringAttribute::Value()
 	{
 		return &m_value;
+	}
+
+	std::wstring StringAttribute::StringValue()
+	{
+		return m_value;
 	}
 }
