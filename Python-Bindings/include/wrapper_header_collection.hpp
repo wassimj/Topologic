@@ -46,6 +46,7 @@
 #include "Aperture.h"
 #include "Bitwise.h"
 #include "PlanarSurface.h"
+#include "Utilities/VertexUtility.h"
 
 // Instantiate Template Classes 
 //TopologicCore::Dictionary dict;
