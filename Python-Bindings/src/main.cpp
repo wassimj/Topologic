@@ -21,6 +21,7 @@ namespace py = pybind11;
 #include "IntAttribute.cppwg.hpp"
 #include "DoubleAttribute.cppwg.hpp"
 #include "StringAttribute.cppwg.hpp"
+#include "ListAttribute.cppwg.hpp"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -43,4 +44,5 @@ PYBIND11_MODULE(topologic, m)
     register_IntAttribute_class(m);
     register_DoubleAttribute_class(m);
     register_StringAttribute_class(m);
+    register_ListAttribute_class(m);
 }

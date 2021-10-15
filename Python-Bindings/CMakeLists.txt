@@ -44,6 +44,7 @@ set(SRC_FILES
   ./src/IntAttribute.cppwg.cpp
   ./src/StringAttribute.cppwg.cpp
   ./src/DoubleAttribute.cppwg.cpp
+  ./src/ListAttribute.cppwg.cpp
   ./src/main.cpp
 )
 

@@ -37,9 +37,9 @@ namespace TopologicCore
 		typedef std::shared_ptr<ListAttribute> Ptr;
 
 		TOPOLOGIC_API ListAttribute(const std::list<Attribute::Ptr>& rkAttributes);
-		virtual void* Value();
+		TOPOLOGIC_API virtual void* Value();
 		//std::list<Attribute::Ptr>& ListValue() { return m_value; }
-		const std::list<Attribute::Ptr>& ListValue() const { return m_value; }
+		TOPOLOGIC_API const std::list<Attribute::Ptr>& ListValue() const { return m_value; }
 
 	protected:
 		std::list<Attribute::Ptr> m_value;
