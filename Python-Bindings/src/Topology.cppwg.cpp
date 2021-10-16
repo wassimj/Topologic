@@ -154,10 +154,19 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
             "RemoveContexts", 
             (::TopologicCore::Topology::Ptr(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Context>, std::allocator<std::shared_ptr<TopologicCore::Context>>> const &)) &Topology::RemoveContexts, 
             " " , py::arg("rkContexts") )
-        .def(
+        /*.def(
             "SharedTopologies", 
             (void(Topology::*)(::TopologicCore::Topology::Ptr const &, int const, ::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::SharedTopologies, 
-            " " , py::arg("kpTopology"), py::arg("kFilterType"), py::arg("rSharedTopologies") )
+            " " , py::arg("kpTopology"), py::arg("kFilterType"), py::arg("rSharedTopologies") )*/
+        .def(
+            "SharedTopologies",
+            [](const Topology& obj, ::std::shared_ptr<TopologicCore::Topology> const& kpTopology, int const kFilterType, py::list& rSharedTopologies) {
+                std::list<Topology::Ptr> local;
+                obj.SharedTopologies(kpTopology, kFilterType, local);
+                for (auto& x : local)
+                    rSharedTopologies.append(x);
+            },
+            " ", py::arg("kpTopology"), py::arg("kFilterType"), py::arg("rSharedTopologies"))
         .def(
             "SetDictionaries", 
             (::TopologicCore::Topology::Ptr(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> const &, ::std::list<std::map<std::basic_string<char>, std::shared_ptr<TopologicCore::Attribute>, std::less<std::basic_string<char>>, std::allocator<std::pair<const std::basic_string<char>, std::shared_ptr<TopologicCore::Attribute>>>>, std::allocator<std::map<std::basic_string<char>, std::shared_ptr<TopologicCore::Attribute>, std::less<std::basic_string<char>>, std::allocator<std::pair<const std::basic_string<char>, std::shared_ptr<TopologicCore::Attribute>>>>>> const &, int const)) &Topology::SetDictionaries, 
@@ -222,22 +231,58 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
             "Geometry", 
             (void(Topology::*)(::std::list<opencascade::handle<Geom_Geometry>, std::allocator<opencascade::handle<Geom_Geometry>>> &) const ) &Topology::Geometry, 
             " " , py::arg("rOcctGeometries") )
-        .def(
+        /*.def(
             "Contents", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::Contents, 
-            " " , py::arg("rContents") )
+            " " , py::arg("rContents") )*/
         .def(
+            "Contents",
+            [](const Topology& obj, py::list& rContents) {
+                std::list<Topology::Ptr> local;
+                obj.Contents(local);
+                for (auto& x : local)
+                    rContents.append(x);
+            },
+            " ", py::arg("rContents"))
+        /*.def(
             "Apertures", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Aperture>, std::allocator<std::shared_ptr<TopologicCore::Aperture>>> &) const ) &Topology::Apertures, 
-            " " , py::arg("rApertures") )
+            " " , py::arg("rApertures") )*/
         .def(
+            "Apertures",
+            [](const Topology& obj, py::list& rApertures) {
+                std::list<Aperture::Ptr> local;
+                obj.Apertures(local);
+                for (auto& x : local)
+                    rApertures.append(x);
+            },
+            " ", py::arg("rApertures"))
+        /*.def(
             "SubContents", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::SubContents, 
-            " " , py::arg("rSubContents") )
+            " " , py::arg("rSubContents") )*/
         .def(
+            "SubContents",
+            [](const Topology& obj, py::list& rSubContents) {
+                std::list<Topology::Ptr> local;
+                obj.SubContents(local);
+                for (auto& x : local)
+                    rSubContents.append(x);
+            },
+            " ", py::arg("rSubContents"))
+        /*.def(
             "Contexts", 
             (bool(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Context>, std::allocator<std::shared_ptr<TopologicCore::Context>>> &) const ) &Topology::Contexts, 
-            " " , py::arg("rContexts") )
+            " " , py::arg("rContexts") )*/
+        .def(
+            "Contexts",
+            [](const Topology& obj, py::list& rContexts) {
+                std::list<Context::Ptr> local;
+                obj.Contexts(local);
+                for (auto& x : local)
+                    rContexts.append(x);
+            },
+            " ", py::arg("rContexts"))
         .def(
             "IsManifold", 
             (bool(Topology::*)() const ) &Topology::IsManifold, 
@@ -306,7 +351,7 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
             "GetTypeAsString", 
             (::std::string(Topology::*)() const ) &Topology::GetTypeAsString, 
             " "  )
-        .def(
+        /*.def(
             "Shells", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &Topology::Shells, 
             " " , py::arg("rShells") )
@@ -333,7 +378,68 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
         .def(
             "CellComplexes", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::CellComplex>, std::allocator<std::shared_ptr<TopologicCore::CellComplex>>> &) const ) &Topology::CellComplexes, 
-            " " , py::arg("rCellComplexes") )
+            " " , py::arg("rCellComplexes") )*/
+
+        .def(
+            "CellComplexes",
+            [](const Topology& obj, py::list& rCellComplexes) {
+                std::list<CellComplex::Ptr> local;
+                obj.CellComplexes(local);
+                for (auto& x : local)
+                    rCellComplexes.append(x);
+            },
+            " ", py::arg("rCellComplexes"))
+
+        .def(
+            "Shells",
+            [](const Topology& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
+
+        .def(
+            "Edges",
+            [](const Topology& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+
+        .def(
+            "Faces",
+            [](const Topology& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
+
+        .def(
+            "Vertices",
+            [](const Topology& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+
+        .def(
+            "Wires",
+            [](const Topology& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
+
         .def(
             "UpwardNavigation", 
             (void(Topology::*)(::TopoDS_Shape const &, int const, ::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::UpwardNavigation, 
@@ -370,10 +476,19 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
             "Members", 
             (void(Topology::*)(::TopTools_ListOfShape &) const ) &Topology::Members, 
             " " , py::arg("rOcctMembers") )
-        .def(
+        /*.def(
             "Members", 
             (void(Topology::*)(::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::Members, 
-            " " , py::arg("rMembers") )
+            " " , py::arg("rMembers") )*/
+        .def(
+            "Members",
+            [](const Topology& obj, py::list& rMembers) {
+                std::list<Topology::Ptr> local;
+                obj.Members(local);
+                for (auto& x : local)
+                    rMembers.append(x);
+            },
+            " ", py::arg("rMembers"))
         .def(
             "ClosestSimplestSubshape", 
             (::TopologicCore::Topology::Ptr(Topology::*)(::TopologicCore::Topology::Ptr const &) const ) &Topology::ClosestSimplestSubshape, 

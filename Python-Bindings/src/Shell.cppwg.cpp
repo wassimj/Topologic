@@ -115,26 +115,71 @@ class Shell_Overloads : public Shell{
 void register_Shell_class(py::module &m){
 py::class_<Shell , Shell_Overloads , std::shared_ptr<Shell >  , Topology  >(m, "Shell")
         .def(py::init<::TopoDS_Shell const &, ::std::string const & >(), py::arg("rkOcctShell"), py::arg("rkGuid") = "")
-        .def(
+        /*.def(
             "Cells", 
             (void(Shell::*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> &) const ) &Shell::Cells, 
-            " " , py::arg("rCells") )
+            " " , py::arg("rCells") )*/
         .def(
+            "Cells",
+            [](const Shell& obj, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+            " ", py::arg("rCells"))
+        /*.def(
             "Edges", 
             (void(Shell::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Shell::Edges, 
-            " " , py::arg("rEdges") )
+            " " , py::arg("rEdges") )*/
         .def(
+            "Edges",
+            [](const Shell& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+        /*.def(
             "Wires", 
             (void(Shell::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Shell::Wires, 
-            " " , py::arg("rWires") )
+            " " , py::arg("rWires") )*/
         .def(
+            "Wires",
+            [](const Shell& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
+        /*.def(
             "Faces", 
             (void(Shell::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Shell::Faces, 
-            " " , py::arg("rFaces") )
+            " " , py::arg("rFaces") )*/
         .def(
+            "Faces",
+            [](const Shell& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
+        /*.def(
             "Vertices", 
             (void(Shell::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Shell::Vertices, 
-            " " , py::arg("rVertices") )
+            " " , py::arg("rVertices") )*/
+        .def(
+            "Vertices",
+            [](const Shell& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
         .def(
             "IsClosed", 
             (bool(Shell::*)() const ) &Shell::IsClosed, 

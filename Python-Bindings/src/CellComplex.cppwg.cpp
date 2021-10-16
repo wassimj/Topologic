@@ -115,30 +115,84 @@ class CellComplex_Overloads : public CellComplex{
 void register_CellComplex_class(py::module &m){
 py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  , Topology  >(m, "CellComplex")
         .def(py::init<::TopoDS_CompSolid const &, ::std::string const & >(), py::arg("rkOcctCompSolid"), py::arg("rkGuid") = "")
-        .def(
+        /*.def(
             "Cells", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> &) const ) &CellComplex::Cells, 
-            " " , py::arg("rCells") )
+            " " , py::arg("rCells") )*/
         .def(
+            "Cells",
+            [](const CellComplex& obj, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+            " ", py::arg("rCells"))
+        /*.def(
             "Faces", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::Faces, 
-            " " , py::arg("rFaces") )
+            " " , py::arg("rFaces") )*/
         .def(
+            "Faces",
+            [](const CellComplex& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
+        /*.def(
             "Shells", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &CellComplex::Shells, 
-            " " , py::arg("rShells") )
+            " " , py::arg("rShells") )*/
+        .def(
+            "Shells",
+            [](const CellComplex& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
         .def(
             "Edges", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &CellComplex::Edges, 
             " " , py::arg("rEdges") )
         .def(
+            "Edges",
+            [](const CellComplex& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+        /*.def(
             "Vertices", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &CellComplex::Vertices, 
-            " " , py::arg("rVertices") )
+            " " , py::arg("rVertices") )*/
         .def(
+            "Vertices",
+            [](const CellComplex& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+        /*.def(
             "Wires", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &CellComplex::Wires, 
-            " " , py::arg("rWires") )
+            " " , py::arg("rWires") )*/
+        .def(
+            "Wires",
+            [](const CellComplex& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
         .def_static(
             "ByCells", 
             (::std::shared_ptr<TopologicCore::CellComplex>(*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> const &)) &CellComplex::ByCells, 
@@ -155,18 +209,36 @@ py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  
             "ExternalBoundary", 
             (::std::shared_ptr<TopologicCore::Cell>(CellComplex::*)() const ) &CellComplex::ExternalBoundary, 
             " "  )
-        .def(
+        /*.def(
             "InternalBoundaries", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::InternalBoundaries, 
-            " " , py::arg("rInternalFaces") )
+            " " , py::arg("rInternalFaces") )*/
+        .def(
+            "Faces",
+            [](const CellComplex& obj, py::list& rInternalFaces) {
+                std::list<Face::Ptr> local;
+                obj.InternalBoundaries(local);
+                for (auto& x : local)
+                    rInternalFaces.append(x);
+            },
+            " ", py::arg("rInternalFaces"))
         .def(
             "IsManifold", 
             (bool(CellComplex::*)() const ) &CellComplex::IsManifold, 
             " "  )
-        .def(
+        /*.def(
             "NonManifoldFaces", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::NonManifoldFaces, 
-            " " , py::arg("rNonManifoldFaces") )
+            " " , py::arg("rNonManifoldFaces") )*/
+        .def(
+            "NonManifoldFaces",
+            [](const CellComplex& obj, py::list& rNonManifoldFaces) {
+                std::list<Face::Ptr> local;
+                obj.NonManifoldFaces(local);
+                for (auto& x : local)
+                    rNonManifoldFaces.append(x);
+            },
+            " ", py::arg("rNonManifoldFaces"))
         .def(
             "GetOcctShape", 
             (::TopoDS_Shape &(CellComplex::*)()) &CellComplex::GetOcctShape, 

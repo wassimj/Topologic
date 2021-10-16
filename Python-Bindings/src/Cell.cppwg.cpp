@@ -115,34 +115,97 @@ class Cell_Overloads : public Cell{
 void register_Cell_class(py::module &m){
 py::class_<Cell , Cell_Overloads , std::shared_ptr<Cell >  , Topology  >(m, "Cell")
         .def(py::init<::TopoDS_Solid const &, ::std::string const & >(), py::arg("rkOcctSolid"), py::arg("rkGuid") = "")
-        .def(
+        /*.def(
             "AdjacentCells", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> &) const ) &Cell::AdjacentCells, 
-            " " , py::arg("rAdjacentCells") )
+            " " , py::arg("rAdjacentCells") )*/
         .def(
+            "AdjacentCells",
+            [](const Cell& obj, py::list& rAdjacentCells) {
+                std::list<Cell::Ptr> local;
+                obj.AdjacentCells(local);
+                for (auto& x : local)
+                    rAdjacentCells.append(x);
+            },
+            " ", py::arg("rAdjacentCells"))
+        /*.def(
             "CellComplexes", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::CellComplex>, std::allocator<std::shared_ptr<TopologicCore::CellComplex>>> &) const ) &Cell::CellComplexes, 
-            " " , py::arg("rCellComplexes") )
+            " " , py::arg("rCellComplexes") )*/
         .def(
+            "CellComplexes",
+            [](const Cell& obj, py::list& rCellComplexes) {
+                std::list<CellComplex::Ptr> local;
+                obj.CellComplexes(local);
+                for (auto& x : local)
+                    rCellComplexes.append(x);
+            },
+            " ", py::arg("rCellComplexes"))
+        /*.def(
             "Shells", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &Cell::Shells, 
-            " " , py::arg("rShells") )
+            " " , py::arg("rShells") )*/
         .def(
+            "Shells",
+            [](const Cell& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
+        /*.def(
             "Edges", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Cell::Edges, 
-            " " , py::arg("rEdges") )
+            " " , py::arg("rEdges") )*/
         .def(
+            "Edges",
+            [](const Cell& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+        /*.def(
             "Faces", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Cell::Faces, 
-            " " , py::arg("rFaces") )
+            " " , py::arg("rFaces") )*/
         .def(
+            "Faces",
+            [](const Cell& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
+        /*.def(
             "Vertices", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Cell::Vertices, 
-            " " , py::arg("rVertices") )
+            " " , py::arg("rVertices") )*/
         .def(
+            "Vertices",
+            [](const Cell& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+        /*.def(
             "Wires", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Cell::Wires, 
-            " " , py::arg("rWires") )
+            " " , py::arg("rWires") )*/
+        .def(
+            "Wires",
+            [](const Cell& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
         .def(
             "CenterOfMass", 
             (::std::shared_ptr<TopologicCore::Vertex>(Cell::*)() const ) &Cell::CenterOfMass, 
@@ -155,26 +218,62 @@ py::class_<Cell , Cell_Overloads , std::shared_ptr<Cell >  , Topology  >(m, "Cel
             "ByShell", 
             (::std::shared_ptr<TopologicCore::Cell>(*)(::std::shared_ptr<TopologicCore::Shell> const &)) &Cell::ByShell, 
             " " , py::arg("rkShell") )
-        .def(
+        /*.def(
             "SharedEdges", 
             (void(Cell::*)(::std::shared_ptr<TopologicCore::Cell> const &, ::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Cell::SharedEdges, 
-            " " , py::arg("kpAnotherCell"), py::arg("rEdges") )
+            " " , py::arg("kpAnotherCell"), py::arg("rEdges") )*/
         .def(
+            "SharedEdges",
+            [](const Cell& obj, ::std::shared_ptr<TopologicCore::Cell> const& kpAnotherCell, py::list& rSharedEdges) {
+                std::list<Edge::Ptr> local;
+                obj.SharedEdges(kpAnotherCell, local);
+                for (auto& x : local)
+                    rSharedEdges.append(x);
+            },
+            " ", py::arg("kpAnotherCell"), py::arg("rSharedEdges"))
+        /*.def(
             "SharedFaces", 
             (void(Cell::*)(::std::shared_ptr<TopologicCore::Cell> const &, ::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Cell::SharedFaces, 
-            " " , py::arg("kpAnotherCell"), py::arg("rFaces") )
+            " " , py::arg("kpAnotherCell"), py::arg("rFaces") )*/
         .def(
+            "SharedFaces",
+            [](const Cell& obj, ::std::shared_ptr<TopologicCore::Cell> const& kpAnotherCell, py::list& rSharedFaces) {
+                std::list<Face::Ptr> local;
+                obj.SharedFaces(kpAnotherCell, local);
+                for (auto& x : local)
+                    rSharedFaces.append(x);
+            },
+            " ", py::arg("kpAnotherCell"), py::arg("rSharedFaces"))
+        /*.def(
             "SharedVertices", 
             (void(Cell::*)(::std::shared_ptr<TopologicCore::Cell> const &, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Cell::SharedVertices, 
-            " " , py::arg("kpkAnotherCell"), py::arg("rVertices") )
+            " " , py::arg("kpkAnotherCell"), py::arg("rVertices") )*/
+        .def(
+            "SharedVertices",
+            [](const Cell& obj, ::std::shared_ptr<TopologicCore::Cell> const& kpAnotherCell, py::list& rSharedVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.SharedVertices(kpAnotherCell, local);
+                for (auto& x : local)
+                    rSharedVertices.append(x);
+            },
+            " ", py::arg("kpAnotherCell"), py::arg("rSharedVertices"))
         .def(
             "ExternalBoundary", 
             (::std::shared_ptr<TopologicCore::Shell>(Cell::*)() const ) &Cell::ExternalBoundary, 
             " "  )
-        .def(
+        /*.def(
             "InternalBoundaries", 
             (void(Cell::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &Cell::InternalBoundaries, 
-            " " , py::arg("rShells") )
+            " " , py::arg("rShells") )*/
+        .def(
+            "InternalBoundaries",
+            [](const Cell& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.InternalBoundaries(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
         .def(
             "IsManifold", 
             (bool(Cell::*)() const ) &Cell::IsManifold, 

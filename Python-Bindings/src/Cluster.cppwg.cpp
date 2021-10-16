@@ -159,7 +159,7 @@ py::class_<Cluster , Cluster_Overloads , std::shared_ptr<Cluster >  , Topology  
             "Geometry", 
             (void(Cluster::*)(::std::list<opencascade::handle<Geom_Geometry>, std::allocator<opencascade::handle<Geom_Geometry>>> &) const ) &Cluster::Geometry, 
             " " , py::arg("rOcctGeometries") )
-        .def(
+        /*.def(
             "Shells", 
             (void(Cluster::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &Cluster::Shells, 
             " " , py::arg("rShells") )
@@ -186,7 +186,68 @@ py::class_<Cluster , Cluster_Overloads , std::shared_ptr<Cluster >  , Topology  
         .def(
             "CellComplexes", 
             (void(Cluster::*)(::std::list<std::shared_ptr<TopologicCore::CellComplex>, std::allocator<std::shared_ptr<TopologicCore::CellComplex>>> &) const ) &Cluster::CellComplexes, 
-            " " , py::arg("rCellComplexes") )
+            " " , py::arg("rCellComplexes") )*/
+
+        .def(
+            "CellComplexes",
+            [](const Cluster& obj, py::list& rCellComplexes) {
+                std::list<CellComplex::Ptr> local;
+                obj.CellComplexes(local);
+                for (auto& x : local)
+                    rCellComplexes.append(x);
+            },
+            " ", py::arg("rCellComplexes"))
+
+        .def(
+            "Shells",
+            [](const Cluster& obj, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("rShells"))
+
+        .def(
+            "Edges",
+            [](const Cluster& obj, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"))
+
+        .def(
+            "Faces",
+            [](const Cluster& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
+
+        .def(
+            "Vertices",
+            [](const Cluster& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+
+        .def(
+            "Wires",
+            [](const Cluster& obj, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("rWires"))
+
         .def(
             "CenterOfMass", 
             (::std::shared_ptr<TopologicCore::Vertex>(Cluster::*)() const ) &Cluster::CenterOfMass, 

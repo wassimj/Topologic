@@ -24,18 +24,45 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "Topology", 
             (::TopologicCore::Topology::Ptr(Graph::*)() const ) &Graph::Topology, 
             " "  )
-        .def(
+        /*.def(
             "Vertices", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Graph::Vertices, 
-            " " , py::arg("rVertices") )
+            " " , py::arg("rVertices") )*/
         .def(
+            "Vertices",
+            [](const Graph& obj, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.Vertices(local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("rVertices"))
+        /*.def(
             "Edges", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &, double const) const ) &Graph::Edges, 
-            " " , py::arg("rEdges"), py::arg("kTolerance") = 1.0E-4 )
+            " " , py::arg("rEdges"), py::arg("kTolerance") = 1.0E-4 )*/
         .def(
+            "Edges",
+            [](const Graph& obj, py::list& rEdges, double const kTolerance) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(local, kTolerance);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rEdges"), py::arg("kTolerance") = 1.0E-4)
+        /*.def(
             "Edges", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> const &, double const, ::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Graph::Edges, 
-            " " , py::arg("rkVertices"), py::arg("kTolerance"), py::arg("rEdges") )
+            " " , py::arg("rkVertices"), py::arg("kTolerance"), py::arg("rEdges") )*/
+        .def(
+            "Edges",
+            [](const Graph& obj, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> const & rkVertices, double const kTolerance, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(rkVertices, kTolerance, local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("rkVertices"), py::arg("kTolerance") = 1.0E-4, py::arg("rEdges"))
         .def(
             "AddVertices", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> const &, double const)) &Graph::AddVertices, 
@@ -52,10 +79,19 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "VertexDegree", 
             (int(Graph::*)(::TopoDS_Vertex const &) const ) &Graph::VertexDegree, 
             " " , py::arg("kpVertex") )
-        .def(
+        /*.def(
             "AdjacentVertices", 
             (void(Graph::*)(::std::shared_ptr<TopologicCore::Vertex> const &, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Graph::AdjacentVertices, 
-            " " , py::arg("kpVertex"), py::arg("rAdjacentVertices") )
+            " " , py::arg("kpVertex"), py::arg("rAdjacentVertices") )*/
+        .def(
+            "AdjacentVertices",
+            [](const Graph& obj, ::std::shared_ptr<TopologicCore::Vertex> const & kpVertex, py::list& rAdjacentVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.AdjacentVertices(kpVertex, local);
+                for (auto& x : local)
+                    rAdjacentVertices.append(x);
+            },
+            " ", py::arg("kpVertex"), py::arg("rAdjacentVertices"))
         .def(
             "AdjacentVertices", 
             (void(Graph::*)(::TopoDS_Vertex const &, ::TopTools_MapOfShape &) const ) &Graph::AdjacentVertices, 
@@ -92,10 +128,19 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "IsComplete", 
             (bool(Graph::*)() const ) &Graph::IsComplete, 
             " "  )
-        .def(
+        /*.def(
             "IsolatedVertices", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Graph::IsolatedVertices, 
-            " " , py::arg("rIsolatedVertices") )
+            " " , py::arg("rIsolatedVertices") )*/
+        .def(
+            "IsolatedVertices",
+            [](const Graph& obj, py::list& rIsolatedVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.IsolatedVertices(local);
+                for (auto& x : local)
+                    rIsolatedVertices.append(x);
+            },
+            " ", py::arg("rIsolatedVertices"))
         .def(
             "MinimumDelta", 
             (int(Graph::*)() const ) &Graph::MinimumDelta, 
@@ -104,10 +149,19 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "MaximumDelta", 
             (int(Graph::*)() const ) &Graph::MaximumDelta, 
             " "  )
-        .def(
+        /*.def(
             "AllPaths", 
             (void(Graph::*)(::TopologicCore::Vertex::Ptr const &, ::TopologicCore::Vertex::Ptr const &, bool const, int const, ::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Graph::AllPaths, 
-            " " , py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths") )
+            " " , py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths") )*/
+        .def(
+            "AllPaths",
+            [](const Graph& obj, ::TopologicCore::Vertex::Ptr const& kpStartVertex, ::TopologicCore::Vertex::Ptr const& kpEndVertex, bool const kUseTimeLimit, int const kTimeLimit, py::list& rPaths) {
+                std::list<Wire::Ptr> local;
+                obj.AllPaths(kpStartVertex, kpEndVertex, kUseTimeLimit, kTimeLimit, local);
+                for (auto& x : local)
+                    rPaths.append(x);
+            },
+            " ", py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths"))
         .def(
             "AllPaths", 
             (void(Graph::*)(::TopologicCore::Vertex::Ptr const &, ::TopologicCore::Vertex::Ptr const &, bool const, int const, ::std::chrono::system_clock::time_point const &, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &, ::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Graph::AllPaths, 
@@ -128,10 +182,19 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "ShortestPath", 
             (::std::shared_ptr<TopologicCore::Wire>(Graph::*)(::TopoDS_Vertex const &, ::TopoDS_Vertex const &, ::std::string const &, ::std::string const &) const ) &Graph::ShortestPath, 
             " " , py::arg("rkOcctStartVertex"), py::arg("rkOcctEndVertex"), py::arg("rkVertexKey"), py::arg("rkEdgeKey") )
-        .def(
+        /*.def(
             "ShortestPaths", 
             (void(Graph::*)(::TopologicCore::Vertex::Ptr const &, ::TopologicCore::Vertex::Ptr const &, ::std::string const &, ::std::string const &, bool const, int const, ::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Graph::ShortestPaths, 
-            " " , py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("rkVertexKey"), py::arg("rkEdgeKey"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths") )
+            " " , py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("rkVertexKey"), py::arg("rkEdgeKey"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths") )*/
+        .def(
+            "ShortestPaths",
+            [](const Graph& obj, ::TopologicCore::Vertex::Ptr const& kpStartVertex, ::TopologicCore::Vertex::Ptr const& kpEndVertex, ::std::string const & rkVertexKey, ::std::string const & rkEdgeKey, bool const kUseTimeLimit, int const kTimeLimit, py::list& rPaths) {
+                std::list<Wire::Ptr> local;
+                obj.ShortestPaths(kpStartVertex, kpEndVertex, rkVertexKey, rkEdgeKey, kUseTimeLimit, kTimeLimit, local);
+                for (auto& x : local)
+                    rPaths.append(x);
+            },
+            " ", py::arg("kpStartVertex"), py::arg("kpEndVertex"), py::arg("rkVertexKey"), py::arg("rkEdgeKey"), py::arg("kUseTimeLimit"), py::arg("kTimeLimit"), py::arg("rPaths"))
         .def(
             "ShortestPaths", 
             (void(Graph::*)(::TopoDS_Vertex const &, ::TopoDS_Vertex const &, ::std::string const &, ::std::string const &, bool const, int const, ::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &Graph::ShortestPaths, 
@@ -164,17 +227,35 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "RemoveEdges", 
             (void(Graph::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> const &, double const)) &Graph::RemoveEdges, 
             " " , py::arg("rkEdges"), py::arg("kTolerance") = 1.0E-4 )
-        .def(
+        /*.def(
             "VerticesAtCoordinates", 
             (void(Graph::*)(double const, double const, double const, double const, ::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &Graph::VerticesAtCoordinates, 
-            " " , py::arg("kX"), py::arg("kY"), py::arg("kZ"), py::arg("kTolerance"), py::arg("rVertices") )
+            " " , py::arg("kX"), py::arg("kY"), py::arg("kZ"), py::arg("kTolerance"), py::arg("rVertices") )*/
+        .def(
+            "VerticesAtCoordinates",
+            [](const Graph& obj, double const kX, double const kY, double const kZ, double const kTolerance, py::list& rVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.VerticesAtCoordinates(kX, kY, kZ, kTolerance, local);
+                for (auto& x : local)
+                    rVertices.append(x);
+            },
+            " ", py::arg("kX"), py::arg("kY"), py::arg("kZ"), py::arg("kTolerance"), py::arg("rVertices"))
         .def(
             "Edge", 
             (::std::shared_ptr<TopologicCore::Edge>(Graph::*)(::std::shared_ptr<TopologicCore::Vertex> const &, ::std::shared_ptr<TopologicCore::Vertex> const &, double const) const ) &Graph::Edge, 
             " " , py::arg("kpVertex1"), py::arg("kpVertex2"), py::arg("kTolerance") )
-        .def(
+        /*.def(
             "IncidentEdges", 
             (void(Graph::*)(::std::shared_ptr<TopologicCore::Vertex> const &, double const, ::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &Graph::IncidentEdges, 
-            " " , py::arg("kpVertex"), py::arg("kTolerance"), py::arg("rEdges") )
+            " " , py::arg("kpVertex"), py::arg("kTolerance"), py::arg("rEdges") )*/
+        .def(
+            "IncidentEdges",
+            [](const Graph& obj, ::TopologicCore::Vertex::Ptr const& kpVertex, double const kTolerance, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.IncidentEdges(kpVertex, kTolerance, local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("kpVertex"), py::arg("kTolerance"), py::arg("rEdges"))
     ;
 }

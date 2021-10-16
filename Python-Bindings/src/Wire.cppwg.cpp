@@ -125,10 +125,19 @@ py::class_<Wire , Wire_Overloads , std::shared_ptr<Wire >  , Topology  >(m, "Wir
                     rEdges.append(x);
             },
             " ", py::arg("rEdges"))
-        .def(
+        /*.def(
             "Faces", 
             (void(Wire::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Wire::Faces, 
-            " " , py::arg("rFaces") )
+            " " , py::arg("rFaces") )*/
+        .def(
+            "Faces",
+            [](const Wire& obj, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("rFaces"))
         .def(
             "IsClosed", 
             (bool(Wire::*)() const ) &Wire::IsClosed, 
