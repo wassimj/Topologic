@@ -51,6 +51,7 @@
 #include "Utilities/WireUtility.h"
 #include "Utilities/ShellUtility.h"
 #include "Utilities/CellUtility.h"
+#include "Utilities/TopologyUtility.h"
 
 // Instantiate Template Classes 
 //TopologicCore::Dictionary dict;

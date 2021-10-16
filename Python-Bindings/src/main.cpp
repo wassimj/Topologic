@@ -27,6 +27,7 @@ namespace py = pybind11;
 #include "WireUtility.Binding.h"
 #include "ShellUtility.Binding.h"
 #include "CellUtility.Binding.h"
+#include "TopoligyUtility.Binding.h"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -55,4 +56,5 @@ PYBIND11_MODULE(topologic, m)
     register_WireUtility_class(m);
     register_ShellUtility_class(m);
     register_CellUtility_class(m);
+    register_TopologyUtility_class(m);
 }
