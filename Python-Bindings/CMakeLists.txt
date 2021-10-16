@@ -48,6 +48,7 @@ set(SRC_FILES
   ./src/VertexUtility.Binding.cpp
   ./src/EdgeUtility.Binding.cpp
   ./src/WireUtility.Binding.cpp
+  ./src/ShellUtility.Binding.cpp
   ./src/main.cpp
 )
 

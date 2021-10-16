@@ -48,6 +48,8 @@
 #include "PlanarSurface.h"
 #include "Utilities/VertexUtility.h"
 #include "Utilities/EdgeUtility.h"
+#include "Utilities/WireUtility.h"
+#include "Utilities/ShellUtility.h"
 
 // Instantiate Template Classes 
 //TopologicCore::Dictionary dict;
