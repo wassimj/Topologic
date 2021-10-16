@@ -24,6 +24,10 @@ namespace py = pybind11;
 #include "ListAttribute.cppwg.hpp"
 #include "VertexUtility.Binding.h"
 #include "EdgeUtility.Binding.h"
+#include "WireUtility.Binding.h"
+#include "ShellUtility.Binding.h"
+#include "CellUtility.Binding.h"
+#include "TopoligyUtility.Binding.h"
 
 PYBIND11_MODULE(topologic, m)
 {
@@ -49,4 +53,8 @@ PYBIND11_MODULE(topologic, m)
     register_ListAttribute_class(m);
     register_VertexUtility_class(m);
     register_EdgeUtility_class(m);
+    register_WireUtility_class(m);
+    register_ShellUtility_class(m);
+    register_CellUtility_class(m);
+    register_TopologyUtility_class(m);
 }
