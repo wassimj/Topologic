@@ -97,7 +97,7 @@ namespace TopologicUtilities
 			const TopologicCore::Topology::Ptr & kpParentTopology,
 			std::list<TopologicCore::Wire::Ptr>& rCoreAdjacentWires);
 
-        static void AdjacentWires(
+        static TOPOLOGIC_API void AdjacentWires(
             TopologicCore::Edge const * const kpkEdge,
             const TopologicCore::Topology::Ptr & kpParentTopology,
             std::list<TopologicCore::Wire::Ptr>& rCoreAdjacentWires);
@@ -107,7 +107,7 @@ namespace TopologicUtilities
             const TopologicCore::Topology::Ptr & kpParentTopology,
             std::list<TopologicCore::Face::Ptr>& rCoreAdjacentFaces);
 
-		static double AngleBetween(
+		static TOPOLOGIC_API double AngleBetween(
 			const TopologicCore::Edge::Ptr & kpEdge1,
 			const TopologicCore::Edge::Ptr & kpEdge2
 		);
