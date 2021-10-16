@@ -47,6 +47,7 @@ set(SRC_FILES
   ./src/ListAttribute.cppwg.cpp
   ./src/VertexUtility.Binding.cpp
   ./src/EdgeUtility.Binding.cpp
+  ./src/WireUtility.Binding.cpp
   ./src/main.cpp
 )
 
