@@ -49,6 +49,7 @@ set(SRC_FILES
   ./src/EdgeUtility.Binding.cpp
   ./src/WireUtility.Binding.cpp
   ./src/ShellUtility.Binding.cpp
+  ./src/CellUtility.Binding.cpp
   ./src/main.cpp
 )
 

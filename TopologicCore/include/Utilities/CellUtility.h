@@ -128,7 +128,7 @@ namespace TopologicUtilities
         /// <param name="rkOcctSolid"></param>
         /// <param name="kTolerance"></param>
         /// <returns></returns>
-        static std::shared_ptr<TopologicCore::Vertex> InternalVertex(
+        static TOPOLOGIC_API std::shared_ptr<TopologicCore::Vertex> InternalVertex(
             const TopoDS_Solid& rkOcctSolid,
             const double kTolerance = 0.0001);
 
