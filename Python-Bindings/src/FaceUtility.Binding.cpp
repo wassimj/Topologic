@@ -42,13 +42,13 @@ void register_FaceUtility_class(py::module& m) {
             " ", py::arg("rkVertices"))
         .def_static(
             "ParametersAtVertex",
-            [](const TopologicCore::Face::Ptr& kpFace, const TopologicCore::Vertex::Ptr& kpVertex, 
-                double& rU, double& rV)
+            [](const TopologicCore::Face::Ptr& kpFace, const TopologicCore::Vertex::Ptr& kpVertex)
             {
+                double rU, rV;
                 FaceUtility::ParametersAtVertex(kpFace, kpVertex, rU, rV);
                 return std::make_tuple(rU, rV);
             },
-            " ", py::arg("kpFace"), py::arg("kpVertex"), py::arg("rU"), py::arg("rV"))
+            " ", py::arg("kpFace"), py::arg("kpVertex"))
         .def_static(
             "VertexAtParameters",
             [](const TopologicCore::Face::Ptr& kpFace, const double kU, const double kV)
