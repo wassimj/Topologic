@@ -51,6 +51,7 @@ set(SRC_FILES
   ./src/ShellUtility.Binding.cpp
   ./src/CellUtility.Binding.cpp
   ./src/TopologyUtility.Binding.cpp
+  ./src/FaceUtility.Binding.cpp
   ./src/main.cpp
 )
 
