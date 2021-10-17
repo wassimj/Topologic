@@ -3,6 +3,7 @@
 #include "wrapper_header_collection.hpp"
 
 #include "FaceUtility.Binding.h"
+#include <tuple>
 
 namespace py = pybind11;
 PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
@@ -14,7 +15,8 @@ void register_FaceUtility_class(py::module& m) {
             "NormalAtParameters",
             [](const TopologicCore::Face::Ptr& kpFace, const double kU, const double kV)
             {
-                return FaceUtility::NormalAtParameters(kpFace, kU, kV);
+                auto ret_val = FaceUtility::NormalAtParameters(kpFace, kU, kV);
+                return std::make_tuple(ret_val.X(), ret_val.Y(), ret_val.Z());
             },
             " ", py::arg("kpFace"), py::arg("kU"), py::arg("kV"))
         .def_static(
