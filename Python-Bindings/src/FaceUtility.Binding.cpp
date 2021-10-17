@@ -45,7 +45,8 @@ void register_FaceUtility_class(py::module& m) {
             [](const TopologicCore::Face::Ptr& kpFace, const TopologicCore::Vertex::Ptr& kpVertex, 
                 double& rU, double& rV)
             {
-                return FaceUtility::ParametersAtVertex(kpFace, kpVertex, rU, rV);
+                FaceUtility::ParametersAtVertex(kpFace, kpVertex, rU, rV);
+                return std::make_tuple(rU, rV);
             },
             " ", py::arg("kpFace"), py::arg("kpVertex"), py::arg("rU"), py::arg("rV"))
         .def_static(
