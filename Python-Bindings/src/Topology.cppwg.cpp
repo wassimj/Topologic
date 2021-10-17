@@ -441,6 +441,16 @@ py::class_<Topology , Topology_Overloads , std::shared_ptr<Topology >  , Topolog
             " ", py::arg("rWires"))
 
         .def(
+            "Cells",
+            [](const Topology& obj, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+            " ", py::arg("rCells"))
+
+        .def(
             "UpwardNavigation", 
             (void(Topology::*)(::TopoDS_Shape const &, int const, ::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &) const ) &Topology::UpwardNavigation, 
             " " , py::arg("rkOcctHostTopology"), py::arg("kTopologyType"), py::arg("rAncestors") )
