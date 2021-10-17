@@ -49,7 +49,7 @@ namespace TopologicUtilities
 		/// <returns></returns>
 		static TOPOLOGIC_API double Area(const TopologicCore::Face::Ptr& kpFace);
 
-		static double Area(const TopoDS_Face& rkOcctFace);
+		static double TOPOLOGIC_API Area(const TopoDS_Face& rkOcctFace);
 
 		/// <summary>
 		/// 
@@ -77,7 +77,7 @@ namespace TopologicUtilities
 		/// <returns></returns>
 		static TOPOLOGIC_API TopologicCore::Vertex::Ptr VertexAtParameters(const TopologicCore::Face::Ptr& kpFace, const double kU, const double kV);
 
-		static void UVSamplePoints(
+		static void TOPOLOGIC_API UVSamplePoints(
 			const TopologicCore::Face::Ptr& kpFace,
 			const std::list<double>& rkUValues,
 			const std::list<double>& rkVValues,
@@ -110,7 +110,7 @@ namespace TopologicUtilities
 		/// <param name="kNonNormalizedV"></param>
 		/// <param name="rNormalizedU"></param>
 		/// <param name="rNormalizedV"></param>
-		static void NormalizeUV(const TopologicCore::Face::Ptr& kpFace, const double kNonNormalizedU, const double kNonNormalizedV, double& rNormalizedU, double& rNormalizedV);
+		static void TOPOLOGIC_API NormalizeUV(const TopologicCore::Face::Ptr& kpFace, const double kNonNormalizedU, const double kNonNormalizedV, double& rNormalizedU, double& rNormalizedV);
 
 		/// <summary>
 		/// 
@@ -120,7 +120,7 @@ namespace TopologicUtilities
 		/// <param name="kNormalizedV"></param>
 		/// <param name="rNonNormalizedU"></param>
 		/// <param name="rNonNormalizedV"></param>
-		static void NonNormalizeUV(const TopologicCore::Face::Ptr& kpFace, const double kNormalizedU, const double kNormalizedV, double& rNonNormalizedU, double& rNonNormalizedV);
+		static void TOPOLOGIC_API NonNormalizeUV(const TopologicCore::Face::Ptr& kpFace, const double kNormalizedU, const double kNormalizedV, double& rNonNormalizedU, double& rNonNormalizedV);
 
 		static TOPOLOGIC_API void AdjacentShells(
 			const TopologicCore::Face::Ptr & kpFace,
@@ -152,7 +152,7 @@ namespace TopologicUtilities
 		/// <returns></returns>
 		static TOPOLOGIC_API bool IsInside(const TopologicCore::Face::Ptr kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex, const double kTolerance);
 
-		static std::shared_ptr<TopologicCore::Vertex> ProjectToSurface(const TopologicCore::Face::Ptr kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex);
+		static TOPOLOGIC_API std::shared_ptr<TopologicCore::Vertex> ProjectToSurface(const TopologicCore::Face::Ptr kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex);
 
 		static TOPOLOGIC_API std::shared_ptr<TopologicCore::Vertex> InternalVertex(
 			const TopologicCore::Face::Ptr kpFace, const double kTolerance = 0.0001);
