@@ -2,27 +2,41 @@ cmake_minimum_required(VERSION 3.10)
 project(topologic)
 
 set(CMAKE_CXX_STANDARD 17)
+IF(MSVC)
 list(APPEND CMAKE_PREFIX_PATH "./pybind")
 
 find_package(PythonLibs REQUIRED)
+ENDIF(MSVC)
 find_package(pybind11 REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
+IF(MSVC)
 include_directories(../TopologicCore/include)
+ELSE(MSVC)
+include_directories(/usr/include/TopologicCore)
+include_directories(/usr/include/opencascade)
+include_directories(/usr/local/include/TopologicCore)
+include_directories(/usr/local/include/opencascade)
+ENDIF(MSVC)
 include_directories(./include)
 
+IF(MSVC)
 # This is a hardcoded path as we expect OpenCASCADE to be exactly
 # in this directory. Revisit if this changes!
 include_directories(C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/inc)
 SET(CUSTOM_LIB_PATH "C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/win64/vc14/lib")
 
 add_library(TopologicCore SHARED IMPORTED)
+ENDIF(MSVC)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "TKernel;"
+    "TopologicCore;"
 )
 
+IF(MSVC)
 SET_PROPERTY(TARGET TopologicCore PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../output/${CMAKE_GENERATOR_PLATFORM}/${CMAKE_BUILD_TYPE}/TopologicCore.dll)
 SET_PROPERTY(TARGET TopologicCore PROPERTY IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/../output/${CMAKE_GENERATOR_PLATFORM}/${CMAKE_BUILD_TYPE}/TopologicCore.lib)
+ENDIF(MSVC)
 
 set(SRC_FILES 
   ./src/TopologicalQuery.cppwg.cpp
