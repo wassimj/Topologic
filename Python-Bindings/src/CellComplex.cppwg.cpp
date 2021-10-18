@@ -154,10 +154,10 @@ py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  
                     rShells.append(x);
             },
             " ", py::arg("rShells"))
-        .def(
+        /*.def(
             "Edges", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &CellComplex::Edges, 
-            " " , py::arg("rEdges") )
+            " " , py::arg("rEdges") )*/
         .def(
             "Edges",
             [](const CellComplex& obj, py::list& rEdges) {
@@ -214,7 +214,7 @@ py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::InternalBoundaries, 
             " " , py::arg("rInternalFaces") )*/
         .def(
-            "Faces",
+            "InternalBoundaries",
             [](const CellComplex& obj, py::list& rInternalFaces) {
                 std::list<Face::Ptr> local;
                 obj.InternalBoundaries(local);
