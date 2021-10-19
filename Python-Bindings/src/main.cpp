@@ -32,6 +32,7 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(topologic, m)
 {
+    register_TopoDS_Shape_class(m);
     register_TopologicalQuery_class(m);
     register_Topology_class(m);
     register_Vertex_class(m);

@@ -14,6 +14,12 @@ typedef ::std::string _std_string;
 typedef ::std::shared_ptr<TopologicCore::Vertex> _std_shared_ptr_lt_TopologicCore_Vertex_gt_;
 typedef ::std::string _std_string;
 
+void register_TopoDS_Shape_class(py::module& m) {
+    py::class_<TopoDS_Shape, std::shared_ptr<TopoDS_Shape>>(m, "TopoDS_Shape")
+        .def(py::init<>())
+        ;
+}
+
 class Topology_Overloads : public Topology{
     public:
     using Topology::Topology;
