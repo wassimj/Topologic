@@ -3,4 +3,5 @@
 
 namespace py = pybind11;
 void register_Topology_class(py::module &m);
+void register_TopoDS_Shape_class(py::module& m);
 #endif // Topology_hpp__pyplusplus_wrapper
