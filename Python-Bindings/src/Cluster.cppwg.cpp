@@ -197,6 +197,15 @@ py::class_<Cluster , Cluster_Overloads , std::shared_ptr<Cluster >  , Topology  
                     rCellComplexes.append(x);
             },
             " ", py::arg("rCellComplexes"))
+       .def(
+           "Cells",
+           [](const Cluster& obj, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(local);
+                for (auto& x : local)
+                    rCells.append(x);
+           },
+           " ", py::arg("rCells"))
 
         .def(
             "Shells",
