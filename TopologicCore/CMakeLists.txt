@@ -421,14 +421,9 @@ endif()
 ################################################################################
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Any CPU")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "TKCAF;"
-    "TKLCAF;"
     "TKOffset;"
-    "TKIGES;"
     "TKPrim;"
     "TKMesh;"
-    "TKXSBase;"
-    "TKBool;"
     "TKBO;"
     "TKShHealing;"
     "TKG3d;"
@@ -442,14 +437,9 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Any CPU")
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "TKCAF;"
-    "TKLCAF;"
     "TKOffset;"
-    "TKIGES;"
     "TKPrim;"
     "TKMesh;"
-    "TKXSBase;"
-    "TKBool;"
     "TKBO;"
     "TKShHealing;"
     "TKG3d;"
@@ -463,14 +453,9 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "TKCAF;"
-    "TKLCAF;"
     "TKOffset;"
-    "TKIGES;"
     "TKPrim;"
     "TKMesh;"
-    "TKXSBase;"
-    "TKBool;"
     "TKBO;"
     "TKShHealing;"
     "TKG3d;"
