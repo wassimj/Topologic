@@ -116,10 +116,19 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
             "ContainsEdge", 
             (bool(Graph::*)(::TopoDS_Vertex const &, ::TopoDS_Vertex const &, double const) const ) &Graph::ContainsEdge, 
             " " , py::arg("rkVertex1"), py::arg("rkVertex2"), py::arg("kTolerance") )
-        .def(
+        /*.def(
             "DegreeSequence", 
             (void(Graph::*)(::std::list<int, std::allocator<int>> &) const ) &Graph::DegreeSequence, 
-            " " , py::arg("rDegreeSequence") )
+            " " , py::arg("rDegreeSequence") ) */
+        .def(
+            "DegreeSequence",
+            [](const Graph& obj, py::list& rDegreeSequence) {
+                std::list<int> local;
+                obj.DegreeSequence(local);
+                for (auto& x : local)
+                    rDegreeSequence.append(x);
+            },
+            " ", py::arg("rDegreeSequence"))
         .def(
             "Density", 
             (double(Graph::*)() const ) &Graph::Density, 
