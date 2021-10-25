@@ -41,7 +41,7 @@ void register_WireUtility_class(py::module& m) {
             [](const TopologicCore::Wire::Ptr& kpWire,
                 const double kTolerance)
             {
-                WireUtility::RemoveCollinearEdges(kpWire, kTolerance);
+                return WireUtility::RemoveCollinearEdges(kpWire, kTolerance);
             },
             " ", py::arg("kpWire"), py::arg("kTolerance"))
          ;
