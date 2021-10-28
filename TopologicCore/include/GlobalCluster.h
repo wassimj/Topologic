@@ -49,17 +49,17 @@ namespace TopologicCore
 
 		TOPOLOGIC_API void AddTopology(const TopoDS_Shape& rkOcctShape);
 
-        std::shared_ptr<Cluster> GetCluster();
+		TOPOLOGIC_API std::shared_ptr<Cluster> GetCluster();
 
-		void RemoveTopology(const std::shared_ptr<Topology>& rkTopology);
+		TOPOLOGIC_API void RemoveTopology(const std::shared_ptr<Topology>& rkTopology);
 
-		void RemoveTopology(const TopoDS_Shape& rkOcctShape);
+		TOPOLOGIC_API void RemoveTopology(const TopoDS_Shape& rkOcctShape);
 
-		void Clear();
+		TOPOLOGIC_API void Clear();
 
-		const TopoDS_Compound& GetOcctCompound() const;
+		TOPOLOGIC_API const TopoDS_Compound& GetOcctCompound() const;
 
-		TopoDS_Compound& GetOcctCompound();
+		TOPOLOGIC_API TopoDS_Compound& GetOcctCompound();
 
 		TOPOLOGIC_API void SubTopologies(std::list<std::shared_ptr<Topology>>& rSubTopologies) const;
 

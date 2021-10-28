@@ -70,6 +70,7 @@ set(SRC_FILES
   ./src/CellUtility.Binding.cpp
   ./src/TopologyUtility.Binding.cpp
   ./src/FaceUtility.Binding.cpp
+  ./src/GlobalCluster.Binding.cpp
   ./src/main.cpp
 )
 
