@@ -3376,7 +3376,7 @@ namespace TopologicCore
 			}
 			//pShapeCopy->AddContent(pCopyContentTopology, filterType);
 		}
-		GlobalCluster::GetInstance().AddTopology(pShapeCopy);
+		// GlobalCluster::GetInstance().AddTopology(pShapeCopy);
 		return pShapeCopy;
 	}
 
