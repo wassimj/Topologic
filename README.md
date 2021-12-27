@@ -140,6 +140,7 @@ At the end of this process, libTopologicCore.so should exist in /usr/local/lib
 
 *For Fedora (Untested. Suggested at OSArch.org)*
 ```
+cd ~/topologicbim
 git clone https://github.com/NonManifoldTopology/Topologic.git
 cd Topologic
 mkdir build
@@ -170,7 +171,7 @@ conda install pybind11 -c conda-forge
 * Issue the normal CMake build command from the build folder
 
 ```
-cd *homefolder*/topologicbim/Topologic/Python-Bindings
+cd ~/topologicbim/Topologic/Python-Bindings
 mkdir build
 cd build
 cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
