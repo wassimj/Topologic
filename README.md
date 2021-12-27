@@ -166,10 +166,6 @@ conda activate py397
 ```
 conda install pybind11 -c conda-forge
 ```
-* Install cmake if you don't have it
-```
-pip install cmake
-```
 * Switch to Python-Bindings folder and create a build folder inside
 * Issue the normal CMake build command from the build folder
 
