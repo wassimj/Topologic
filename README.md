@@ -104,4 +104,80 @@ mkdir build && cd build
 cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
+### Installation Instructions for Linux
+This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
+
+The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Adminstrator priviliges.
+
+1. **Install Opencascade 7.4.0 and dependencies**
+
+*For Ubuntu (Tested)*
+```
+sudo apt-get install bzip2 unzip cmake make g++ git libgl-dev libglu-dev libpng-dev libxmu-dev libxi-dev libtbb-dev tcl-dev tk-dev zlib1g-dev libharfbuzz-dev libfreetype-dev libfreeimage-dev libocct-*-dev
+```
+if `libocct-*-dev` cannot be found while installing the dependencies, replace it with `libocct-foundation-dev libocct-data-exchange-dev`
+
+*For Fedora (Untested. Suggested at OSArch.org)*
+ ```
+ sudo dnf install cmake gcc-c++ opencascade-devel libuuid-devel
+ ```
+
+2. **Create a topologicbim working folder**: We will assume that you will install everything in ~/topologicbim
+
+3. **Install Topologic**
+
+```
+cd ~/topologicbim
+git clone https://github.com/NonManifoldTopology/Topologic.git
+cd Topologic
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+At the end of this process, libTopologicCore.so should exist in /usr/local/lib
+
+*For Fedora (Untested. Suggested at OSArch.org)*
+```
+git clone https://github.com/NonManifoldTopology/Topologic.git
+cd Topologic
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+This will likely install the library and headers to /usr/local so unless you have already edited your library path you need to do something like this:
+```
+sudo sh -c "echo /usr/local/lib >> /etc/ld.so.conf"
+sudo ldconfig
+```
+4. **Install Python bindings for Topolgic (Optional)**
+
+* Note: If you are planning to use Topologic with Blender and your system's python is different than the one Blender uses, then create a compatible python virtual environment. We will assume that Blender is using python 3.9.7 so the instructions below as you to create a conda virtual environment with python 3.9.7. We will call it py397. The name can be anything you want. Just always remember what you named your environment and match the python version to Blender's.
+
+```
+conda create --name py397 python=3.9.7
+conda activate py397
+```
+* Install pybind11 within conda
+
+```
+conda install pybind11 -c conda-forge
+```
+* Install cmake if you don't have it
+```
+pip install cmake
+```
+* Switch to Python-Bindings folder and create a build folder inside
+* Issue the normal CMake build command from the build folder
+
+```
+cd *homefolder*/topologicbim/Topologic/Python-Bindings
+mkdir build
+cd build
+cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+cmake --build . --config Release
+```
 
