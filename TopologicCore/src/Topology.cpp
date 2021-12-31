@@ -3208,7 +3208,7 @@ namespace TopologicCore
 		return false;
 	}
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
 	void Topology::GlobalClusterSubTopologies(std::list<Topology::Ptr>& rSubTopologies) const
 	{
 		TopTools_ListOfShape occtListMembers;
@@ -3221,7 +3221,7 @@ namespace TopologicCore
 			rSubTopologies.push_back(pMemberTopology);
 		}
 	}
-#endif
+// #endif
 
 	void Topology::UpwardNavigation(const TopoDS_Shape & rkOcctHostTopology, const int kTopologyType, std::list<std::shared_ptr<Topology>>& rAncestors) const
 	{
