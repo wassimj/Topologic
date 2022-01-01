@@ -128,7 +128,7 @@ if `libocct-*-dev` cannot be found while installing the dependencies, replace it
 
 ```
 cd ~/topologicbim
-git clone https://github.com/NonManifoldTopology/Topologic.git
+git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 mkdir build
 cd build
