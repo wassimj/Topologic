@@ -646,9 +646,9 @@ namespace TopologicCore
 
 		TOPOLOGIC_API static bool IsContainerType(const TopoDS_Shape& rkOcctShape);
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
 		TOPOLOGIC_API void GlobalClusterSubTopologies(std::list<Topology::Ptr>& rSubTopologies) const;
-#endif
+// #endif
 
 		TOPOLOGIC_API void RegisterFactory(const std::string& rkGuid, const std::shared_ptr<TopologyFactory>& kpTopologyFactory);
 
