@@ -46,7 +46,7 @@ namespace TopologicUtilities
 		std::list<TopologicCore::Topology::Ptr> subContents;
 		TopologicCore::Topology::SubContents(kpTopology->GetOcctShape(), subContents);
 
-		for (const TopologicCore::Topology::Ptr kpSubContent : subContents)
+		for (const TopologicCore::Topology::Ptr &kpSubContent : subContents)
 		{
 			// Transform kpSubContent
 			TopologicCore::Topology::Ptr transformedSubcontent = Translate(kpSubContent,
@@ -89,7 +89,7 @@ namespace TopologicUtilities
 		std::list<TopologicCore::Topology::Ptr> subContents;
 		TopologicCore::Topology::SubContents(kpTopology->GetOcctShape(), subContents);
 
-		for (const TopologicCore::Topology::Ptr kpSubContent : subContents)
+		for (const TopologicCore::Topology::Ptr &kpSubContent : subContents)
 		{
 			// Transform kpSubContent
 			TopologicCore::Topology::Ptr transformedSubcontent = Rotate(kpSubContent,
@@ -129,7 +129,7 @@ namespace TopologicUtilities
 		std::list<TopologicCore::Topology::Ptr> subContents;
 		TopologicCore::Topology::SubContents(kpTopology->GetOcctShape(), subContents);
 
-		for (const TopologicCore::Topology::Ptr kpSubContent : subContents)
+		for (const TopologicCore::Topology::Ptr &kpSubContent : subContents)
 		{
 			// Transform kpSubContent
 			TopologicCore::Topology::Ptr transformedSubcontent = Transform(kpSubContent,
@@ -187,7 +187,7 @@ namespace TopologicUtilities
 		std::list<TopologicCore::Topology::Ptr> subContents;
 		TopologicCore::Topology::SubContents(kpTopology->GetOcctShape(), subContents);
 
-		for (const TopologicCore::Topology::Ptr kpSubContent : subContents)
+		for (const TopologicCore::Topology::Ptr &kpSubContent : subContents)
 		{
 			// Transform kpSubContent
 			TopologicCore::Topology::Ptr transformedSubcontent = Scale(kpSubContent,

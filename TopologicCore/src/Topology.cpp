@@ -698,7 +698,7 @@ namespace TopologicCore
 		double averageX = 0.0;
 		double averageY = 0.0;
 		double averageZ = 0.0;
-		for (const Vertex::Ptr kpVertex : vertices)
+		for (const Vertex::Ptr &kpVertex : vertices)
 		{
 			std::tuple<double, double, double> coordinates = kpVertex->Coordinates();
 			averageX += std::get<0>(coordinates);
@@ -985,7 +985,7 @@ namespace TopologicCore
 			if (kpSelectedSubtopology != nullptr)
 			{
 				AttributeManager::GetInstance().ClearOne(kpSelectedSubtopology->GetOcctShape());
-				for (const auto kpAttributePair : *rkDictionaryIterator)
+				for (const auto &kpAttributePair : *rkDictionaryIterator)
 				{
 					AttributeManager::GetInstance().Add(kpSelectedSubtopology->GetOcctShape(), kpAttributePair.first, kpAttributePair.second);
 				}
@@ -1730,7 +1730,7 @@ namespace TopologicCore
 		std::list<Topology::Ptr> subContents;
 		SubContents(rkOcctShape1, subContents);
 
-		for (const Topology::Ptr kpSubContent : subContents)
+		for (const Topology::Ptr &kpSubContent : subContents)
 		{
 			// Attach to the same context type
 			int contextType = 0;
@@ -1756,7 +1756,7 @@ namespace TopologicCore
 		std::list<Topology::Ptr> subContents;
 		SubContents(rkOcctShape1, subContents);
 
-		for (const Topology::Ptr kpSubContent : subContents)
+		for (const Topology::Ptr &kpSubContent : subContents)
 		{
 			// Check if the context topology is part of kpTopology2. Use OCCT IsDeleted()
 			bool allContextsDisappear = true;
@@ -2850,7 +2850,7 @@ namespace TopologicCore
 		kpMergeTopology->Vertices(mergeVertices);
 
 		std::list<Topology::Ptr> intersectionVertices;
-		for (const Vertex::Ptr kpMergeVertex : mergeVertices)
+		for (const Vertex::Ptr &kpMergeVertex : mergeVertices)
 		{
 			bool isInEdgeVertices = IsInList(kpMergeVertex, edgeVertices, kTolerance);
 			bool isInFaceVertices = IsInList(kpMergeVertex, faceVertices, kTolerance);
@@ -2952,7 +2952,7 @@ namespace TopologicCore
 			{
 				std::list<Topology::Ptr> subTopologies;
 				SubTopologies(subTopologies);
-				for (const Topology::Ptr kpTopology: subTopologies)
+				for (const Topology::Ptr &kpTopology: subTopologies)
 				{
                     rOcctCellsBuildersOperandsA.Append(kpTopology->GetOcctShape());
 				}
@@ -2980,7 +2980,7 @@ namespace TopologicCore
 			{
 				std::list<Topology::Ptr> subTopologies;
 				kpOtherTopology->SubTopologies(subTopologies);
-				for (const Topology::Ptr kpTopology : subTopologies)
+				for (const Topology::Ptr &kpTopology : subTopologies)
 				{
                     rOcctCellsBuildersOperandsB.Append(kpTopology->GetOcctShape());
 				}
