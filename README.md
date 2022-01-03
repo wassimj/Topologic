@@ -141,7 +141,7 @@ At the end of this process, libTopologicCore.so should exist in /usr/local/lib
 *For Fedora (Untested. Suggested at OSArch.org)*
 ```
 cd ~/topologicbim
-git clone https://github.com/NonManifoldTopology/Topologic.git
+git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 mkdir build
 cd build
