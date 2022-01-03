@@ -178,6 +178,24 @@ cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
 
+5. **To make a distributable library that can be installed in different locations on a variety of Linux systems:**
+
+Compile and install all the opencascade and uuid *.so libraries, and build and install TopologicCore as above.
+
+Collect all the .so files, put them in one folder and set the rpath, which is a magic incantation like this:
+```
+patchelf --set-rpath '$ORIGIN/.' *.so*
+```
+
+Strip debug symbols to make them smaller:
+```
+strip *.so*
+```
+
+Note that you only need a handful of the opencascade *.so files, not all of them.
+
+Build the topologic python bindings in the same way, except use two images, one for python 3.7 and another for python 3.9, these create a topologic.*.so file each, you can put both in this same folder.
+
 ### Installation Instructions for MacOS (Raw instructions, badly formatted, needs work)
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte-iul.pt>
