@@ -28,7 +28,7 @@ TopologicCore contains the following main classes:
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
 ### Installation Instructions for Windows 10
-This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
+This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git). If you just want to use Topologic (e.g. with Blender), you do not need to follow these instructions. Instead, just download the ZIP binaries from https://github.com/wassimj/TopologicSverchok/Releases
 
 The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
 
@@ -166,7 +166,7 @@ sudo ldconfig
 cd ~/topologicbim/Topologic/Python-Bindings
 mkdir build
 cd build
-cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
 
@@ -188,7 +188,7 @@ then try again:
 cd ~/topologicbim/Topologic/Python-Bindings
 mkdir build
 cd build
-cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
 
