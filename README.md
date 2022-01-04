@@ -40,7 +40,7 @@ Choose  *Windows installer VC++ 2017 64 bit: opencascade-7.4.0-vc14-64.exe (258 
 
 This will automatically install opencascade in:
 ```
-C:/OpenCASCADE-7.4.0-vc14-64
+C:\OpenCASCADE-7.4.0-vc14-64
 ```
 Do **NOT** change the location and name of this folder.
 
@@ -60,7 +60,7 @@ Make sure you install git: https://www.oreilly.com/library/view/mastering-visual
 * Choose *x64 Native Tools Command Prompt*
 * In the window that appears type:
 ```
-cd C:/Users/*homefolder*/topologicbim
+cd C:\Users\*homefolder*\topologicbim
 git clone https://github.com/wassimj/Topologic.git
 cd Topologic
 WindowsBuild.bat
@@ -99,12 +99,39 @@ pip install cmake
 * Issue the normal CMake build command from the build folder
 
 ```
-cd C:/Users/*homefolder*/topologicbim/Topologic/Python-Bindings
+cd C:\Users\*homefolder*\topologicbim\Topologic\Python-Bindings
 mkdir build
 cd build
 cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
+7. **To make a distributable library:**
+
+Place all the opencascade *.dll libraries, TopologicCore.dll and the python bindings (.pyd file) as above in one folder. ZIP that folder for distribution.
+
+Note that you only need a handful of the opencascade *.dll files, not all of them. Our best guesstimate is that you need only the following opencascade files (removed the extension from the file name):
+
+. TKBO
+. TKBool
+. TKBRep
+. TKCAF
+. TKCDF
+. TKernel
+. TKFillet
+. TKG2d
+. TKG3d
+. TKGeomAlgo
+. TKGeomBase
+. TKIGES
+. TKLCAF
+. TKMath
+. TKMesh
+. TKOffset
+. TKPrim
+. TKShHealing
+. TKTopAlgo
+. TKXSBase
+
 ### Installation Instructions for Linux
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
@@ -150,7 +177,7 @@ cmake ..
 make
 sudo make install
 ```
-This will likely install the library and headers to /usr/local so unless you have already edited your library path you need to do something like this:
+This will likely install the library and headers to /usr/local/lib so unless you have already edited your library path you need to do something like this:
 ```
 sudo sh -c "echo /usr/local/lib >> /etc/ld.so.conf"
 sudo ldconfig
@@ -170,7 +197,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
 
-If the above fails, try installing pybind11 first:
+If the above fails, try installing a conda environment and within it, install pybind11 first. Make sure you match the python version to what you need. Below we just assume python 3.9.7, but this could be different in your case.
 
 ```
 conda create --name py397 python=3.9.7
@@ -191,24 +218,45 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
+You can repeat the above proces to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
 
 5. **To make a distributable library that can be installed in different locations on a variety of Linux systems:**
 
-Compile and install all the opencascade and uuid *.so libraries, and build and install TopologicCore as above.
+Compile and install all the opencascade and uuid *.so libraries, and build and install TopologicCore with the python bindings as above. 
+Collect all the .so files, put them in one folder, cd to that folder and set the rpath, which is a magic incantation like this:
 
-Collect all the .so files, put them in one folder and set the rpath, which is a magic incantation like this:
 ```
 patchelf --set-rpath '$ORIGIN/.' *.so*
 ```
 
 Strip debug symbols to make them smaller:
+
 ```
 strip *.so*
 ```
 
-Note that you only need a handful of the opencascade *.so files, not all of them.
+Note that you only need a handful of the opencascade *.so files, not all of them. Our best guesstimate is that you need only the following files (removed the extension from the file name):
 
-Build the topologic python bindings in the same way, except use two images, one for python 3.7 and another for python 3.9, these create a topologic.*.so file each, you can put both in this same folder.
+. TKBO
+. TKBool
+. TKBRep
+. TKCAF
+. TKCDF
+. TKernel
+. TKFillet
+. TKG2d
+. TKG3d
+. TKGeomAlgo
+. TKGeomBase
+. TKIGES
+. TKLCAF
+. TKMath
+. TKMesh
+. TKOffset
+. TKPrim
+. TKShHealing
+. TKTopAlgo
+. TKXSBase
 
 ### Installation Instructions for MacOS (Raw instructions, badly formatted, needs work)
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
