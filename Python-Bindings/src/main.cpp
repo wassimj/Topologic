@@ -27,7 +27,7 @@ namespace py = pybind11;
 #include "WireUtility.Binding.h"
 #include "ShellUtility.Binding.h"
 #include "CellUtility.Binding.h"
-#include "TopoligyUtility.Binding.h"
+#include "TopologyUtility.Binding.h"
 #include "FaceUtility.Binding.h"
 #include "GlobalCluster.Binding.h"
 
