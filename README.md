@@ -1,4 +1,5 @@
-(For installation instructions, scroll to the bottom of the page)
+**Table of Contents**
+
 1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
 2. Installation Instructions:
      1. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
@@ -33,7 +34,7 @@ TopologicCore contains the following main classes:
 * CellComplex: A CellComplex is a contiguous collection of Cells where adjacent Cells are connected by shared Faces. It is non- manifold.
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
-### Installation Instructions for Windows 10
+# Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git). If you just want to use Topologic (e.g. with Blender), you do not need to follow these instructions. Instead, just download the ZIP binaries from https://github.com/wassimj/TopologicSverchok/Releases
 
 The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
@@ -138,7 +139,7 @@ Note that you only need a handful of the opencascade *.dll files, not all of the
 * TKTopAlgo
 * TKXSBase
 
-### Installation Instructions for Linux
+# Installation Instructions for Linux
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
 The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Adminstrator priviliges.
@@ -264,8 +265,10 @@ Note that you only need a handful of the opencascade *.so files, not all of them
 * TKTopAlgo
 * TKXSBase
 
-### Installation Instructions for MacOS
+# Installation Instructions for MacOS
+
 **(Raw instructions, badly formatted, needs work)**
+
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte-iul.pt>
 
