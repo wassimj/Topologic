@@ -55,7 +55,7 @@ Make sure you install git: https://www.oreilly.com/library/view/mastering-visual
 
 4. **Install Topologic**
 
-* Go to the WIndows Start Menu in the lower left corner
+* Go to the Windows Start Menu in the lower left corner
 * Search for the Visual Studio 2019 Folder and expand it
 * Choose *x64 Native Tools Command Prompt*
 * In the window that appears type:
@@ -100,7 +100,8 @@ pip install cmake
 
 ```
 cd C:/Users/*homefolder*/topologicbim/Topologic/Python-Bindings
-mkdir build && cd build
+mkdir build
+cd build
 cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
@@ -158,6 +159,19 @@ sudo ldconfig
 
 * Note: If you are planning to use Topologic with Blender and your system's python is different than the one Blender uses, then create a compatible python virtual environment. We will assume that Blender is using python 3.9.7 so the instructions below as you to create a conda virtual environment with python 3.9.7. We will call it py397. The name can be anything you want. Just always remember what you named your environment and match the python version to Blender's.
 
+* Switch to Python-Bindings folder and create a build folder inside
+* Issue the normal CMake build command from the build folder
+
+```
+cd ~/topologicbim/Topologic/Python-Bindings
+mkdir build
+cd build
+cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+cmake --build . --config Release
+```
+
+If the above fails, try installing pybind11 first:
+
 ```
 conda create --name py397 python=3.9.7
 conda activate py397
@@ -167,8 +181,8 @@ conda activate py397
 ```
 conda install pybind11 -c conda-forge
 ```
-* Switch to Python-Bindings folder and create a build folder inside
-* Issue the normal CMake build command from the build folder
+
+then try again:
 
 ```
 cd ~/topologicbim/Topologic/Python-Bindings
