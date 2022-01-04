@@ -265,7 +265,7 @@ Note that you only need a handful of the opencascade *.so files, not all of them
 * TKXSBase
 
 ### Installation Instructions for MacOS
-# (Raw instructions, badly formatted, needs work)
+**(Raw instructions, badly formatted, needs work)**
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte-iul.pt>
 
