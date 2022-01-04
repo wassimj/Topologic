@@ -1,9 +1,10 @@
 (For installation instructions, scroll to the bottom of the page)
 1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
 2. Installation Instructions:
-      i. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
-      ii. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
-      iii. MacOS: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-MacOS)
+     1. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
+     2. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
+     3. MacOS: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-MacOS)
+
 # Topologic
 Topologic is a software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology.
 
