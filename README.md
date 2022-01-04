@@ -1,4 +1,9 @@
 (For installation instructions, scroll to the bottom of the page)
+1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
+2. Installation Instructions:
+      i. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
+      ii. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
+      iii. MacOS: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-MacOS)
 # Topologic
 Topologic is a software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology.
 
@@ -258,7 +263,8 @@ Note that you only need a handful of the opencascade *.so files, not all of them
 * TKTopAlgo
 * TKXSBase
 
-### Installation Instructions for MacOS (Raw instructions, badly formatted, needs work)
+### Installation Instructions for MacOS
+# (Raw instructions, badly formatted, needs work)
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte-iul.pt>
 
