@@ -111,26 +111,26 @@ Place all the opencascade *.dll libraries, TopologicCore.dll and the python bind
 
 Note that you only need a handful of the opencascade *.dll files, not all of them. Our best guesstimate is that you need only the following opencascade files (removed the extension from the file name):
 
-. TKBO
-. TKBool
-. TKBRep
-. TKCAF
-. TKCDF
-. TKernel
-. TKFillet
-. TKG2d
-. TKG3d
-. TKGeomAlgo
-. TKGeomBase
-. TKIGES
-. TKLCAF
-. TKMath
-. TKMesh
-. TKOffset
-. TKPrim
-. TKShHealing
-. TKTopAlgo
-. TKXSBase
+* TKBO
+* TKBool
+* TKBRep
+* TKCAF
+* TKCDF
+* TKernel
+* TKFillet
+* TKG2d
+* TKG3d
+* TKGeomAlgo
+* TKGeomBase
+* TKIGES
+* TKLCAF
+* TKMath
+* TKMesh
+* TKOffset
+* TKPrim
+* TKShHealing
+* TKTopAlgo
+* TKXSBase
 
 ### Installation Instructions for Linux
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
@@ -237,26 +237,26 @@ strip *.so*
 
 Note that you only need a handful of the opencascade *.so files, not all of them. Our best guesstimate is that you need only the following files (removed the extension from the file name):
 
-. TKBO
-. TKBool
-. TKBRep
-. TKCAF
-. TKCDF
-. TKernel
-. TKFillet
-. TKG2d
-. TKG3d
-. TKGeomAlgo
-. TKGeomBase
-. TKIGES
-. TKLCAF
-. TKMath
-. TKMesh
-. TKOffset
-. TKPrim
-. TKShHealing
-. TKTopAlgo
-. TKXSBase
+* TKBO
+* TKBool
+* TKBRep
+* TKCAF
+* TKCDF
+* TKernel
+* TKFillet
+* TKG2d
+* TKG3d
+* TKGeomAlgo
+* TKGeomBase
+* TKIGES
+* TKLCAF
+* TKMath
+* TKMesh
+* TKOffset
+* TKPrim
+* TKShHealing
+* TKTopAlgo
+* TKXSBase
 
 ### Installation Instructions for MacOS (Raw instructions, badly formatted, needs work)
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
