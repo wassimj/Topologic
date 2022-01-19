@@ -61,7 +61,7 @@ namespace TopologicUtilities
 		TopologicCore::Wire::Ptr pCopyWire = std::dynamic_pointer_cast<TopologicCore::Wire>(kpWire->DeepCopy());
 
 		std::list<TopologicCore::Edge::Ptr> edges;
-		pCopyWire->Edges(edges);
+		pCopyWire->Edges(nullptr, edges);
 
 		if (edges.empty())
 		{

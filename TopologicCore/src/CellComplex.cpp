@@ -23,7 +23,7 @@
 #include "Wire.h"
 #include "Shell.h"
 #include "CellComplexFactory.h"
-#include "GlobalCluster.h"
+//#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <BOPAlgo_MakerVolume.hxx>
@@ -44,37 +44,37 @@
 
 namespace TopologicCore
 {
-	void CellComplex::Cells(std::list<Cell::Ptr>& rCells) const
+	void CellComplex::Cells(const Topology::Ptr& kpHostTopology, std::list<Cell::Ptr>& rCells) const
 	{
 		DownwardNavigation(rCells);
 	}
 
-	void CellComplex::Faces(std::list<Face::Ptr>& rFaces) const
+	void CellComplex::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
 		DownwardNavigation(rFaces);
 	}
 
-	void CellComplex::Shells(std::list<Shell::Ptr>& rShells) const
+	void CellComplex::Shells(const Topology::Ptr& kpHostTopology, std::list<Shell::Ptr>& rShells) const
 	{
 		DownwardNavigation(rShells);
 	}
 
-	void CellComplex::Edges(std::list<Edge::Ptr>& rEdges) const
+	void CellComplex::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
 		DownwardNavigation(rEdges);
 	}
 
-	void CellComplex::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void CellComplex::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		DownwardNavigation(rVertices);
 	}
 
-	void CellComplex::Wires(std::list<Wire::Ptr>& rWires) const
+	void CellComplex::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
 		DownwardNavigation(rWires);
 	}
 
-	CellComplex::Ptr CellComplex::ByCells(const std::list<Cell::Ptr>& rkCells)
+	CellComplex::Ptr CellComplex::ByCells(const std::list<Cell::Ptr>& rkCells, const bool kCopyAttributes)
 	{
 		// ByOcctSolids does the actual construction. This method extracts the OCCT structures from the input
 		// and wrap the output in a Topologic class.
@@ -86,17 +86,18 @@ namespace TopologicCore
 
 		TopoDS_CompSolid occtCompSolid = ByOcctSolids(occtShapes);
 		CellComplex::Ptr pCellComplex = std::make_shared<CellComplex>(occtCompSolid);
-		//CellComplex::Ptr pCopyCellComplex = std::dynamic_pointer_cast<CellComplex>(pCellComplex->DeepCopy());
-
-		std::list<Topology::Ptr> cellsAsTopologies;
-		for (const Cell::Ptr& kpCell : rkCells)
+		CellComplex::Ptr pCopyCellComplex = std::dynamic_pointer_cast<CellComplex>(pCellComplex->DeepCopy());
+		if (kCopyAttributes)
 		{
-			cellsAsTopologies.push_back(kpCell);
-			//AttributeManager::GetInstance().DeepCopyAttributes(kpCell->GetOcctSolid(), pCopyCellComplex->GetOcctCompSolid());
+			std::list<Topology::Ptr> cellsAsTopologies;
+			for (const Cell::Ptr& kpCell : rkCells)
+			{
+				cellsAsTopologies.push_back(kpCell);
+				AttributeManager::GetInstance().DeepCopyAttributes(kpCell->GetOcctSolid(), pCopyCellComplex->GetOcctCompSolid());
+			}
+			CellComplex::Ptr pCopyCellComplex = TopologicalQuery::Downcast<CellComplex>(pCellComplex->DeepCopyAttributesFrom(cellsAsTopologies));
 		}
-		CellComplex::Ptr pCopyCellComplex = TopologicalQuery::Downcast<CellComplex>(pCellComplex->DeepCopyAttributesFrom(cellsAsTopologies));
-
-		GlobalCluster::GetInstance().AddTopology(pCopyCellComplex->GetOcctCompSolid());
+		//GlobalCluster::GetInstance().AddTopology(pCopyCellComplex->GetOcctCompSolid());
 
 		return pCopyCellComplex;
 	}
@@ -169,7 +170,7 @@ namespace TopologicCore
 		return pCopyCellComplex->GetOcctCompSolid();
 	}
 
-	CellComplex::Ptr CellComplex::ByFaces(const std::list<Face::Ptr>& rkFaces, const double kTolerance)
+	CellComplex::Ptr CellComplex::ByFaces(const std::list<Face::Ptr>& rkFaces, const double kTolerance, const bool kCopyAttributes)
 	{
 		BOPAlgo_MakerVolume occtMakerVolume;
 		TopTools_ListOfShape occtShapes;
@@ -222,21 +223,24 @@ namespace TopologicCore
 			}
 		}
 
-		CellComplex::Ptr cellComplex = ByCells(cells);
+		CellComplex::Ptr cellComplex = ByCells(cells, false); //Since these are new Cells, no need to copy dictionaries
 
 		TopoDS_CompSolid occtFixedCompSolid = OcctShapeFix(cellComplex->GetOcctCompSolid());
 
 		CellComplex::Ptr fixedCellComplex = std::make_shared<CellComplex>(occtFixedCompSolid);
 		CellComplex::Ptr copyFixedCellComplex = TopologicalQuery::Downcast<CellComplex>(fixedCellComplex->DeepCopy());
 
-		GlobalCluster::GetInstance().AddTopology(copyFixedCellComplex->GetOcctCompSolid());
-		std::list<Topology::Ptr> facesAsTopologies;
-		for (const Face::Ptr& kpFace : rkFaces)
+		//GlobalCluster::GetInstance().AddTopology(copyFixedCellComplex->GetOcctCompSolid());
+		if (kCopyAttributes)
 		{
-			facesAsTopologies.push_back(kpFace);
-			//AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCellComplex->GetOcctCompSolid());
+			std::list<Topology::Ptr> facesAsTopologies;
+			for (const Face::Ptr& kpFace : rkFaces)
+			{
+				facesAsTopologies.push_back(kpFace);
+				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCellComplex->GetOcctCompSolid());
+			}
+			copyFixedCellComplex->DeepCopyAttributesFrom(facesAsTopologies);
 		}
-		copyFixedCellComplex->DeepCopyAttributesFrom(facesAsTopologies);
 		return copyFixedCellComplex;
 	}
 
@@ -245,7 +249,7 @@ namespace TopologicCore
 		// Get the Cells
 		TopTools_ListOfShape occtCellsBuildersArguments;
 		std::list<Cell::Ptr> cells;
-		Cells(cells);
+		Cells(nullptr, cells);
 		for (const Cell::Ptr& kpCell : cells)
 		{
 			occtCellsBuildersArguments.Append(kpCell->GetOcctShape());
@@ -289,7 +293,7 @@ namespace TopologicCore
 		{
 			 Cell::Ptr pCell = std::make_shared<Cell>(TopoDS::Solid(occtExplorer.Current()));
 			 Cell::Ptr pCellCopy = TopologicalQuery::Downcast<TopologicCore::Cell>(pCell->DeepCopy());
-			 GlobalCluster::GetInstance().AddTopology(pCellCopy->GetOcctShape());
+			 //GlobalCluster::GetInstance().AddTopology(pCellCopy->GetOcctShape());
 			 return pCellCopy;
 		}
 		return nullptr;
@@ -302,11 +306,11 @@ namespace TopologicCore
 
 		// Get the envelope Faces
 		std::list<Face::Ptr> envelopeFaces;
-		pEnvelopeCell->Faces(envelopeFaces);
+		pEnvelopeCell->Faces(nullptr, envelopeFaces);
 
 		// Get the original Faces
 		std::list<Face::Ptr> faces;
-		Faces(faces);
+		Faces(nullptr, faces);
 
 		// An internal Face can be found in the original Face list, but not in the envelope Face list.
 		Handle(IntTools_Context) pOcctIntToolsContext = new IntTools_Context();
@@ -329,19 +333,20 @@ namespace TopologicCore
 		}
 	}
 
-	bool CellComplex::IsManifold() const
+	bool CellComplex::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		throw std::runtime_error("Not implemented yet");
+		// throw std::runtime_error("Not implemented yet");
+		return false;
 	}
 
 	void CellComplex::NonManifoldFaces(std::list<Face::Ptr>& rNonManifoldFaces) const
 	{
 		std::list<Face::Ptr> faces;
-		Faces(faces);
+		Faces(nullptr, faces);
 
 		for (const Face::Ptr& kpFace : faces)
 		{
-			if(!kpFace->IsManifold())
+			if (!kpFace->IsManifold(std::make_shared<CellComplex>(this->GetOcctCompSolid())))
 			{
 				rNonManifoldFaces.push_back(kpFace);
 			}
@@ -388,7 +393,7 @@ namespace TopologicCore
 	void CellComplex::Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const
 	{
 		std::list<Face::Ptr> faces;
-		Faces(faces);
+		Faces(nullptr, faces);
 		for (const Face::Ptr& kpFace : faces)
 		{
 			rOcctGeometries.push_back(kpFace->Surface());

@@ -58,11 +58,12 @@
 
 namespace TopologicCore
 {
-	void Face::AdjacentFaces(std::list<Face::Ptr>& rFaces) const
+	void Face::AdjacentFaces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
 		// Iterate through the edges and find the incident faces which are not this face.
 		TopTools_IndexedDataMapOfShapeListOfShape occtEdgeFaceMap;
-		TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
+		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
+		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
 
 		// Find the constituent faces
 		TopTools_MapOfShape occtEdges;
@@ -104,27 +105,41 @@ namespace TopologicCore
 		}
 	}
 
-	void Face::Cells(std::list<Cell::Ptr>& rCells) const
+	void Face::Cells(const Topology::Ptr& kpHostTopology, std::list<Cell::Ptr>& rCells) const
 	{
-		UpwardNavigation(rCells);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rCells);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
-	void Face::Edges(std::list<Edge::Ptr>& rEdges) const
+	void Face::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
 		DownwardNavigation(rEdges);
 	}
 
-	void Face::Shells(std::list<Shell::Ptr>& rShells) const
+	void Face::Shells(const Topology::Ptr& kpHostTopology, std::list<Shell::Ptr>& rShells) const
 	{
-		UpwardNavigation(rShells);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rShells);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
-	void Face::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Face::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		DownwardNavigation(rVertices);
 	}
 
-	void Face::Wires(std::list<Wire::Ptr>& rWires) const
+	void Face::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
 		DownwardNavigation(rWires);
 	}
@@ -144,18 +159,21 @@ namespace TopologicCore
 		return BRepBuilderAPI_MakeVertex(occtShapeProperties.CentreOfMass());
 	}
 
-	Face::Ptr Face::ByExternalBoundary(const Wire::Ptr& kpExternalBoundary)
+	Face::Ptr Face::ByExternalBoundary(const Wire::Ptr& kpExternalBoundary, const bool kCopyAttributes)
 	{
 		std::list<Wire::Ptr> internalBoundaries;
 		Face::Ptr face = ByExternalInternalBoundaries(kpExternalBoundary, internalBoundaries);
-		AttributeManager::GetInstance().DeepCopyAttributes(kpExternalBoundary->GetOcctWire(), face->GetOcctFace());
+		if (kCopyAttributes)
+		{
+			AttributeManager::GetInstance().DeepCopyAttributes(kpExternalBoundary->GetOcctWire(), face->GetOcctFace());
+		}
 
 		return face;
 	}
 
 	Face::Ptr Face::ByExternalInternalBoundaries(
 		const Wire::Ptr& pkExternalBoundary,
-		const std::list<Wire::Ptr>& rkInternalBoundaries)
+		const std::list<Wire::Ptr>& rkInternalBoundaries, const bool kCopyAttributes)
 	{
         if (!pkExternalBoundary->IsClosed())
         {
@@ -217,20 +235,29 @@ namespace TopologicCore
 		Face::Ptr pFace = std::make_shared<Face>(occtFixedFace);
 		Face::Ptr pCopyFace = std::dynamic_pointer_cast<Face>(pFace->DeepCopy());
 		std::list<Topology::Ptr> wiresAsTopologies;
-		//AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+		if (kCopyAttributes)
+		{
+			AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+		}
 		wiresAsTopologies.push_back(pkExternalBoundary);
 		for (const Wire::Ptr& kpInternalBoundary : rkInternalBoundaries)
 		{
 			wiresAsTopologies.push_back(kpInternalBoundary);
-			//AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+			if (kCopyAttributes)
+			{
+				AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+			}
 		}
-		pCopyFace->DeepCopyAttributesFrom(wiresAsTopologies);
+		if (kCopyAttributes)
+		{
+			pCopyFace->DeepCopyAttributesFrom(wiresAsTopologies);
+		}
 
-		GlobalCluster::GetInstance().AddTopology(pCopyFace->GetOcctFace());
+		//GlobalCluster::GetInstance().AddTopology(pCopyFace->GetOcctFace());
 		return pCopyFace;
 	}
 
-	Face::Ptr Face::ByEdges(const std::list<Edge::Ptr>& rkEdges)
+	Face::Ptr Face::ByEdges(const std::list<Edge::Ptr>& rkEdges, const bool kCopyAttributes)
 	{
 		if (rkEdges.size() < 3)
 		{
@@ -243,7 +270,10 @@ namespace TopologicCore
 		for (const Edge::Ptr& kpEdge : rkEdges)
 		{
 			edgesAsTopologies.push_back(kpEdge);
-			AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pFace->GetOcctFace());
+			if (kCopyAttributes)
+			{
+				AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pFace->GetOcctFace());
+			}
 		}
 		pFace->DeepCopyAttributesFrom(edgesAsTopologies);
 
@@ -263,7 +293,7 @@ namespace TopologicCore
 		ShapeFix_Face occtShapeFix(occtMakeFace);
 		occtShapeFix.Perform();
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
+		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 
@@ -437,7 +467,7 @@ namespace TopologicCore
 		occtShapeFix.Perform();
 
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
+		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 
@@ -620,21 +650,28 @@ namespace TopologicCore
 		return TopoDS::Face(rkOcctInputFace);
 	}
 
-	bool Face::IsManifold() const
+	bool Face::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-        return IsManifoldToTopology();
+		std::list<Cell::Ptr> cells;
+		TopologicUtilities::FaceUtility::AdjacentCells(this, kpHostTopology, cells);
+		// A manifold face has 0 or 1 cell.
+		if (cells.size() < 2)
+		{
+			return true;
+		}
+		return false;
 	}
 
-    bool Face::IsManifoldToTopology(const Topology::Ptr & kpTopology) const
+    bool Face::IsManifoldToTopology(const Topology::Ptr& kpHostTopology) const
     {
         std::list<Cell::Ptr> cells;
-        if (kpTopology == nullptr)
+        if (kpHostTopology == nullptr)
         {
-            Cells(cells);
+            Cells(kpHostTopology, cells);
         }
         else
         {
-            TopologicUtilities::FaceUtility::AdjacentCells(this, kpTopology, cells);
+            TopologicUtilities::FaceUtility::AdjacentCells(this, kpHostTopology, cells);
         }
 
         // A manifold face has 0 or 1 cell.

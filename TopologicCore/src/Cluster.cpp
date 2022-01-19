@@ -36,7 +36,7 @@
 
 namespace TopologicCore
 {
-	Cluster::Ptr Cluster::ByTopologies(const std::list<Topology::Ptr>& rkTopologies)
+	Cluster::Ptr Cluster::ByTopologies(const std::list<Topology::Ptr>& rkTopologies, const bool kCopyAttributes)
 	{
 		if (rkTopologies.empty())
 		{
@@ -56,14 +56,17 @@ namespace TopologicCore
 		Cluster::Ptr pCopyCluster = std::dynamic_pointer_cast<Cluster>(pCluster->DeepCopy());
 
 		// Transfer the attributes
-		/*for (const Topology::Ptr& kpTopology : rkTopologies)
+		if (kCopyAttributes)
 		{
-			AttributeManager::GetInstance().DeepCopyAttributes(kpTopology->GetOcctShape(), pCopyCluster->GetOcctCompound());
-		}*/
-		pCopyCluster->DeepCopyAttributesFrom(rkTopologies);
+			for (const Topology::Ptr& kpTopology : rkTopologies)
+			{
+				AttributeManager::GetInstance().DeepCopyAttributes(kpTopology->GetOcctShape(), pCopyCluster->GetOcctCompound());
+			}
+			pCopyCluster->DeepCopyAttributesFrom(rkTopologies);
+		}
 
 		// Add to the Global Cluster
-		GlobalCluster::GetInstance().AddTopology(pCopyCluster->GetOcctCompound());
+		//GlobalCluster::GetInstance().AddTopology(pCopyCluster->GetOcctCompound());
 		return pCopyCluster;
 	}
 
@@ -188,37 +191,37 @@ namespace TopologicCore
 
 	}
 
-	void Cluster::Shells(std::list<Shell::Ptr>& rShells) const
+	void Cluster::Shells(const Topology::Ptr& kpHostTopology, std::list<Shell::Ptr>& rShells) const
 	{
 		DownwardNavigation(rShells);
 	}
 
-	void Cluster::Edges(std::list<Edge::Ptr>& rEdges) const
+	void Cluster::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
 		DownwardNavigation(rEdges);
 	}
 
-	void Cluster::Faces(std::list<Face::Ptr>& rFaces) const
+	void Cluster::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
 		DownwardNavigation(rFaces);
 	}
 
-	void Cluster::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Cluster::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		DownwardNavigation(rVertices);
 	}
 
-	void Cluster::Wires(std::list<Wire::Ptr>& rWires) const
+	void Cluster::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
 		DownwardNavigation(rWires);
 	}
 
-	void Cluster::Cells(std::list<Cell::Ptr>& rCells) const
+	void Cluster::Cells(const Topology::Ptr& kpHostTopology, std::list<Cell::Ptr>& rCells) const
 	{
 		DownwardNavigation(rCells);
 	}
 
-	void Cluster::CellComplexes(std::list<CellComplex::Ptr>& rCellComplexes) const
+	void Cluster::CellComplexes(const Topology::Ptr& kpHostTopology, std::list<CellComplex::Ptr>& rCellComplexes) const
 	{
 		DownwardNavigation(rCellComplexes);
 	}
@@ -278,9 +281,10 @@ namespace TopologicCore
 		return BRepBuilderAPI_MakeVertex(occtCentroid);
 	}
 
-	bool Cluster::IsManifold() const
+	bool Cluster::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		throw std::runtime_error("Not implemented yet");
+		// throw std::runtime_error("Not implemented yet");
+		return false;
 	}
 
 	std::string Cluster::GetTypeAsString() const

@@ -51,9 +51,9 @@ namespace TopologicCore
 		return Topology()->CenterOfMass();
 	}
 
-	bool Aperture::IsManifold() const
+	bool Aperture::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		return Topology()->IsManifold();
+		return Topology()->IsManifold(kpHostTopology);
 	}
 
 	std::string Aperture::GetTypeAsString() const

@@ -42,9 +42,9 @@
 
 namespace TopologicCore
 {
-	void Wire::Edges(std::list<Edge::Ptr>& rEdges) const
+	void Wire::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
-		if (!IsManifold())
+		if (!IsManifold(nullptr))
 		{
             // Gives in any order
 			DownwardNavigation(rEdges);
@@ -124,7 +124,7 @@ namespace TopologicCore
 
 				// Get the other vertex
 				std::list<Vertex::Ptr> vertices;
-				currentEdge->Vertices(vertices);
+				currentEdge->Vertices(nullptr, vertices);
 
 				for (const Vertex::Ptr& kpVertex : vertices)
 				{
@@ -146,9 +146,16 @@ namespace TopologicCore
 		}
 	}
 
-	void Wire::Faces(std::list<Face::Ptr>& rFaces) const
+	void Wire::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
-		UpwardNavigation(rFaces);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rFaces);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
 	bool Wire::IsClosed() const
@@ -159,16 +166,16 @@ namespace TopologicCore
 		return isClosed;
 	}
 
-	void Wire::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Wire::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		TopTools_MapOfShape occtVertices;
 		std::list<Edge::Ptr> edges;
-		Edges(edges);
+		Edges(nullptr, edges);
 
 		for (const Edge::Ptr kpEdge : edges)
 		{
 			std::list<Vertex::Ptr> vertices;
-			kpEdge->Vertices(vertices);
+			kpEdge->Vertices(nullptr, vertices);
 
 			// Special case when handling the second edge
 			if (rVertices.size() == 2)
@@ -199,7 +206,7 @@ namespace TopologicCore
 	}
 
 	// This method may involve making copies of the edges if they originally do not share vertices.
-	Wire::Ptr Wire::ByEdges(const std::list<Edge::Ptr>& rkEdges)
+	Wire::Ptr Wire::ByEdges(const std::list<Edge::Ptr>& rkEdges, const bool kCopyAttributes)
 	{
 		if (rkEdges.empty())
 		{
@@ -215,12 +222,15 @@ namespace TopologicCore
 		TopoDS_Wire occtWire = ByOcctEdges(occtEdges);
 		Wire::Ptr pWire = std::make_shared<Wire>(occtWire);
 		Wire::Ptr pCopyWire = std::dynamic_pointer_cast<Wire>(pWire->DeepCopy());
-		for (const Edge::Ptr& kpEdge : rkEdges)
+		if (kCopyAttributes)
 		{
-			AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pCopyWire->GetOcctWire());
+			for (const Edge::Ptr& kpEdge : rkEdges)
+			{
+				AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pCopyWire->GetOcctWire());
+			}
 		}
 
-		GlobalCluster::GetInstance().AddTopology(pCopyWire->GetOcctWire());
+		//GlobalCluster::GetInstance().AddTopology(pCopyWire->GetOcctWire());
 		return pCopyWire;
 	}
 
@@ -241,15 +251,22 @@ namespace TopologicCore
 		}
 	}
 
-	bool Wire::IsManifold() const
+	bool Wire::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		int numberOfBranches = NumberOfBranches();
-		if (numberOfBranches == 0)
-		{
-			return true;
-		}
+		std::list<Vertex::Ptr> vertices;
+		DownwardNavigation<Vertex>(vertices);
 
-		return false;
+		for (const Vertex::Ptr& kpVertex : vertices)
+		{
+			std::list<Edge::Ptr> edges;
+			// This should be safe because Wire should not be null.
+			kpVertex->UpwardNavigation<Edge>(GetOcctWire(), edges);
+			if (edges.size() > 2)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	int Wire::NumberOfBranches() const
@@ -261,6 +278,7 @@ namespace TopologicCore
 		for (const Vertex::Ptr& kpVertex: vertices)
 		{
 			std::list<Edge::Ptr> edges;
+			// This should be safe because Wire should not be null.
 			kpVertex->UpwardNavigation<Edge>(GetOcctWire(), edges);
 			if (edges.size() > 2)
 			{
@@ -275,7 +293,7 @@ namespace TopologicCore
 	{
 		// Returns a list of curves
 		std::list<Edge::Ptr> edges;
-		Edges(edges);
+		Edges(nullptr, edges);
 
 		for (const Edge::Ptr& kpEdge : edges)
 		{

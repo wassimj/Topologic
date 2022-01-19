@@ -100,7 +100,7 @@ namespace TopologicCore
 		/// Checks if the underlying Topology is manifold.
 		/// </summary>
 		/// <returns name="bool">True if the underlying Topology is manifold, otherwise False</returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// Returns the type of the Aperture as a String.

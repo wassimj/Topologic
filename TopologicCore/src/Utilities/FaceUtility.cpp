@@ -518,7 +518,7 @@ namespace TopologicUtilities
 			return false;
 		}
 		std::list<TopologicCore::Vertex::Ptr> vertices;
-		sliceResult->Vertices(vertices);
+		sliceResult->Vertices(nullptr, vertices);
 
 		if (vertices.size() <= 2)
 		{
@@ -526,9 +526,9 @@ namespace TopologicUtilities
 		}
 
 		std::list<TopologicCore::Vertex::Ptr> faceVertices;
-		kpFace->Vertices(faceVertices);
+		kpFace->Vertices(nullptr, faceVertices);
 		std::list<TopologicCore::Edge::Ptr> faceEdges;
-		kpFace->Edges(faceEdges);
+		kpFace->Edges(nullptr, faceEdges);
 			
 		// For each point not close to vertexA or vertexB, if the distance to 
 		// existing edges or vertices is under tolerance, reject it.

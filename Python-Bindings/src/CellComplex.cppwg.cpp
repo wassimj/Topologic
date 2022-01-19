@@ -19,19 +19,19 @@ typedef ::std::string _std_string;
 class CellComplex_Overloads : public CellComplex{
     public:
     using CellComplex::CellComplex;
-    void Vertices(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> & rVertices) const  override {
+    /*void Vertices(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>>& rVertices) const  override {
         PYBIND11_OVERLOAD(
             void,
             CellComplex,
             Vertices,
             rVertices);
-    }
-    bool IsManifold() const  override {
+    }*/
+    bool IsManifold(::TopologicCore::Topology::Ptr const & kpHostTopology) const  override {
         PYBIND11_OVERLOAD(
             bool,
             CellComplex,
             IsManifold,
-            );
+            kpHostTopology);
     }
     ::TopoDS_Shape & GetOcctShape() override {
         PYBIND11_OVERLOAD(
@@ -115,96 +115,82 @@ class CellComplex_Overloads : public CellComplex{
 void register_CellComplex_class(py::module &m){
 py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  , Topology  >(m, "CellComplex")
         .def(py::init<::TopoDS_CompSolid const &, ::std::string const & >(), py::arg("rkOcctCompSolid"), py::arg("rkGuid") = "")
-        /*.def(
-            "Cells", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> &) const ) &CellComplex::Cells, 
-            " " , py::arg("rCells") )*/
         .def(
-            "Cells",
-            [](const CellComplex& obj, py::list& rCells) {
-                std::list<Cell::Ptr> local;
-                obj.Cells(local);
-                for (auto& x : local)
-                    rCells.append(x);
-            },
-            " ", py::arg("rCells"))
-        /*.def(
-            "Faces", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::Faces, 
-            " " , py::arg("rFaces") )*/
-        .def(
-            "Faces",
-            [](const CellComplex& obj, py::list& rFaces) {
-                std::list<Face::Ptr> local;
-                obj.Faces(local);
-                for (auto& x : local)
-                    rFaces.append(x);
-            },
-            " ", py::arg("rFaces"))
-        /*.def(
-            "Shells", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Shell>, std::allocator<std::shared_ptr<TopologicCore::Shell>>> &) const ) &CellComplex::Shells, 
-            " " , py::arg("rShells") )*/
-        .def(
-            "Shells",
-            [](const CellComplex& obj, py::list& rShells) {
-                std::list<Shell::Ptr> local;
-                obj.Shells(local);
-                for (auto& x : local)
-                    rShells.append(x);
-            },
-            " ", py::arg("rShells"))
-        /*.def(
-            "Edges", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &) const ) &CellComplex::Edges, 
-            " " , py::arg("rEdges") )*/
+        "Vertices",
+        [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rVertices) {
+            std::list<Vertex::Ptr> local;
+            obj.Vertices(kpHostTopology, local);
+            for (auto& x : local)
+                rVertices.append(x);
+        },
+        " ", py::arg("kpHostTopology"), py::arg("rVertices"))
         .def(
             "Edges",
-            [](const CellComplex& obj, py::list& rEdges) {
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rEdges) {
                 std::list<Edge::Ptr> local;
-                obj.Edges(local);
+                obj.Edges(kpHostTopology, local);
                 for (auto& x : local)
                     rEdges.append(x);
             },
-            " ", py::arg("rEdges"))
-        /*.def(
-            "Vertices", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> &) const ) &CellComplex::Vertices, 
-            " " , py::arg("rVertices") )*/
-        .def(
-            "Vertices",
-            [](const CellComplex& obj, py::list& rVertices) {
-                std::list<Vertex::Ptr> local;
-                obj.Vertices(local);
-                for (auto& x : local)
-                    rVertices.append(x);
-            },
-            " ", py::arg("rVertices"))
-        /*.def(
-            "Wires", 
-            (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Wire>, std::allocator<std::shared_ptr<TopologicCore::Wire>>> &) const ) &CellComplex::Wires, 
-            " " , py::arg("rWires") )*/
+            " ", py::arg("kpHostTopology"), py::arg("rEdges"))
+
         .def(
             "Wires",
-            [](const CellComplex& obj, py::list& rWires) {
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rWires) {
                 std::list<Wire::Ptr> local;
-                obj.Wires(local);
+                obj.Wires(kpHostTopology, local);
                 for (auto& x : local)
                     rWires.append(x);
             },
-            " ", py::arg("rWires"))
+            " ", py::arg("kpHostTopology"), py::arg("rWires"))
+        .def(
+            "Faces",
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(kpHostTopology, local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rCells"))
+        .def(
+            "Shells",
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(kpHostTopology, local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rShells"))
+        .def(
+            "Cells",
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(kpHostTopology, local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+        " ", py::arg("kpHostTopology"), py::arg("rCells"))
+        .def(
+            "CellComplexes",
+            [](const CellComplex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rCellComplexes) {
+                std::list<CellComplex::Ptr> local;
+                obj.CellComplexes(kpHostTopology, local);
+                for (auto& x : local)
+                    rCellComplexes.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rCellComplexes"))
         .def_static(
             "ByCells", 
-            (::std::shared_ptr<TopologicCore::CellComplex>(*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> const &)) &CellComplex::ByCells, 
-            " " , py::arg("rkCells") )
+            (::std::shared_ptr<TopologicCore::CellComplex>(*)(::std::list<std::shared_ptr<TopologicCore::Cell>, std::allocator<std::shared_ptr<TopologicCore::Cell>>> const &, bool const)) &CellComplex::ByCells, 
+            " " , py::arg("rkCells"), py::arg("kCopyAttributes") = false)
         .def_static(
             "ByOcctSolids", 
             (::TopoDS_CompSolid(*)(::TopTools_ListOfShape const &)) &CellComplex::ByOcctSolids, 
             " " , py::arg("rkOcctSolids") )
         .def_static(
             "ByFaces", 
-            (::std::shared_ptr<TopologicCore::CellComplex>(*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> const &, double const)) &CellComplex::ByFaces, 
-            " " , py::arg("rkFaces"), py::arg("kTolerance") )
+            (::std::shared_ptr<TopologicCore::CellComplex>(*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> const &, double const, bool const)) &CellComplex::ByFaces, 
+            " " , py::arg("rkFaces"), py::arg("kTolerance"), py::arg("kCopyAttributes") = false)
         .def(
             "ExternalBoundary", 
             (::std::shared_ptr<TopologicCore::Cell>(CellComplex::*)() const ) &CellComplex::ExternalBoundary, 
@@ -224,8 +210,8 @@ py::class_<CellComplex , CellComplex_Overloads , std::shared_ptr<CellComplex >  
             " ", py::arg("rInternalFaces"))
         .def(
             "IsManifold", 
-            (bool(CellComplex::*)() const ) &CellComplex::IsManifold, 
-            " "  )
+            (bool(CellComplex::*)(const Topology::Ptr&) const ) &CellComplex::IsManifold,
+            " " , py::arg("kpHostTopology"))
         /*.def(
             "NonManifoldFaces", 
             (void(CellComplex::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &CellComplex::NonManifoldFaces, 

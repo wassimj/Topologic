@@ -58,7 +58,7 @@ namespace TopologicCore
 		/// Returns the Edges adjacent to the Edge.
 		/// </summary>
 		/// <param name="rAdjacentEdges">>A list of Edges adjacent to the Edge</param>
-		TOPOLOGIC_API void AdjacentEdges(std::list<std::shared_ptr<Edge>>& rAdjacentEdges) const;
+		TOPOLOGIC_API void AdjacentEdges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rAdjacentEdges) const;
 
 		/// <summary>
 		/// Returns the start Vertex of the Edge.
@@ -90,19 +90,19 @@ namespace TopologicCore
 		/// Returns the Vertices at the ends of the Edge.
 		/// </summary>
 		/// <param name="rVertices">A list of Vertices at the ends of the Edge</param>
-		TOPOLOGIC_API void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// Returns the Wires incident to the Edge.
 		/// </summary>
 		/// <param name="rWires">A list of Wires incident to the Edge</param>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// Returns the Faces incident to the Edge.
 		/// </summary>
 		/// <param name="rFaces">A list of Faces incident to the Edge</param>
-		TOPOLOGIC_API void Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// Creates an Edge by NURBS curve parameters
@@ -140,7 +140,7 @@ namespace TopologicCore
 		/// <param name="kpEndVertex">The end Vertex</param>
 		/// <param name="kCopyAttributes">If True, copy the dictionaries</param>
 		/// <returns name="Edge">The created Edge</returns>
-		TOPOLOGIC_API static Edge::Ptr ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes = true);
+		TOPOLOGIC_API static Edge::Ptr ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// Returns the shared Vertices between two Edges.
@@ -153,9 +153,7 @@ namespace TopologicCore
 		/// Returns True if this Edge is a manifold, otherwise a False.
 		/// </summary>
 		/// <returns name="bool">True if this Edge is a manifold, otherwise a False</returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
-
-		TOPOLOGIC_API virtual bool IsManifold(const TopologicCore::Topology::Ptr& rkParentTopology) const;
+		TOPOLOGIC_API virtual bool IsManifold(const TopologicCore::Topology::Ptr& rkHostTopology) const;
 
 		/// <summary>
 		/// Creates a geometry from Edge.

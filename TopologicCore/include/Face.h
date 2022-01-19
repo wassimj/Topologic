@@ -68,39 +68,39 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <param name="rFaces"></param>
-		TOPOLOGIC_API void AdjacentFaces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void AdjacentFaces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rCells"></param>
 		/// <returns></returns>
-		TOPOLOGIC_API void Cells(std::list<std::shared_ptr<Cell>>& rCells) const;
+		TOPOLOGIC_API void Cells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Cell>>& rCells) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rEdges"></param>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rShells"></param>
 		/// <returns></returns>
-		TOPOLOGIC_API void Shells(std::list<std::shared_ptr<Shell>>& rShells) const;
+		TOPOLOGIC_API void Shells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Shell>>& rShells) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rVertices"></param>
-		TOPOLOGIC_API void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rWires"></param>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// 
@@ -114,7 +114,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="kpExternalBoundary"></param>
 		/// <returns></returns>
-		TOPOLOGIC_API static std::shared_ptr<Face> ByExternalBoundary(const std::shared_ptr<Wire>& kpExternalBoundary);
+		TOPOLOGIC_API static std::shared_ptr<Face> ByExternalBoundary(const std::shared_ptr<Wire>& kpExternalBoundary, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// 
@@ -124,14 +124,14 @@ namespace TopologicCore
 		/// <returns></returns>
 		TOPOLOGIC_API static std::shared_ptr<Face> ByExternalInternalBoundaries(
 			const std::shared_ptr<Wire>& pkExternalBoundary, 
-			const std::list<std::shared_ptr<Wire>>& rkInternalBoundaries);
+			const std::list<std::shared_ptr<Wire>>& rkInternalBoundaries, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkEdges"></param>
 		/// <returns></returns>
-		static TOPOLOGIC_API std::shared_ptr<Face> ByEdges(const std::list<std::shared_ptr<Edge>>& rkEdges);
+		static TOPOLOGIC_API std::shared_ptr<Face> ByEdges(const std::list<std::shared_ptr<Edge>>& rkEdges, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// 
@@ -223,13 +223,13 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-		TOPOLOGIC_API bool IsManifoldToTopology(const Topology::Ptr& kpTopology = nullptr) const;
+		TOPOLOGIC_API bool IsManifoldToTopology(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// 

@@ -57,7 +57,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkTopologies">A set of Topologies</param>
 		/// <returns name="Cluster">The created Cluster</returns>
-		TOPOLOGIC_API static std::shared_ptr<Cluster> ByTopologies(const std::list<std::shared_ptr<Topology>>& rkTopologies);
+		TOPOLOGIC_API static std::shared_ptr<Cluster> ByTopologies(const std::list<std::shared_ptr<Topology>>& rkTopologies, const bool kCopyAttributes = false);
 
 		TOPOLOGIC_API static TopoDS_Compound ByOcctTopologies(const TopTools_MapOfShape& rkOcctShapes);
 
@@ -121,43 +121,43 @@ namespace TopologicCore
 		/// Returns the Shells constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Shells constituent to the Cluster</returns>
-		TOPOLOGIC_API void Shells(std::list<std::shared_ptr<Shell>>& rShells) const;
+		TOPOLOGIC_API void Shells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Shell>>& rShells) const;
 
 		/// <summary>
 		/// Returns the Edges constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Edges constituent to the Cluster</returns>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// Returns the Faces constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Faces constituent to the Cluster</returns>
-		TOPOLOGIC_API void Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// Returns the Vertices constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Vertices constituent to the Cluster</returns>
-		TOPOLOGIC_API void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// Returns the Wires constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Wires constituent to the Cluster</returns>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// Returns the Cells constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of Cells constituent to the Cluster</returns>
-		TOPOLOGIC_API void Cells(std::list<std::shared_ptr<Cell>>& rCells) const;
+		TOPOLOGIC_API void Cells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Cell>>& rCells) const;
 
 		/// <summary>
 		/// Returns the CellComplexes constituent to the Cluster.
 		/// </summary>
 		/// <returns name="rShells">A list of CellComplexes constituent to the Cluster</returns>
-		TOPOLOGIC_API void CellComplexes(std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
+		TOPOLOGIC_API void CellComplexes(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
 
 		/// <summary>
 		/// Returns the center of mass of this Cluster.
@@ -175,7 +175,7 @@ namespace TopologicCore
 		/// Returns True if this Cluster is a manifold, otherwise a False.
 		/// </summary>
 		/// <returns name="bool">True if this Cluster is a manifold, otherwise a False</returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// Returns the type associated to Cluster.

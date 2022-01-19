@@ -18,6 +18,9 @@
 #include "Vertex.h"
 #include "Wire.h"
 #include "Face.h"
+#include "Shell.h"
+#include "Cell.h"
+#include "CellComplex.h"
 #include "EdgeFactory.h"
 #include "Cluster.h"
 #include "GlobalCluster.h"
@@ -39,10 +42,10 @@
 
 namespace TopologicCore
 {
-	void Edge::AdjacentEdges(std::list<Edge::Ptr>& rAdjacentEdges) const
+	void Edge::AdjacentEdges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rAdjacentEdges) const
 	{
 		std::list<Vertex::Ptr> vertices;
-		Vertices(vertices);
+		Vertices(kpHostTopology, vertices);
 
 		// Find the constituent edges
 		TopTools_MapOfShape occtAdjacentEdges;
@@ -50,7 +53,7 @@ namespace TopologicCore
 		{
 			// Find the edges
 			std::list<Edge::Ptr> edges;
-			kpVertex->Edges(edges);
+			kpVertex->Edges(kpHostTopology, edges);
 
 			for (const Edge::Ptr& kpEdge : edges)
 			{
@@ -94,20 +97,34 @@ namespace TopologicCore
 		return std::make_shared<Vertex>(EndVertex(GetOcctEdge()));
 	}
 
-	void Edge::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Edge::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		rVertices.push_back(StartVertex());
 		rVertices.push_back(EndVertex());
 	}
 
-	void Edge::Wires(std::list<Wire::Ptr>& rWires) const
+	void Edge::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
-		UpwardNavigation(rWires);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rWires);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
-	void Edge::Faces(std::list<std::shared_ptr<Face>>& rFaces) const
+	void Edge::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
-		UpwardNavigation(rFaces);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rFaces);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
 	Edge::Ptr Edge::ByCurve(
@@ -196,6 +213,8 @@ namespace TopologicCore
 		Edge::Ptr pCopyEdge = std::dynamic_pointer_cast<Edge>(pEdge->DeepCopy());
 		if (kCopyAttributes)
 		{
+			#include <iostream>
+			std::cout << "Copying Attributes" << std::endl;
 			AttributeManager::GetInstance().DeepCopyAttributes(startVertex->GetOcctVertex(), pCopyEdge->GetOcctEdge());
 			AttributeManager::GetInstance().DeepCopyAttributes(endVertex->GetOcctVertex(), pCopyEdge->GetOcctEdge());
 		}
@@ -231,24 +250,105 @@ namespace TopologicCore
 		}
 	}
 
-	bool Edge::IsManifold() const
+	bool Edge::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-        return IsManifold(std::dynamic_pointer_cast<Topology>(GlobalCluster::GetInstance().GetCluster()));
+		// In the context of a Wire, an Edge is non-manifold if it connects more than two edges.
+		if (kpHostTopology->GetType() == TOPOLOGY_WIRE)
+		{
+			std::list<Edge::Ptr> edges;
+			AdjacentEdges(kpHostTopology, edges);
+			if (edges.size() > 2)
+			{
+				return false;
+			}
+		}
+		// In the context of a Face, an Edge is non-manifold if it connects more than two edges.
+		if (kpHostTopology->GetType() == TOPOLOGY_FACE)
+		{
+			std::list<Edge::Ptr> edges;
+			AdjacentEdges(kpHostTopology, edges);
+			if (edges.size() > 2)
+			{
+				return false;
+			}
+		}
+		// In the context of a Shell, an Edge is non-manifold if it connects more than one Face.
+		if (kpHostTopology->GetType() == TOPOLOGY_SHELL)
+		{
+			std::list<Face::Ptr> faces;
+			Faces(kpHostTopology, faces);
+			if (faces.size() > 1)
+			{
+				return false;
+			}
+		}
+		// In the context of a Cell, an Edge is non-manifold if it connects more than two Faces.
+		if (kpHostTopology->GetType() == TOPOLOGY_CELL)
+		{
+			std::list<Face::Ptr> faces;
+			Faces(kpHostTopology, faces);
+			if (faces.size() > 2)
+			{
+				return false;
+			}
+		}
+		// In the context of a CellComplex, an Edge is non-manifold if it connects more than one Cell.
+		if (kpHostTopology->GetType() == TOPOLOGY_CELLCOMPLEX)
+		{
+			std::list<Cell::Ptr> cells;
+			Cells(kpHostTopology, cells);
+			if (cells.size() > 1)
+			{
+				return false;
+			}
+		}
+		// In the context of a Cluster, Check all the SubTopologies
+		if (kpHostTopology->GetType() == TOPOLOGY_CLUSTER)
+		{
+			std::list<TopologicCore::CellComplex::Ptr> cellComplexes;
+			kpHostTopology->CellComplexes(nullptr, cellComplexes);
+			for (const CellComplex::Ptr kpCellComplex : cellComplexes)
+			{
+				if (IsManifold(kpCellComplex))
+				{
+					return false;
+				}
+			}
+			std::list<TopologicCore::Cell::Ptr> cells;
+			for (const Cell::Ptr kpCell : cells)
+			{
+				if (IsManifold(kpCell))
+				{
+					return false;
+				}
+			}
+			std::list<TopologicCore::Shell::Ptr> shells;
+			for (const Shell::Ptr kpShell : shells)
+			{
+				if (IsManifold(kpShell))
+				{
+					return false;
+				}
+			}
+			std::list<TopologicCore::Face::Ptr> faces;
+			for (const Face::Ptr kpFace : faces)
+			{
+				if (IsManifold(kpFace))
+				{
+					return false;
+				}
+			}
+			std::list<TopologicCore::Wire::Ptr> wires;
+			for (const Wire::Ptr kpWire : wires)
+			{
+				if (IsManifold(kpWire))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
-
-    bool Edge::IsManifold(const TopologicCore::Topology::Ptr & rkParentTopology) const
-    {
-        std::list<Wire::Ptr> wires;
-        TopologicUtilities::EdgeUtility::AdjacentWires(this, rkParentTopology, wires);
-
-        // A manifold edge has <= 2 wires.
-        if (wires.size() <= 2)
-        {
-            return true;
-        }
-
-        return false;
-    }
 
 	void Edge::Geometry(std::list<Handle(Geom_Geometry)>& rOcctGeometries) const
 	{

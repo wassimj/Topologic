@@ -26,6 +26,7 @@
 #include <BOPAlgo_CellsBuilder.hxx>
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepBuilderAPI_MakeShape.hxx>
+#include <BRepAlgoAPI_Check.hxx>
 #include <Standard_Handle.hxx>
 #include <Geom_Geometry.hxx>
 #include <TopoDS_Edge.hxx>
@@ -355,7 +356,7 @@ namespace TopologicCore
 		/// Returns True if this Topology is manifold, otherwise a False.
 		/// </summary>
 		/// <returns name="bool">True if this Topology is manifold, otherwise a False.</returns>
-		TOPOLOGIC_API virtual bool IsManifold() const = 0;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const = 0;
 
 		/// <summary>
 		/// 
@@ -441,43 +442,43 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <param name="rShells"></param>
-		TOPOLOGIC_API void Shells(std::list<std::shared_ptr<Shell>>& rShells) const;
+		TOPOLOGIC_API void Shells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Shell>>& rShells) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rEdges"></param>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rFaces"></param>
-		TOPOLOGIC_API void Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rVertices"></param>
-		TOPOLOGIC_API virtual void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API virtual void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rWires"></param>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rCells"></param>
-		TOPOLOGIC_API void Cells(std::list<std::shared_ptr<Cell>>& rCells) const;
+		TOPOLOGIC_API void Cells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Cell>>& rCells) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rCellComplexes"></param>
-		TOPOLOGIC_API void CellComplexes(std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
+		TOPOLOGIC_API void CellComplexes(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
 
 		/// <summary>
 		/// 
@@ -485,14 +486,7 @@ namespace TopologicCore
 		/// <param name="kOcctShapeType"></param>
 		/// <param name="rMembers"></param>
 		template <class Subclass>
-		void Navigate(std::list<std::shared_ptr<Subclass>>& rMembers) const;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="rAncestors"></param>
-		template <class Subclass>
-		void UpwardNavigation(std::list<std::shared_ptr<Subclass>>& rAncestors) const;
+		void Navigate(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Subclass>>& rMembers) const;
 
 		/// <summary>
 		/// 
@@ -502,7 +496,7 @@ namespace TopologicCore
 		template <class Subclass>
 		void UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, std::list<std::shared_ptr<Subclass>>& rAncestors) const;
 
-		TOPOLOGIC_API void UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, const int kTopologyType, std::list<std::shared_ptr<Topology>>& rAncestors) const;
+		void UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, const int kTopologyType, std::list<std::shared_ptr<Topology>>& rAncestors) const;
 
 		/// <summary>
 		/// 
@@ -517,7 +511,7 @@ namespace TopologicCore
 		/// <param name="rkOcctShape"></param>
 		/// <param name="rkShapeEnum"></param>
 		/// <param name="rOcctMembers"></param>
-		TOPOLOGIC_API static void DownwardNavigation(const TopoDS_Shape& rkOcctShape, const TopAbs_ShapeEnum& rkShapeEnum, TopTools_MapOfShape& rOcctMembers);
+		static void DownwardNavigation(const TopoDS_Shape& rkOcctShape, const TopAbs_ShapeEnum& rkShapeEnum, TopTools_MapOfShape& rOcctMembers);
 
 		/// <summary>
 		/// Copy the whole content/context hierarchy.
@@ -815,11 +809,18 @@ namespace TopologicCore
 	};
 
 	template<class Subclass>
-	void Topology::Navigate(std::list<std::shared_ptr<Subclass>>& rMembers) const
+	void Topology::Navigate(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Subclass>>& rMembers) const
 	{
 		if (Subclass::Type() > GetType())
 		{
-			UpwardNavigation(rMembers);
+			if (kpHostTopology)
+			{
+				UpwardNavigation(kpHostTopology->GetOcctShape(), rMembers);
+			}
+			else
+			{
+				throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+			}
 		}
 		else if (Subclass::Type() < GetType())
 		{
@@ -831,19 +832,21 @@ namespace TopologicCore
 		}
 	}
 
-	template <class Subclass>
+	/*template <class Subclass>
 	void Topology::UpwardNavigation(std::list<std::shared_ptr<Subclass>>& rAncestors) const
 	{
 		UpwardNavigation(GlobalCluster::GetInstance().GetOcctCompound(), rAncestors);
-	}
+	}*/
 
 	template<class Subclass>
 	inline void Topology::UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, std::list<std::shared_ptr<Subclass>>& rAncestors) const
 	{
 		static_assert(std::is_base_of<Topology, Subclass>::value, "Subclass not derived from Topology");
-
 		TopAbs_ShapeEnum occtShapeType = CheckOcctShapeType<Subclass>();
-
+		if (rkOcctHostTopology.IsNull())
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 		TopTools_MapOfShape occtAncestorMap;
 		TopTools_IndexedDataMapOfShapeListOfShape occtShapeMap;
 		TopExp::MapShapesAndUniqueAncestors(

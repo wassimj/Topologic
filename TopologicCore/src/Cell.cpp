@@ -22,8 +22,9 @@
 #include "Shell.h"
 #include "CellComplex.h"
 #include "CellFactory.h"
-#include "GlobalCluster.h"
+//#include "GlobalCluster.h"
 #include "AttributeManager.h"
+#include <Utilities/EdgeUtility.h>
 
 #include <BOPAlgo_MakerVolume.hxx>
 #include <BRep_Builder.hxx>
@@ -41,11 +42,12 @@
 
 namespace TopologicCore
 {
-	void Cell::AdjacentCells(std::list<Cell::Ptr>& rAdjacentCells) const
+	void Cell::AdjacentCells(const Topology::Ptr& kpHostTopology, std::list<Cell::Ptr>& rAdjacentCells) const
 	{
 		// Get a map of Face->Solid[]
 		TopTools_IndexedDataMapOfShapeListOfShape occtFaceSolidMap;
-		TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
+		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
+		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
 
 		// Find the constituent Faces
 		TopTools_MapOfShape occtFaces;
@@ -89,32 +91,35 @@ namespace TopologicCore
 		}
 	}
 
-	void Cell::CellComplexes(std::list<std::shared_ptr<TopologicCore::CellComplex>>& rCellComplexes) const
+	void Cell::CellComplexes(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<TopologicCore::CellComplex>>& rCellComplexes) const
 	{
-		UpwardNavigation(rCellComplexes);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rCellComplexes);
+		}
 	}
 
-	void Cell::Shells(std::list<Shell::Ptr>& rShells) const
+	void Cell::Shells(const Topology::Ptr& kpHostTopology, std::list<Shell::Ptr>& rShells) const
 	{
 		DownwardNavigation(rShells);
 	}
 
-	void Cell::Edges(std::list<Edge::Ptr>& rEdges) const
+	void Cell::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
 		DownwardNavigation(rEdges);
 	}
 
-	void Cell::Faces(std::list<Face::Ptr>& rFaces) const
+	void Cell::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
 		DownwardNavigation(rFaces);
 	}
 
-	void Cell::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Cell::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		DownwardNavigation(rVertices);
 	}
 
-	void Cell::Wires(std::list<Wire::Ptr>& rWires) const
+	void Cell::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
 		DownwardNavigation(rWires);
 	}
@@ -132,7 +137,7 @@ namespace TopologicCore
 		return BRepBuilderAPI_MakeVertex(occtShapeProperties.CentreOfMass());
 	}
 
-	Cell::Ptr Cell::ByFaces(const std::list<Face::Ptr>& rkFaces, double kTolerance)
+	Cell::Ptr Cell::ByFaces(const std::list<Face::Ptr>& rkFaces, double kTolerance, const bool kCopyAttributes)
 	{
 		if (kTolerance <= 0.0)
 		{
@@ -221,21 +226,23 @@ namespace TopologicCore
 		Cell::Ptr copyFixedCell = TopologicalQuery::Downcast<Cell>(fixedCell->DeepCopy());
 
 		// Register to Global Cluster
-		GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
+		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
 
 		// Copy the Dictionaries
-		std::list<Topology::Ptr> facesAsTopologies;
-		for (const Face::Ptr& kpFace : rkFaces)
+		if (kCopyAttributes)
 		{
-			facesAsTopologies.push_back(kpFace);
-			//AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCell->GetOcctSolid());
+			std::list<Topology::Ptr> facesAsTopologies;
+			for (const Face::Ptr& kpFace : rkFaces)
+			{
+				facesAsTopologies.push_back(kpFace);
+				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCell->GetOcctSolid());
+			}
+			copyFixedCell->DeepCopyAttributesFrom(facesAsTopologies);
 		}
-		copyFixedCell->DeepCopyAttributesFrom(facesAsTopologies);
-
 		return copyFixedCell;
 	}
 
-	Cell::Ptr Cell::ByShell(const Shell::Ptr& kpShell)
+	Cell::Ptr Cell::ByShell(const Shell::Ptr& kpShell, const bool kCopyAttributes)
 	{
 		if (!kpShell->IsClosed())
 		{
@@ -266,10 +273,13 @@ namespace TopologicCore
 		Cell::Ptr copyFixedCell = TopologicalQuery::Downcast<Cell>(fixedCell->DeepCopy());
 
 		// Register to Global Cluster
-		GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
+		//GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
 
 		// Copy the Dictionaries
-		AttributeManager::GetInstance().DeepCopyAttributes(kpShell->GetOcctShell(), copyFixedCell->GetOcctSolid());
+		if (kCopyAttributes)
+		{
+			AttributeManager::GetInstance().DeepCopyAttributes(kpShell->GetOcctShell(), copyFixedCell->GetOcctSolid());
+		}
 
 		return copyFixedCell;
 	}
@@ -384,12 +394,29 @@ namespace TopologicCore
 		}
 	}
 
-	bool Cell::IsManifold() const
+	bool Cell::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		// TODO: check for internal Faces
-		// NOTE: it is not enough to check Edges bordering > 3 Faces
-		// throw std::runtime_error("Not implemented yet");
-		return false;
+		Shell::Ptr externalBoundary = ExternalBoundary();
+		std::list<Face::Ptr> externalBoundaryFaces;
+		externalBoundary->Faces(nullptr, externalBoundaryFaces);
+		std::list<Face::Ptr> cellFaces;
+		Faces(nullptr, cellFaces);
+		if (cellFaces.size() > externalBoundaryFaces.size())
+		{
+			return false;
+		}
+		std::list<Edge::Ptr> edges;
+		externalBoundary->Edges(nullptr, edges);
+		for (const Edge::Ptr& kpEdge : edges)
+		{
+			std::list<Face::Ptr> edgeFaces;
+			TopologicUtilities::EdgeUtility::AdjacentFaces(kpEdge, externalBoundary, edgeFaces);
+			if (edgeFaces.size() != 2)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	TopoDS_Shape& Cell::GetOcctShape()
@@ -438,7 +465,7 @@ namespace TopologicCore
 	{
 		// Returns a list of faces
 		std::list<Face::Ptr> faces;
-		Faces(faces);
+		Faces(nullptr, faces);
 		for (const Face::Ptr& kpFace : faces)
 		{
 			rOcctGeometries.push_back(kpFace->Surface());

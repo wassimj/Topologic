@@ -22,15 +22,17 @@ namespace TopologicCore
 {
 	void GlobalCluster::AddTopology(const std::shared_ptr<Topology>& rkTopology)
 	{
-        if (rkTopology != nullptr)
-        {
-            AddTopology(rkTopology->GetOcctShape());
-        }
+		return;
+        //if (rkTopology != nullptr)
+        //{
+            //AddTopology(rkTopology->GetOcctShape());
+        //}
 	}
 
 	void GlobalCluster::AddTopology(const TopoDS_Shape & rkOcctShape)
 	{
-		m_occtBuilder.Add(m_occtCompound, rkOcctShape);
+		//m_occtBuilder.Add(m_occtCompound, rkOcctShape);
+		return;
 	}
 
     Cluster::Ptr GlobalCluster::GetCluster()

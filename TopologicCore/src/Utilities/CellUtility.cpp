@@ -151,7 +151,7 @@ namespace TopologicUtilities
 		
 		// Pick random Face
 		std::list<TopologicCore::Face::Ptr> faces;
-		kpCell->Faces(faces);
+		kpCell->Faces(nullptr, faces);
 		
 		for (const TopologicCore::Face::Ptr& kpFace : faces)
 		{
@@ -179,7 +179,7 @@ namespace TopologicUtilities
 
 			// Get the vertices of the ray
 			std::list<TopologicCore::Vertex::Ptr> rayVertices;
-			rayShot->Vertices(rayVertices);
+			rayShot->Vertices(nullptr, rayVertices);
 
 			// Get the closest intersection (but not the original vertex in face)
 			double minDistance = std::numeric_limits<double>::max();

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "Edge.h"
 #include "Topology.h"
 #include "Utilities.h"
 
@@ -76,7 +77,7 @@ namespace TopologicCore
 		/// Returns the list of edges of which this vertex is a constituent member.
 		/// </summary>
 		/// <param name="rEdges">The edges containing this vertex as a constituent member</param>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges);
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const;
 
 		/// <summary>
 		/// 
@@ -106,7 +107,13 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
+
+		/// <summary>
+		/// Returns the Vertices adjacent to the Vertex.
+		/// </summary>
+		/// <param name="rAdjacentVertices">>A list of Vertices adjacent to the Vertex</param>
+		TOPOLOGIC_API void AdjacentVertices(const TopologicCore::Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rAdjacentVertices) const;
 
 		/// <summary>
 		/// Return the corresponding point of this vertex. The output list only contains one vertex.

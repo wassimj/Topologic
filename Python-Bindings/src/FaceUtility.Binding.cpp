@@ -129,6 +129,18 @@ void register_FaceUtility_class(py::module& m) {
             " ", py::arg("kpFace"), py::arg("kNormalizedU"),
                 py::arg("kNormalizedV"), py::arg("rNonNormalizedU"),
                 py::arg("rNonNormalizedV"))
+        /*.def_static(
+            "AdjacentFaces",
+            [](const TopologicCore::Face::Ptr& kpFace,
+                const TopologicCore::Topology::Ptr& kpParentTopology,
+                py::list& rCoreAdjacentFaces)
+            {
+                std::list<TopologicCore::Face::Ptr> rCoreAdjacentFacesLocal;
+                FaceUtility::AdjacentFaces(kpFace.get(), kpParentTopology, rCoreAdjacentFacesLocal);
+                for (auto& x : rCoreAdjacentFacesLocal)
+                    rCoreAdjacentFaces.append(x);
+            },
+            " ", py::arg("kpFace"), py::arg("kpParentTopology"), py::arg("rCoreAdjacentFaces")) */
         .def_static(
             "AdjacentShells",
             [](const TopologicCore::Face::Ptr& kpFace,
@@ -157,7 +169,7 @@ void register_FaceUtility_class(py::module& m) {
                 py::arg("rCoreAdjacentCells"))
         .def_static(
             "IsInside",
-            [](const TopologicCore::Face::Ptr kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex, 
+            [](const TopologicCore::Face::Ptr& kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex, 
                 const double kTolerance)
             {               
                 return FaceUtility::IsInside(kpFace, kpVertex, kTolerance);
@@ -165,14 +177,14 @@ void register_FaceUtility_class(py::module& m) {
             " ", py::arg("kpFace"), py::arg("kpVertex"), py::arg("kTolerance"))
         .def_static(
             "ProjectToSurface",
-            [](const TopologicCore::Face::Ptr kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex)
+            [](const TopologicCore::Face::Ptr& kpFace, const std::shared_ptr<TopologicCore::Vertex>& kpVertex)
             {
                 return FaceUtility::ProjectToSurface(kpFace, kpVertex);
             },
             " ", py::arg("kpFace"), py::arg("kpVertex"))
         .def_static(
             "InternalVertex",
-            [](const TopologicCore::Face::Ptr kpFace, const double kTolerance = 0.0001)
+            [](const TopologicCore::Face::Ptr& kpFace, const double kTolerance = 0.0001)
             {
                 return FaceUtility::InternalVertex(kpFace, kTolerance);
             },

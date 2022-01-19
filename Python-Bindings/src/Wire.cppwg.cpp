@@ -20,19 +20,28 @@ typedef ::std::string _std_string;
 class Wire_Overloads : public Wire{
     public:
     using Wire::Wire;
-    void Vertices(::std::list<std::shared_ptr<TopologicCore::Vertex>, std::allocator<std::shared_ptr<TopologicCore::Vertex>>> & rVertices) const  override {
+    /*void Vertices(::std::list<std::shared_ptr<TopologicCore::Vertex>, ::TopologicCore::Topology::Ptr const& kpHostTopology, std::allocator<std::shared_ptr<TopologicCore::Vertex>>>& rVertices) const  override {
         PYBIND11_OVERLOAD(
             void,
             Wire,
             Vertices,
+            kpHostTopology,
             rVertices);
-    }
-    bool IsManifold() const  override {
+    }*/
+    /*void Edges(::std::list<std::shared_ptr<TopologicCore::Edge>, ::TopologicCore::Topology::Ptr const& kpHostTopology, std::allocator<std::shared_ptr<TopologicCore::Edge>>>& rEdges) const  override {
+        PYBIND11_OVERLOAD(
+            void,
+            Wire,
+            Edges,
+            kpHostTopology,
+            rEdges);
+    }*/
+    bool IsManifold(::TopologicCore::Topology::Ptr const & kpHostTopology) const  override {
         PYBIND11_OVERLOAD(
             bool,
             Wire,
             IsManifold,
-            );
+            kpHostTopology);
     }
     void Geometry(::std::list<opencascade::handle<Geom_Geometry>, std::allocator<opencascade::handle<Geom_Geometry>>> & rOcctGeometries) const  override {
         PYBIND11_OVERLOAD(
@@ -118,18 +127,18 @@ py::class_<Wire , Wire_Overloads , std::shared_ptr<Wire >  , Topology  >(m, "Wir
         .def(py::init<::TopoDS_Wire const &, ::std::string const & >(), py::arg("rkOcctWire"), py::arg("rkGuid") = "")
         .def(
             "Edges",
-            [](const Wire& obj, py::list& rEdges) {
+            [](const Wire& obj, const TopologicCore::Topology::Ptr& kpHostTopology, py::list& rEdges) {
                 std::list<Edge::Ptr> local;
-                obj.Edges(local);
+                obj.Edges(kpHostTopology, local);
                 for (auto& x : local)
                     rEdges.append(x);
             },
-            " ", py::arg("rEdges"))
+            " ", py::arg("kpHostTopology"), py::arg("rEdges"))
         /*.def(
             "Faces", 
             (void(Wire::*)(::std::list<std::shared_ptr<TopologicCore::Face>, std::allocator<std::shared_ptr<TopologicCore::Face>>> &) const ) &Wire::Faces, 
             " " , py::arg("rFaces") )*/
-        .def(
+        /*.def(
             "Faces",
             [](const Wire& obj, py::list& rFaces) {
                 std::list<Face::Ptr> local;
@@ -137,32 +146,32 @@ py::class_<Wire , Wire_Overloads , std::shared_ptr<Wire >  , Topology  >(m, "Wir
                 for (auto& x : local)
                     rFaces.append(x);
             },
-            " ", py::arg("rFaces"))
+            " ", py::arg("rFaces"))*/
         .def(
             "IsClosed", 
             (bool(Wire::*)() const ) &Wire::IsClosed, 
             " "  )
         .def(
             "Vertices",
-            [](const Wire& obj, py::list& rVertices) {
+            [](const Wire& obj, const TopologicCore::Topology::Ptr& kpHostTopology, py::list& rVertices) {
                 std::list<Vertex::Ptr> local;
-                obj.Vertices(local);
+                obj.Vertices(kpHostTopology, local);
                 for (auto& x : local)
                     rVertices.append(x);
             },
-            " ", py::arg("rVertices"))
+            " ", py::arg("kpHostTopology"), py::arg("rVertices"))
         .def_static(
             "ByEdges", 
-            (::std::shared_ptr<TopologicCore::Wire>(*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> const &)) &Wire::ByEdges, 
-            " " , py::arg("rkEdges") )
+            (::std::shared_ptr<TopologicCore::Wire>(*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> const &, const bool)) &Wire::ByEdges, 
+            " " , py::arg("rkEdges"), py::arg("kCopyAttributes") = false)
         .def_static(
             "ByOcctEdges", 
             (::TopoDS_Wire(*)(::TopTools_ListOfShape const &)) &Wire::ByOcctEdges, 
             " " , py::arg("rkOcctEdges") )
         .def(
             "IsManifold", 
-            (bool(Wire::*)() const ) &Wire::IsManifold, 
-            " "  )
+            (bool(Wire::*)(::TopologicCore::Topology::Ptr const &) const ) &Wire::IsManifold,
+            " ", py::arg("kpHostTopology"))
         .def(
             "NumberOfBranches", 
             (int(Wire::*)() const ) &Wire::NumberOfBranches, 

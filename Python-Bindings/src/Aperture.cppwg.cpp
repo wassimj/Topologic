@@ -35,12 +35,12 @@ class Aperture_Overloads : public Aperture{
             CenterOfMass,
             );
     }
-    bool IsManifold() const  override {
+    bool IsManifold(const Topology::Ptr& kpHostTopology) const  override {
         PYBIND11_OVERLOAD(
             bool,
             Aperture,
             IsManifold,
-            );
+            kpHostTopology);
     }
     ::std::string GetTypeAsString() const  override {
         PYBIND11_OVERLOAD(
@@ -133,8 +133,8 @@ py::class_<Aperture , Aperture_Overloads , std::shared_ptr<Aperture >  , Topolog
             " "  )
         .def(
             "IsManifold", 
-            (bool(Aperture::*)() const ) &Aperture::IsManifold, 
-            " "  )
+            (bool(Aperture::*)(const Topology::Ptr &) const ) &Aperture::IsManifold,
+            " " , py::arg("kpHostTopology"))
         .def(
             "GetTypeAsString", 
             (::std::string(Aperture::*)() const ) &Aperture::GetTypeAsString, 

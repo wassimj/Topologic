@@ -58,14 +58,14 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <param name="rEdges"></param>
-		void TOPOLOGIC_API Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		void TOPOLOGIC_API Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rFaces"></param>
 		/// <returns></returns>
-		void TOPOLOGIC_API Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		void TOPOLOGIC_API Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// 
@@ -77,14 +77,14 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <param name="rVertices"></param>
-		virtual void TOPOLOGIC_API Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		virtual void TOPOLOGIC_API Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rkEdges"></param>
 		/// <returns></returns>
-		static TOPOLOGIC_API std::shared_ptr<Wire> ByEdges(const std::list<std::shared_ptr<Edge>>& rkEdges);
+		static TOPOLOGIC_API std::shared_ptr<Wire> ByEdges(const std::list<std::shared_ptr<Edge>>& rkEdges, const bool kCopyAttributes = false);
 
 		TOPOLOGIC_API static TopoDS_Wire ByOcctEdges(const TopTools_ListOfShape& rkOcctEdges);
 
@@ -92,7 +92,7 @@ namespace TopologicCore
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// 

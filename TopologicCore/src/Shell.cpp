@@ -53,22 +53,29 @@
 
 namespace TopologicCore
 {
-	void Shell::Cells(std::list<Cell::Ptr>& rCells) const
+	void Shell::Cells(const Topology::Ptr& kpHostTopology, std::list<Cell::Ptr>& rCells) const
 	{
-		UpwardNavigation(rCells);
+		if (kpHostTopology)
+		{
+			UpwardNavigation(kpHostTopology->GetOcctShape(), rCells);
+		}
+		else
+		{
+			throw std::runtime_error("Host Topology cannot be NULL when searching for ancestors.");
+		}
 	}
 
-	void Shell::Edges(std::list<Edge::Ptr>& rEdges) const
+	void Shell::Edges(const Topology::Ptr& kpHostTopology, std::list<Edge::Ptr>& rEdges) const
 	{
 		DownwardNavigation(rEdges);
 	}
 
-	void Shell::Wires(std::list<Wire::Ptr>& rWires) const
+	void Shell::Wires(const Topology::Ptr& kpHostTopology, std::list<Wire::Ptr>& rWires) const
 	{
 		DownwardNavigation(rWires);
 	}
 
-	void Shell::Faces(std::list<Face::Ptr>& rFaces) const
+	void Shell::Faces(const Topology::Ptr& kpHostTopology, std::list<Face::Ptr>& rFaces) const
 	{
 		DownwardNavigation(rFaces);
 	}
@@ -79,12 +86,12 @@ namespace TopologicCore
 		return (occtBrepCheckShell.Closed() == BRepCheck_NoError);
 	}
 
-	void Shell::Vertices(std::list<Vertex::Ptr>& rVertices) const
+	void Shell::Vertices(const Topology::Ptr& kpHostTopology, std::list<Vertex::Ptr>& rVertices) const
 	{
 		DownwardNavigation(rVertices);
 	}
 
-	Shell::Ptr Shell::ByFaces(const std::list<Face::Ptr>& rkFaces, const double kTolerance)
+	Shell::Ptr Shell::ByFaces(const std::list<Face::Ptr>& rkFaces, const double kTolerance, const bool kCopyAttributes)
 	{
 		if (rkFaces.empty())
 		{
@@ -107,10 +114,13 @@ namespace TopologicCore
 			for (TopTools_ListIteratorOfListOfShape occtShapeIterator(occtShapes); occtShapeIterator.More(); occtShapeIterator.Next())
 			{
 				occtBuilder.Add(occtShell, TopoDS::Face(occtShapeIterator.Value()));
-				AttributeManager::GetInstance().DeepCopyAttributes(occtShapeIterator.Value(), occtShell);
+				if (kCopyAttributes)
+				{
+					AttributeManager::GetInstance().DeepCopyAttributes(occtShapeIterator.Value(), occtShell);
+				}
 			}
 			Shell::Ptr pShell = std::make_shared<Shell>(occtShell);
-			GlobalCluster::GetInstance().AddTopology(pShell);
+			//GlobalCluster::GetInstance().AddTopology(pShell);
 			return pShell;
 		}
 
@@ -118,17 +128,20 @@ namespace TopologicCore
 		try{
 			TopoDS_Shell occtShell = TopoDS::Shell(occtShape);
 			Shell::Ptr pShell = std::make_shared<Shell>(occtShell);
-			//Shell::Ptr pCopyShell = std::dynamic_pointer_cast<Shell>(pShell->DeepCopy());
 			std::list<Topology::Ptr> facesAsTopologies;
 			for (const Face::Ptr& kpFace: rkFaces)
 			{
 				facesAsTopologies.push_back(kpFace);
-				//AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), pCopyShell->GetOcctShell());
 			}
-			Shell::Ptr pCopyShell = std::dynamic_pointer_cast<Shell>(pShell->DeepCopyAttributesFrom(facesAsTopologies));
-
-			GlobalCluster::GetInstance().AddTopology(pCopyShell);
-			return pCopyShell;
+			if (kCopyAttributes)
+			{
+				Shell::Ptr pCopyShell = std::dynamic_pointer_cast<Shell>(pShell->DeepCopyAttributesFrom(facesAsTopologies));
+				return pCopyShell;
+			}
+			else
+			{
+				return pShell;
+			}
 		}
 		catch (Standard_TypeMismatch)
 		{
@@ -138,10 +151,20 @@ namespace TopologicCore
 		}
 	}
 
-	bool Shell::IsManifold() const
+	bool Shell::IsManifold(const Topology::Ptr& kpHostTopology) const
 	{
-		// throw std::runtime_error("Not implemented yet");
-		return false;
+		// A Shell is non-manifold if at least one of its edges is shared by more than two faces
+		std::list<Edge::Ptr> edges;
+		for (const Edge::Ptr& kpEdge: edges)
+		{
+			std::list<Face::Ptr> faces;
+			kpEdge->UpwardNavigation(this->GetOcctShape(), faces);
+			if (faces.size() > 2)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	TopoDS_Shape& Shell::GetOcctShape()
@@ -208,7 +231,7 @@ namespace TopologicCore
 	{
 		// Returns a list of faces
 		std::list<Face::Ptr> faces;
-		Faces(faces);
+		Faces(nullptr,faces);
 		for (const Face::Ptr& kpFace : faces)
 		{
 			rOcctGeometries.push_back(kpFace->Surface());

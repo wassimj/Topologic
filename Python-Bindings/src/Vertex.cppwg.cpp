@@ -19,12 +19,12 @@ typedef ::std::string _std_string;
 class Vertex_Overloads : public Vertex{
     public:
     using Vertex::Vertex;
-    bool IsManifold() const  override {
+    bool IsManifold(::TopologicCore::Topology::Ptr const & kpHostTopology) const  override {
         PYBIND11_OVERLOAD(
             bool,
             Vertex,
             IsManifold,
-            );
+            kpHostTopology);
     }
     void Geometry(::std::list<opencascade::handle<Geom_Geometry>, std::allocator<opencascade::handle<Geom_Geometry>>> & rOcctGeometries) const  override {
         PYBIND11_OVERLOAD(
@@ -116,20 +116,6 @@ py::class_<Vertex , Vertex_Overloads , std::shared_ptr<Vertex >  , Topology  >(m
             "ByCoordinates", 
             (::std::shared_ptr<TopologicCore::Vertex>(*)(double const, double const, double const)) &Vertex::ByCoordinates, 
             " " , py::arg("kX"), py::arg("kY"), py::arg("kZ") )
-        /*.def(
-            "Edges", 
-            (void(Vertex::*)(::std::list<std::shared_ptr<TopologicCore::Edge>, std::allocator<std::shared_ptr<TopologicCore::Edge>>> &)) &Vertex::Edges, 
-            " " , py::arg("rEdges") ) */
-        .def(
-            // Proof of concept for list passed as reference and filled in C++
-            "Edges",
-            [](Vertex& obj, py::list& rEdges) {
-                std::list<Edge::Ptr> local;
-                obj.Edges(local);
-                for (auto& x : local)
-                    rEdges.append(x);
-            },
-            " ", py::arg("rEdges"))
         .def(
             "X", 
             (double(Vertex::*)() const ) &Vertex::X, 
@@ -147,9 +133,82 @@ py::class_<Vertex , Vertex_Overloads , std::shared_ptr<Vertex >  , Topology  >(m
             (::std::tuple<double, double, double>(Vertex::*)() const ) &Vertex::Coordinates, 
             " "  )
         .def(
-            "IsManifold", 
-            (bool(Vertex::*)() const ) &Vertex::IsManifold, 
-            " "  )
+            "AdjacentVertices",
+            [](const Vertex& obj, const TopologicCore::Topology::Ptr& kpParentTopology, py::list& rAdjacentVertices) {
+                std::list<Vertex::Ptr> local;
+                obj.AdjacentVertices(kpParentTopology, local);
+                for (auto& x : local)
+                    rAdjacentVertices.append(x);
+            },
+            " ", py::arg("kpParentTopology"), py::arg("rAdjacentVertices"))
+        .def(
+            "Vertices",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rVertices) {
+                    std::list<Vertex::Ptr> local;
+                    obj.Vertices(kpHostTopology, local);
+                    for (auto& x : local)
+                        rVertices.append(x);
+                },
+            " ", py::arg("kpHostTopology"), py::arg("rVertices"))
+        .def(
+            "Edges",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rEdges) {
+                std::list<Edge::Ptr> local;
+                obj.Edges(kpHostTopology, local);
+                for (auto& x : local)
+                    rEdges.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rEdges"))
+
+        .def(
+            "Wires",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rWires) {
+                std::list<Wire::Ptr> local;
+                obj.Wires(kpHostTopology, local);
+                for (auto& x : local)
+                    rWires.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rWires"))
+        .def(
+            "Faces",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rFaces) {
+                std::list<Face::Ptr> local;
+                obj.Faces(kpHostTopology, local);
+                for (auto& x : local)
+                    rFaces.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rCells"))
+        .def(
+            "Shells",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rShells) {
+                std::list<Shell::Ptr> local;
+                obj.Shells(kpHostTopology, local);
+                for (auto& x : local)
+                    rShells.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rShells"))
+        .def(
+            "Cells",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rCells) {
+                std::list<Cell::Ptr> local;
+                obj.Cells(kpHostTopology, local);
+                for (auto& x : local)
+                    rCells.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rCells"))
+        .def(
+            "CellComplexes",
+            [](const Vertex& obj, ::TopologicCore::Topology::Ptr const& kpHostTopology, py::list& rCellComplexes) {
+                std::list<CellComplex::Ptr> local;
+                obj.CellComplexes(kpHostTopology, local);
+                for (auto& x : local)
+                    rCellComplexes.append(x);
+            },
+            " ", py::arg("kpHostTopology"), py::arg("rCellComplexes"))
+        .def(
+            "IsManifold",
+            (bool(Vertex::*)(::TopologicCore::Topology::Ptr const&) const) & Vertex::IsManifold,
+            " ", py::arg("kpHostTopology"))
         .def(
             "Geometry", 
             (void(Vertex::*)(::std::list<opencascade::handle<Geom_Geometry>, std::allocator<opencascade::handle<Geom_Geometry>>> &) const ) &Vertex::Geometry, 

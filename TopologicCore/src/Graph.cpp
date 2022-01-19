@@ -1405,7 +1405,7 @@ namespace TopologicCore
 
 		if (kDirect)
 		{
-			kpEdge->Vertices(vertices);
+			kpEdge->Vertices(nullptr, vertices);
 			edges.push_back(kpEdge);
 		}
 
@@ -1426,7 +1426,7 @@ namespace TopologicCore
 					AttributeManager::GetInstance().CopyAttributes(kpContent->GetOcctShape(), contentCenterOfMass->GetOcctShape());
 					vertices.push_back(contentCenterOfMass);
 					std::list<Vertex::Ptr> edgeVertices;
-					kpEdge->Vertices(edgeVertices);
+					kpEdge->Vertices(nullptr, edgeVertices);
 
 					for (const Vertex::Ptr& kpVertex : edgeVertices)
 					{
@@ -1450,8 +1450,8 @@ namespace TopologicCore
 		std::list<Edge::Ptr> edges;
 		if (kDirect || kToExteriorApertures)
 		{
-			kpWire->Edges(edges);
-			kpWire->Vertices(vertices);
+			kpWire->Edges(nullptr, edges);
+			kpWire->Vertices(nullptr, vertices);
 		}
 
 		if (kToExteriorApertures)
@@ -1464,7 +1464,7 @@ namespace TopologicCore
 				kpEdge->Contents(contents);
 
 				std::list<Vertex::Ptr> edgeVertices;
-				kpEdge->Vertices(edgeVertices);
+				kpEdge->Vertices(nullptr, edgeVertices);
 
 				for (const Topology::Ptr& kpContent : contents)
 				{
@@ -1511,7 +1511,7 @@ namespace TopologicCore
 		if (kToExteriorTopologies || kToExteriorApertures)
 		{
 			std::list<Edge::Ptr> faceEdges;
-			kpFace->Edges(faceEdges);
+			kpFace->Edges(nullptr, faceEdges);
 
 			for (const Edge::Ptr& kpFaceEdge : faceEdges)
 			{
@@ -1568,7 +1568,7 @@ namespace TopologicCore
 		std::map<TopoDS_Face, TopologicCore::Vertex::Ptr, TopologicCore::OcctShapeComparator> faceCentroids;
 
 		std::list<TopologicCore::Face::Ptr> faces;
-		kpShell->Faces(faces);
+		kpShell->Faces(nullptr, faces);
 		for (const TopologicCore::Face::Ptr& kpFace : faces)
 		{
 			Vertex::Ptr internalVertex = nullptr;
@@ -1611,7 +1611,7 @@ namespace TopologicCore
 		}
 
 		std::list<TopologicCore::Edge::Ptr> edges;
-		kpShell->Edges(edges);
+		kpShell->Edges(nullptr, edges);
 		for (const TopologicCore::Edge::Ptr& kpEdge : edges)
 		{
 			TopologicCore::Vertex::Ptr pCentroid = kpEdge->CenterOfMass();
@@ -1668,7 +1668,7 @@ namespace TopologicCore
 		for (const Topology::Ptr& kpEdgeTopology : graphEdges)
 		{
 			std::list<Vertex::Ptr> edgeVertices;
-			kpEdgeTopology->Vertices(edgeVertices);
+			kpEdgeTopology->Vertices(nullptr, edgeVertices);
 			for (const Vertex::Ptr& kpVertex : edgeVertices)
 			{
 				vertices.push_back(kpVertex);
@@ -1692,7 +1692,7 @@ namespace TopologicCore
 		if (kToExteriorTopologies || kToExteriorApertures)
 		{
 			std::list<Face::Ptr> cellFaces;
-			kpCell->Faces(cellFaces);
+			kpCell->Faces(nullptr, cellFaces);
 
 			for (const Face::Ptr& kpCellFace : cellFaces)
 			{
@@ -1751,7 +1751,7 @@ namespace TopologicCore
 		std::map<TopoDS_Solid, TopologicCore::Vertex::Ptr, TopologicCore::OcctShapeComparator> cellCentroids;
 
 		std::list<TopologicCore::Cell::Ptr> cells;
-		kpCellComplex->Cells(cells);
+		kpCellComplex->Cells(nullptr, cells);
 		for (const TopologicCore::Cell::Ptr& kpCell : cells)
 		{
 			TopologicCore::Vertex::Ptr pCentroid = TopologicUtilities::CellUtility::InternalVertex(kpCell, kTolerance);
@@ -1768,7 +1768,7 @@ namespace TopologicCore
 			{
 				// Get faces
 				std::list<Face::Ptr> faces;
-				kpCell->Faces(faces);
+				kpCell->Faces(nullptr, faces);
 
 				// Get adjacent cells. Only add here if the cell is not already added here, and 
 				// the reverse is not in occtCellAdjacency.
@@ -1863,7 +1863,7 @@ namespace TopologicCore
 		}
 
 		std::list<TopologicCore::Face::Ptr> faces;
-		kpCellComplex->Faces(faces);
+		kpCellComplex->Faces(nullptr, faces);
 		for (const TopologicCore::Face::Ptr& kpFace : faces)
 		{
 			Vertex::Ptr internalVertex = nullptr;
@@ -1947,7 +1947,7 @@ namespace TopologicCore
 		for (const Edge::Ptr& kpEdgeTopology : edges)
 		{
 			std::list<Vertex::Ptr> edgeVertices;
-			kpEdgeTopology->Vertices(edgeVertices);
+			kpEdgeTopology->Vertices(nullptr, edgeVertices);
 			for (const Vertex::Ptr& kpVertex : edgeVertices)
 			{
 				vertices.push_back(kpVertex);

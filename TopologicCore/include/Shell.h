@@ -62,31 +62,31 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rCells"></param>
 		/// <returns></returns>
-		TOPOLOGIC_API void Cells(std::list<std::shared_ptr<Cell>>& rCells) const;
+		TOPOLOGIC_API void Cells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Cell>>& rCells) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rEdges"></param>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rWires"></param>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rFaces"></param>
-		TOPOLOGIC_API void Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="rVertices"></param>
-		TOPOLOGIC_API void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// 
@@ -100,13 +100,13 @@ namespace TopologicCore
 		/// <param name="rkFaces"></param>
 		/// <param name="kTolerance"></param>
 		/// <returns></returns>
-		static TOPOLOGIC_API std::shared_ptr<Shell> ByFaces(const std::list<std::shared_ptr<Face>>& rkFaces, const double kTolerance = 0.001);
+		static TOPOLOGIC_API std::shared_ptr<Shell> ByFaces(const std::list<std::shared_ptr<Face>>& rkFaces, const double kTolerance = 0.001, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// 

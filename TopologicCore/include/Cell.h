@@ -57,43 +57,43 @@ namespace TopologicCore
 		/// Returns the Cells adjacent to the Cell.
 		/// </summary>
 		/// <param name="rAdjacentCells">>A list of Cells adjacent to the Cell</param>
-		TOPOLOGIC_API void AdjacentCells(std::list<std::shared_ptr<Cell>>& rAdjacentCells) const;
+		TOPOLOGIC_API void AdjacentCells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Cell>>& rAdjacentCells) const;
 
 		/// <summary>
 		/// Returns the CellComplexes which contain the Cell.
 		/// </summary>
 		/// <param name="rCellComplexes">A list of CellComplexes containing the Cell</param>
-		TOPOLOGIC_API void CellComplexes(std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
+		TOPOLOGIC_API void CellComplexes(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<CellComplex>>& rCellComplexes) const;
 
 		/// <summary>
 		/// Returns the Shells constituent to the Cell.
 		/// </summary>
 		/// <param name="rShells">>A list of Shells constituent to the Cell</returns>
-		TOPOLOGIC_API void Shells(std::list<std::shared_ptr<Shell>>& rShells) const;
+		TOPOLOGIC_API void Shells(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Shell>>& rShells) const;
 
 		/// <summary>
 		/// Returns the Edges constituent to the Cell.
 		/// </summary>
 		/// <param name="rEdges">A list of Edges constituent to the Cell</param>
-		TOPOLOGIC_API void Edges(std::list<std::shared_ptr<Edge>>& rEdges) const;
+		TOPOLOGIC_API void Edges(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Edge>>& rEdges) const;
 
 		/// <summary>
 		/// Returns the Faces constituent to the Cell.
 		/// </summary>
 		/// <param name="rFaces">A list of Faces constituent to the Cell</returns>
-		TOPOLOGIC_API void Faces(std::list<std::shared_ptr<Face>>& rFaces) const;
+		TOPOLOGIC_API void Faces(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Face>>& rFaces) const;
 
 		/// <summary>
 		/// Returns the Vertices constituent to the Cell.
 		/// </summary>
 		/// <param name="rVertices">A list of Vertices constituent to the Cell</param>
-		TOPOLOGIC_API void Vertices(std::list<std::shared_ptr<Vertex>>& rVertices) const;
+		TOPOLOGIC_API void Vertices(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Vertex>>& rVertices) const;
 
 		/// <summary>
 		/// Returns the Wires constituent to the Cell.
 		/// </summary>
 		/// <param name="rWires">A list of Wires constituent to the Cell</param>
-		TOPOLOGIC_API void Wires(std::list<std::shared_ptr<Wire>>& rWires) const;
+		TOPOLOGIC_API void Wires(const Topology::Ptr& kpHostTopology, std::list<std::shared_ptr<Wire>>& rWires) const;
 
 		/// <summary>
 		/// Returns the center of mass of this Cell.
@@ -114,14 +114,14 @@ namespace TopologicCore
 		/// <param name="rkFaces">A set of Faces</param>
 		/// <param name="kTolerance">A positive tolerance value</param>
 		/// <returns name="Cell">The created Cell</returns>
-		TOPOLOGIC_API static std::shared_ptr<Cell> ByFaces(const std::list<std::shared_ptr<Face>>& rkFaces, const double kTolerance = 0.001);
+		TOPOLOGIC_API static std::shared_ptr<Cell> ByFaces(const std::list<std::shared_ptr<Face>>& rkFaces, const double kTolerance = 0.001, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// Creates a Cell from a Shell. The Shell must be closed, otherwise an exception is thrown.
 		/// </summary>
 		/// <param name="rkShell">A Shell</param>
 		/// <returns name="Cell">The created Cell</returns>
-		TOPOLOGIC_API static std::shared_ptr<Cell> ByShell(const std::shared_ptr<Shell>& rkShell);
+		TOPOLOGIC_API static std::shared_ptr<Cell> ByShell(const std::shared_ptr<Shell>& rkShell, const bool kCopyAttributes = false);
 
 		/// <summary>
 		/// Returns the shared Edges between two Cells. 
@@ -160,7 +160,7 @@ namespace TopologicCore
 		/// Returns True if this Cell is a manifold, otherwise a False.
 		/// </summary>
 		/// <returns name="bool">True if this Cell is a manifold, otherwise a False.</returns>
-		TOPOLOGIC_API virtual bool IsManifold() const;
+		TOPOLOGIC_API virtual bool IsManifold(const Topology::Ptr& kpHostTopology) const;
 
 		/// <summary>
 		/// Returns the underlying OCCT shape.

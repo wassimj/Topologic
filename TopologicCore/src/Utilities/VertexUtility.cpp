@@ -78,7 +78,7 @@ namespace TopologicUtilities
 	{
 		double minDistance = std::numeric_limits<double>::max();
 		std::list<TopologicCore::Edge::Ptr> edges;
-		kpWire->Edges(edges);
+		kpWire->Edges(nullptr, edges);
 
 		for (const TopologicCore::Edge::Ptr& kpEdge : edges)
 		{
@@ -133,7 +133,7 @@ namespace TopologicUtilities
 	{
 		double minDistance = std::numeric_limits<double>::max();
 		std::list<TopologicCore::Face::Ptr> faces;
-		kpShell->Faces(faces);
+		kpShell->Faces(nullptr, faces);
 
 		for (const TopologicCore::Face::Ptr& kpFace : faces)
 		{
@@ -159,7 +159,7 @@ namespace TopologicUtilities
 
 		double minDistance = std::numeric_limits<double>::max();
 		std::list<TopologicCore::Face::Ptr> faces;
-		kpCell->Faces(faces);
+		kpCell->Faces(nullptr, faces);
 
 		for (const TopologicCore::Face::Ptr& kpFace : faces)
 		{
@@ -179,7 +179,7 @@ namespace TopologicUtilities
 	{
 		double minDistance = std::numeric_limits<double>::max();
 		std::list<TopologicCore::Cell::Ptr> cells;
-		kpCellComplex->Cells(cells);
+		kpCellComplex->Cells(nullptr, cells);
 
 		for (const TopologicCore::Cell::Ptr& kpCell : cells)
 		{
