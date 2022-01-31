@@ -172,7 +172,7 @@ namespace TopologicCore
 		std::list<Edge::Ptr> edges;
 		Edges(nullptr, edges);
 
-		for (const Edge::Ptr kpEdge : edges)
+		for (const Edge::Ptr &kpEdge : edges)
 		{
 			std::list<Vertex::Ptr> vertices;
 			kpEdge->Vertices(nullptr, vertices);
@@ -182,7 +182,7 @@ namespace TopologicCore
 			{
 				auto firstVertexIterator = rVertices.begin();
 
-				for (const Vertex::Ptr kpVertex : vertices)
+				for (const Vertex::Ptr &kpVertex : vertices)
 				{
 					if (kpVertex->IsSame(*firstVertexIterator))
 					{
@@ -194,7 +194,7 @@ namespace TopologicCore
 				}
 			}
 
-			for (const Vertex::Ptr kpVertex : vertices)
+			for (const Vertex::Ptr &kpVertex : vertices)
 			{
 				if (!occtVertices.Contains(kpVertex->GetOcctShape()))
 				{
