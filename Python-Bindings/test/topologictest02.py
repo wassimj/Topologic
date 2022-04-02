@@ -46,7 +46,7 @@ print("Retrieving a Dictionary from a Topology")
 d_back = v.GetDictionary()
 print("Done")
 
-print("Retrieving attrributes and values from a Dictionary")
+print("Retrieving attributes and values from a Dictionary")
 # Retrieve Values from Dictionary
 newIntAttribute = d_back.ValueAtKey(keys[0])
 newDoubleAttribute = d_back.ValueAtKey(keys[1])

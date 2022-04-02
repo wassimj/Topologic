@@ -55,7 +55,7 @@ namespace TopologicUtilities
 	{
 		if (kpWire->NumberOfBranches() > 0)
 		{
-			throw std::runtime_error("This method currently only supportes straight, manifold wires with no branches.");
+			throw std::runtime_error("This method currently only supports straight, manifold wires with no branches.");
 		}
 
 		TopologicCore::Wire::Ptr pCopyWire = std::dynamic_pointer_cast<TopologicCore::Wire>(kpWire->DeepCopy());

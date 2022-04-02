@@ -37,7 +37,7 @@ TopologicCore contains the following main classes:
 # Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git). If you just want to use Topologic (e.g. with Blender), you do not need to follow these instructions. Instead, just download the ZIP binaries from https://github.com/wassimj/TopologicSverchok/Releases
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Administrator privileges.
 
 1. **Install Opencascade 7.4.0**
 
@@ -142,7 +142,7 @@ Note that you only need a handful of the opencascade *.dll files, not all of the
 # Installation Instructions for Linux
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
-The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Adminstrator priviliges.
+The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Administrator privileges.
 
 1. **Install Opencascade 7.4.0 and dependencies**
 
@@ -225,7 +225,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
-You can repeat the above proces to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
+You can repeat the above process to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
 
 5. **To make a distributable library that can be installed in different locations on a variety of Linux systems:**
 

@@ -1048,7 +1048,7 @@ namespace TopologicCore
 			const TopoDS_Shape& rkModifiedShape = occtSewing.Modified(occtEdgeIterator.Value());
 			Topology::Ptr pChildTopology = Topology::ByOcctShape(rkModifiedShape, "");
 
-			// Map the aperture to the modifed shell faces.
+			// Map the aperture to the modified shell faces.
 			std::list<Topology::Ptr> contents;
 			ContentManager::GetInstance().Find(occtEdgeIterator.Value(), contents);
 			for (const Topology::Ptr& rkContent : contents)
@@ -1444,7 +1444,7 @@ namespace TopologicCore
 
 	TopoDS_Shape Topology::Simplify(TopoDS_Shape & rOcctShape)
 	{
-		// Simplify needs to do the followings.
+		// Simplify needs to do the following.
 		// 1. The input is a container type, otherwise return itself.
 		// 2. If the input is an empty cluster: return null
 		// 3. Else if the input just contains one container element: recursively dive deeper until a non-container element OR
