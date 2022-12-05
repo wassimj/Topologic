@@ -1,0 +1,12 @@
+name: topologic
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  # opencascade
+  - occt
+  # build tools
+  - cxx-compiler
+  - cmake
+  - ninja
+
