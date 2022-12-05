@@ -5,6 +5,7 @@ home = expanduser("~")
 release = os.path.join(home, "topologicbim", "Topologic", "output", "x64", "Release")
 print(release)
 sys.path.append(release)
+sys.path.append(".")
 
 from topologic import Vertex, Topology, Dictionary, Attribute, IntAttribute, DoubleAttribute, StringAttribute
 

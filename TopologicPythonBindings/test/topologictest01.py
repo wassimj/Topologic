@@ -4,7 +4,7 @@ from os.path import expanduser
 home = expanduser("~")
 release = os.path.join(home, "topologicbim", "Topologic", "output", "x64", "Release")
 print(release)
-sys.path.append(release)
+sys.path.append(release) ; sys.path.append(".")
 
 from topologic import Vertex, Edge, Wire, Face, Shell, Cell, CellComplex, Cluster, Aperture, Dictionary, Topology
 
@@ -82,7 +82,7 @@ edges = [e1, e2, e3, e4, e5]
 for anEdge in edges:
     print(anEdge)
     vertices = []
-    anEdge.Vertices(vertices)
+    anEdge.Vertices(anEdge, vertices)
     for aVertex in vertices:
         print(aVertex.X(), aVertex.Y(), aVertex.Z())
 print("Done")
@@ -107,11 +107,11 @@ wires = [w1, w2, w3, w4, w5]
 for aWire in wires:
     print(aWire)
     vertices = []
-    aWire.Vertices(vertices)
+    aWire.Vertices(aWire, vertices)
     for aVertex in vertices:
         print(aVertex.X(), aVertex.Y(), aVertex.Z())
         pEdges = []
-        aVertex.Edges(pEdges)
+        aVertex.Edges(aVertex, pEdges)
         for aPEdge in pEdges:
             print("   "+str(aPEdge))
 print("Done")
@@ -121,12 +121,14 @@ wires = [w1, w2, w3, w4, w5]
 for aWire in wires:
     print(aWire)
     edges = []
-    aWire.Edges(edges)
+    aWire.Edges(aWire, edges)
     for anEdge in edges:
         print("   "+str(anEdge))
         adjEdges = []
-        anEdge.AdjacentEdges(adjEdges)
+        anEdge.AdjacentEdges(aWire, adjEdges)
         sharedVertices = []
+        print("--")
+        print(adjEdges)
         anEdge.SharedVertices(adjEdges[0], sharedVertices)
         print(len(sharedVertices))
         for sharedVertex in sharedVertices:
