@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.15)
 project(TopologicCore CXX)
 set(PROJECT_NAMESPACE Topologic)
 
-option(${PROJECT_NAME}_BUILD_SHARED "Build ${PROJECT_NAME} as a shared library" ${BUILD_SHARED_LIBS})
+# Build shared library by default
+option(TOPOLOGICCORE_BUILD_SHARED "Build ${PROJECT_NAME} as a shared library" ON)
 
-if (${PROJECT_NAME}_BUILD_SHARED)
-    set(${PROJECT_NAME}_LIBRARY_TYPE SHARED)
+if (${TOPOLOGICCORE_BUILD_SHARED})
+    set(build_library_type SHARED)
 else()
-    set(${PROJECT_NAME}_LIBRARY_TYPE STATIC)
+    set(build_library_type STATIC)
 endif()
 
 
@@ -151,7 +152,7 @@ set(ALL_FILES
 
 
 # Library target
-add_library(${PROJECT_NAME} ${${PROJECT_NAME}_LIBRARY_TYPE} ${ALL_FILES})
+add_library(${PROJECT_NAME} ${build_library_type} ${ALL_FILES})
 add_library(${PROJECT_NAMESPACE}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 # Include dir
@@ -159,7 +160,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Set version
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "0.0.0" SOVERSION "0")
 
-if (${PROJECT_NAME}_LIBRARY_TYPE STREQUAL STATIC)
+if (build_library_type STREQUAL SHARED)
+    if (WIN32)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC TOPOLOGICCORE_WINDLL) # propagate __declspec(dllimport)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE TOPOLOGICCORE_WINDLL_EXPORTS)
+    endif()
+endif()
+
+if (build_library_type STREQUAL STATIC)
   set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE True)
 endif()
 
@@ -184,19 +192,24 @@ set(DEPENDENCIES_OpenCASCADE
         )
 target_link_libraries(${PROJECT_NAME} PUBLIC ${DEPENDENCIES_OpenCASCADE})
 
+
+
+
+## the following doesn't work on windows so doesn't seem to be worth doing ##
 # hacky: remove propagated OpenCASCADE linkage when building a shared library
 # the API of TopologicPythonBindings references symbols from OpenCASCADE directly
 # and this results in it getting directly linked to some OpenCASCADE shared libraries
 # if we want to prevent this and link it only to TopologicCore (which in turn is linked to OpenCASCADE of course)
 # it can be done by removing OpenCASCADE targets from INTERFACE_LINK_LIBRARIES
-if (${PROJECT_NAME}_LIBRARY_TYPE STREQUAL SHARED)
-    set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES "")
-    # setting INTERFACE_LINK_LIBRARIES to an empty list since there are not other dependencies for now
-endif()
+#if (build_library_type STREQUAL SHARED)
+#    set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES "")
+#    # setting INTERFACE_LINK_LIBRARIES to an empty list since there are not other dependencies for now
+#endif()
 # a downside that this also prevents the propagation of include dirs
 # so in this case TopologicPythonBindings has to declare OpenCASCADE as direct dependency
 # and find its include dirs to compile
 #  might revisit later if doing all this is worth it at all
+##
 
 
 #include(CMakePrintHelpers)
