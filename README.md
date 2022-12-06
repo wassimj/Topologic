@@ -34,349 +34,62 @@ TopologicCore contains the following main classes:
 * CellComplex: A CellComplex is a contiguous collection of Cells where adjacent Cells are connected by shared Faces. It is non- manifold.
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
-# Installation Instructions for Windows 10
-This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git). If you just want to use Topologic (e.g. with Blender), you do not need to follow these instructions. Instead, just download the ZIP binaries from https://github.com/wassimj/TopologicSverchok/Releases
+## Build Instructions
+TODO: this is only a placeholder describing current testing.
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Administrator privileges.
+Prerequisites:
+ - Anaconda or Miniconda
 
-1. **Install Opencascade 7.4.0**
-
-Download from https://old.opencascade.com/content/previous-releases
-
-Choose  *Windows installer VC++ 2017 64 bit: opencascade-7.4.0-vc14-64.exe (258 336 552 bytes)*
-
-This will automatically install opencascade in:
+1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
-C:\OpenCASCADE-7.4.0-vc14-64
-```
-Do **NOT** change the location and name of this folder.
-
-2. **Create a topologicbim working folder**: We will assume that your home folder is called *homefolder* and you will install everything in *homefolder*/topologicbim
-
-3. **Install Visual Studio Community 2019 with python 3.9 and git**
-
-Download from https://visualstudio.microsoft.com/downloads/
-Make sure you check the box for Desktop Development with C++ (Windows category)
-Make sure you install the correct version of Python 3.9 (Web Development category)
-Make sure you install git: https://www.oreilly.com/library/view/mastering-visual-studio/9781787281905/61432953-a0b3-4b16-b1fb-2636f7271582.xhtml#:~:text=To%20install%20the%20Git%20plugin,GitHub%20extension%20for%20Visual%20Studio.
-
-4. **Install Topologic**
-
-* Go to the Windows Start Menu in the lower left corner
-* Search for the Visual Studio 2019 Folder and expand it
-* Choose *x64 Native Tools Command Prompt*
-* In the window that appears type:
-```
-cd C:\Users\*homefolder*\topologicbim
-git clone https://github.com/wassimj/Topologic.git
+git clone https://github.com/gy-k/Topologic
 cd Topologic
-WindowsBuild.bat
+git checkout  cmake-refactor
+git submodule init
+git submodule update
 ```
-5. **Set the Environment Variable**
-
-A window will open with a folder that has all the DLL files. Copy the path of this folder (e.g. C:\Users\*homefolder*\topologicbim\Topologic\output\x64\Release) and add it to the **PATH** environment variable:
-
-* In Search, search for and then select: System (Control Panel)
-* Click the Advanced system settings link.
-* Click Environment Variables. ...
-* In the Edit System Variable (or New System Variable) window, add the folder to the PATH environment variable.
-
-6. **Install Python bindings for Topolgic (Optional)**
-
-* Prerequisite: WindowsBuild.bat have to be run without any errors
-* Install Anaconda3 personal edition from https://www.anaconda.com/products/individual
-* Launch Anaconda Navigator and click on the CMD.exe prompt.
-* Within the window that appears Create a python 3.9 virtual environment. We will call it Blender392 because you can use that with Blender later. The name can be anything you want. Just always remember what you named your environment.
-
+2. Create the Conda environment: a Conda environment with the name `topologic` will be created that contains the build dependencies (notable OpenCASCADE) and tools.
 ```
-conda create --name Blender392 python=3.9.1
-conda activate Blender392
+conda env create -f conda_env_topoplogic_py310.yml
 ```
-* Install pybind11 within conda
 
+### Build Instructions for Windows
+1. Activate the Conda environment:
 ```
-conda install pybind11 -c conda-forge
+conda activate topologic
 ```
-* Install cmake
-
+2. Run the build, both TopologicCore and TopologicPythonBindings are going to be built:
 ```
-pip install cmake
-```
-* Switch to Python-Bindings folder and create a build folder inside
-* Issue the normal CMake build command from the build folder
-
-```
-cd C:\Users\*homefolder*\topologicbim\Topologic\Python-Bindings
-mkdir build
-cd build
-cmake -Ax64 -DCMAKE_BUILD_TYPE=Release ..
+mkdir build1
+cd build1
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CONFIGURATION_TYPES=Release
 cmake --build . --config Release
 ```
-7. **To make a distributable library:**
-
-Place all the opencascade *.dll libraries, TopologicCore.dll and the python bindings (.pyd file) as above in one folder. ZIP that folder for distribution.
-
-Note that you only need a handful of the opencascade *.dll files, not all of them. Our best guesstimate is that you need only the following opencascade files (removed the extension from the file name):
-
-* TKBO
-* TKBool
-* TKBRep
-* TKCAF
-* TKCDF
-* TKernel
-* TKFillet
-* TKG2d
-* TKG3d
-* TKGeomAlgo
-* TKGeomBase
-* TKIGES
-* TKLCAF
-* TKMath
-* TKMesh
-* TKOffset
-* TKPrim
-* TKShHealing
-* TKTopAlgo
-* TKXSBase
-
-# Installation Instructions for Linux
-This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
-
-The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Administrator privileges.
-
-1. **Install Opencascade 7.4.0 and dependencies**
-
-*For Ubuntu (Tested)*
+3. The build artifacts are going to be in `TopologicCore/Release/` and `TopologicPythonBindings/Release/`  
+To test the Python module:
 ```
-sudo apt-get install bzip2 unzip cmake make g++ git libgl-dev libglu-dev libpng-dev libxmu-dev libxi-dev libtbb-dev tcl-dev tk-dev zlib1g-dev libharfbuzz-dev libfreetype-dev libfreeimage-dev libocct-*-dev
-```
-if `libocct-*-dev` cannot be found while installing the dependencies, replace it with `libocct-foundation-dev libocct-data-exchange-dev`
-
-*For Fedora (Untested. Suggested at OSArch.org)*
- ```
- sudo dnf install cmake gcc-c++ opencascade-devel libuuid-devel
- ```
-
-2. **Create a topologicbim working folder**: We will assume that you will install everything in ~/topologicbim
-
-3. **Install Topologic**
-
-```
-cd ~/topologicbim
-git clone https://github.com/wassimj/Topologic.git
-cd Topologic
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-```
-At the end of this process, libTopologicCore.so should exist in /usr/local/lib
-
-*For Fedora (Untested. Suggested at OSArch.org)*
-```
-cd ~/topologicbim
-git clone https://github.com/wassimj/Topologic.git
-cd Topologic
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-```
-This will likely install the library and headers to /usr/local/lib so unless you have already edited your library path you need to do something like this:
-```
-sudo sh -c "echo /usr/local/lib >> /etc/ld.so.conf"
-sudo ldconfig
-```
-4. **Install Python bindings for Topolgic (Optional)**
-
-* Note: If you are planning to use Topologic with Blender and your system's python is different than the one Blender uses, then create a compatible python virtual environment. We will assume that Blender is using python 3.9.7 so the instructions below as you to create a conda virtual environment with python 3.9.7. We will call it py397. The name can be anything you want. Just always remember what you named your environment and match the python version to Blender's.
-
-* Switch to Python-Bindings folder and create a build folder inside
-* Issue the normal CMake build command from the build folder
-
-```
-cd ~/topologicbim/Topologic/Python-Bindings
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . --config Release
+cd TopologicPythonBindings/Release/
+cp ..\..\TopologicCore\Release\TopologicCore.dll .
+python ..\..\..\TopologicPythonBindings\test\topologictest01.py
+python ..\..\..\TopologicPythonBindings\test\topologictest02.py
 ```
 
-If the above fails, try installing a conda environment and within it, install pybind11 first. Make sure you match the python version to what you need. Below we just assume python 3.9.7, but this could be different in your case.
-
+### Build Instructions for Linux
+1. Activate the Conda environment:
 ```
-conda create --name py397 python=3.9.7
-conda activate py397
+conda activate topologic
 ```
-* Install pybind11 within conda
-
+2. Run the build, both TopologicCore and TopologicPythonBindings are going to be built:
 ```
-conda install pybind11 -c conda-forge
+mkdir build1
+cd build1
+cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build .
 ```
-
-then try again:
-
+3. The build artifacts are going to be in `TopologicCore/` and `TopologicPythonBindings/`  
+   To test the Python module:
 ```
-cd ~/topologicbim/Topologic/Python-Bindings
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . --config Release
+cd TopologicPythonBindings/
+python ../../TopologicPythonBindings/test/topologictest01.py
+python ../../TopologicPythonBindings/test/topologictest02.py
 ```
-You can repeat the above process to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
-
-5. **To make a distributable library that can be installed in different locations on a variety of Linux systems:**
-
-Compile and install all the opencascade and uuid *.so libraries, and build and install TopologicCore with the python bindings as above. 
-Collect all the .so files, put them in one folder, cd to that folder and set the rpath, which is a magic incantation like this:
-
-```
-patchelf --set-rpath '$ORIGIN/.' *.so*
-```
-
-Strip debug symbols to make them smaller:
-
-```
-strip *.so*
-```
-
-Note that you only need a handful of the opencascade *.so files, not all of them. Our best guesstimate is that you need only the following files (removed the extension from the file name):
-
-* TKBO
-* TKBool
-* TKBRep
-* TKCAF
-* TKCDF
-* TKernel
-* TKFillet
-* TKG2d
-* TKG3d
-* TKGeomAlgo
-* TKGeomBase
-* TKIGES
-* TKLCAF
-* TKMath
-* TKMesh
-* TKOffset
-* TKPrim
-* TKShHealing
-* TKTopAlgo
-* TKXSBase
-
-# Installation Instructions for MacOS
-
-**(Raw instructions, badly formatted, needs work)**
-
-This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
-These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte-iul.pt>
-
-1. Build OpenCascade from binaries
-     1. Download Open CASCADE Technology source package, tgz archive (opencascade-7.4.0.tgz) from: https://old.opencascade.com/content/previous-releases
-     2. Get the needed third party libraries (the minimum requirements are Tcl8.5, Tk8.5 and FreeType2.4.10) You can get a precompiled version of all of them.
-          1. ActiveTCL 8.5 includes both Tcl and Tk (https://www.activestate.com/products/tcl/)
-          2. FreeType: https://dev.opencascade.org/resources/download/3rd-party-components
-     3. Build: I used Cmake to generate the make files you can find detailed instructions here
-          1.	Extract .tar file and create folder structure for Open Cascade
-          ```
-          tar -xf opencascade-7.4.0.tar
-          tar -xf freetype-2.10.4-macos-x86_64.txz
-          mkdir build
-          ```
-          2. Run cmake
-          ```
-          cd build
-          cmake ../opencascade-7.4.0 -D3RDPARTY_FREETYPE_DIR=<freetype path>
-          ```
-
-          Optional parameters to be use in cmake:
-          - ``-DCMAKE_OSX_DEPLOYMENT_TARGET=<target_macosx_version>`` to set your desired macosx version
-          - ``-D3RDPARTY_TCL_DIR=<tcl_dir>`` (if you didn't install it with its installer)
-          - ``-D3RDPARTY_TK_DIR=<tk_dir>`` (if you didn't install it with its installer)
-          - ``-DCMAKE_INSTALL_PREFIX=<install_path>`` to change installation path
-          3. Build
-          
-          ```
-          make
-          ```
-          or for parallel build
-          ```
-          make -j<cpu_count>
-          ```
-          4. Install
-          ```
-          sudo make install
-          ```
-
-2.	Build TopologicCore from binaries
-     1.	Clone repo and create folder structure for TopologicBim
-     ```
-     mkdir TopologicBim
-     cd TopologicBim
-     git clone https://github.com/wassimj/Topologic
-     mkdir build
-     cd build
-     ```
-     2. Run cmake
-     ```
-     cmake ../TopologicBim
-     ```
-     - You can set the location of OpenCascade binaries OCC_INCLUDE_DIR and gp_Pnt_hxx if you didn't install them into system with: ``-DOCC_INCLUDE_DIR=<occ_include_path>``and ``-Dgp_Pnt_hxx=<gp_Pnt_hxx_path>``
-     - ``-DCMAKE_OSX_DEPLOYMENT_TARGET=<target_macosx_version>`` to set your desired macosx version
-     - ``-DCMAKE_INSTALL_PREFIX=<install_path>`` to change installation path
-     3. Build
-     ```
-     make
-     ```
-     or for parallel build
-     ```
-     make -j<cpu_count>
-     ```
-     4. Install
-     ```
-     sudo make install
-     ```
-
-3.	Build Python bindings
-     1.	Create an environment with Anaconda, set python to the desired version and open a terminal
-     
-     ```
-     conda create --name py397 python=3.9.7
-     conda activate py397
-     ```
-     2. Generate folder structure
-     ```
-     cd TopologicBim/Python-Bindings
-     mkdir build
-     cd build
-     
-     cmake .. -DCMAKE_CXX_FLAGS=/usr/local/lib/
-     ```
-     3. Build
-     ```
-     make
-     ```
-     or for parallel build
-     ```
-     make -j<cpu_count>
-     ```
-
-4.	Make the files redistributable 
-
-     Bring together all output files:
-     - copy all files under ``<opencascade_build_dir>/mac64/clang/lib/`` into dist folder
-     - copy all files under ``<TopologicCore_build_dir>/TopologicCore/libTopologicCorexxx.xxx.dylib`` into dist folder
-     - copy ``topologic.cpython-39-darwin.so`` file into dist folder
-
-
-In this last step you need to ensure that your executable topologic.cpython-39-darwin.so and all the other libraries are correctly configured
-
-     1.	go to the final install dir of topologic where all the OpenCascade and Topologic dylib files and topologic.cpython-39-darwin.so are 
-     2.	install_name_tool -add_rpath @loader_path topologic.cpython-39-darwin.so (we set the LC_RPATH of the executable)
-     3.	check the which libraries are loaded by topologic.cpython-39-darwin.so using: otool -L topologic.cpython-39-darwin.so
-     4.	install_name_tool -id @rpath topologic.cpython-39-darwin.so (change the id of the executable)
-     5.	change all of the libraries OpenCascade and Topologic dylib paths to start with @rpath/... using: install_name_tool -change [old name] [new name] topologic.cpython-39-darwin.so
-     6.	run renameLib.sh to change all the other libraries ids and paths
-
-
