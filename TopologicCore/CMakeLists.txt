@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.24)
 
 project(TopologicCore CXX)
 set(PROJECT_NAMESPACE Topologic)
@@ -160,6 +160,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Set version
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "0.0.0" SOVERSION "0")
 
+
 if (build_library_type STREQUAL SHARED)
     if (WIN32)
         target_compile_definitions(${PROJECT_NAME} PUBLIC TOPOLOGICCORE_WINDLL) # propagate __declspec(dllimport)
@@ -170,6 +171,13 @@ endif()
 if (build_library_type STREQUAL STATIC)
   set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE True)
 endif()
+
+# pybind11 used by TopologicPythonBindings has LTO turned on by default
+# have to turn it on for static linking here, so just turn it on always
+include(CheckIPOSupported)
+check_ipo_supported() # simply fail if not supported
+set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+
 
 # Dependency: OpenCASCADE
 find_package(OpenCASCADE REQUIRED)
@@ -190,27 +198,38 @@ set(DEPENDENCIES_OpenCASCADE
         "TKFillet;"
         "TKBool;"
         )
-target_link_libraries(${PROJECT_NAME} PUBLIC ${DEPENDENCIES_OpenCASCADE})
+if(NOT CMAKE_LINK_GROUP_USING_RESCAN_SUPPORTED)
+    target_link_libraries(${PROJECT_NAME} PUBLIC "${DEPENDENCIES_OpenCASCADE}")
+else()
+    # help static linking with RESCAN
+    target_link_libraries(${PROJECT_NAME} PUBLIC "$<LINK_GROUP:RESCAN,${DEPENDENCIES_OpenCASCADE}>")
+endif()
+
+# workaround for the include path from the vcpkg OpenCASCADE
+if(VCPKG_INSTALLED_DIR)
+    message(STATUS "workaround for vcpkg: adding OpenCASCADE_INCLUDE_DIR directory to target: ${PROJECT_NAME}: ${OpenCASCADE_INCLUDE_DIR}")
+    target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
+endif()
 
 
-
-
-## the following doesn't work on windows so doesn't seem to be worth doing ##
-# hacky: remove propagated OpenCASCADE linkage when building a shared library
+# hacky: if not on windows, remove propagated OpenCASCADE linkage when building a shared library
 # the API of TopologicPythonBindings references symbols from OpenCASCADE directly
 # and this results in it getting directly linked to some OpenCASCADE shared libraries
 # if we want to prevent this and link it only to TopologicCore (which in turn is linked to OpenCASCADE of course)
 # it can be done by removing OpenCASCADE targets from INTERFACE_LINK_LIBRARIES
-#if (build_library_type STREQUAL SHARED)
-#    set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES "")
-#    # setting INTERFACE_LINK_LIBRARIES to an empty list since there are not other dependencies for now
-#endif()
-# a downside that this also prevents the propagation of include dirs
-# so in this case TopologicPythonBindings has to declare OpenCASCADE as direct dependency
-# and find its include dirs to compile
-#  might revisit later if doing all this is worth it at all
-##
+if (build_library_type STREQUAL SHARED)
+    if(NOT WIN32)
+        # INTERFACE_LINK_LIBRARIES_DIRECT_EXCLUDE sounds good, but doesn't seem to work
+        #set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES_DIRECT_EXCLUDE ${DEPENDENCIES_OpenCASCADE})
+        # setting INTERFACE_LINK_LIBRARIES to an empty list since there are not other dependencies for now
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES "")
+        # restore propagation of OpenCASCADE include dir
+        target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
+    endif()
+endif()
+
+
 
 
 #include(CMakePrintHelpers)
-#cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES TYPE POSITION_INDEPENDENT_CODE LINK_LIBRARIES LINK_INTERFACE_LIBRARIES INTERFACE_LINK_LIBRARIES INTERFACE_COMPILE_DEFINITIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES INCLUDE_DIRECTORIES)
+#cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES TYPE POSITION_INDEPENDENT_CODE LINK_LIBRARIES LINK_INTERFACE_LIBRARIES INTERFACE_LINK_LIBRARIES INTERFACE_LINK_LIBRARIES_DIRECT_EXCLUDE INTERFACE_COMPILE_DEFINITIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES INCLUDE_DIRECTORIES)
