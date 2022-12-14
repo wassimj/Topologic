@@ -147,8 +147,8 @@ set(ALL_FILES
     ${Utilities}
 )
 
-#file(GLOB TOPOLOGICCORE_H_FILES include/*.h)
-#file(GLOB TOPOLOGICCORE_UTILITIES_H_FILES include/Utilities/*.h)
+file(GLOB TOPOLOGICCORE_H_FILES include/*.h)
+file(GLOB TOPOLOGICCORE_UTILITIES_H_FILES include/Utilities/*.h)
 
 
 # Library target
@@ -227,6 +227,21 @@ if (build_library_type STREQUAL SHARED)
         target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
     endif()
 endif()
+
+
+# install definitions
+install(TARGETS ${PROJECT_NAME}
+        DESTINATION lib/${PROJECT_NAME}
+        COMPONENT ${PROJECT_NAME}
+        )
+install(FILES ${TOPOLOGICCORE_H_FILES}
+        DESTINATION include/${PROJECT_NAME}
+        COMPONENT ${PROJECT_NAME}_Headers
+        )
+install(FILES ${TOPOLOGICCORE_UTILITIES_H_FILES}
+        DESTINATION include/${PROJECT_NAME}/Utilities
+        COMPONENT ${PROJECT_NAME}_Headers
+        )
 
 
 

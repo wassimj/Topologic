@@ -46,6 +46,7 @@ set(SRC_FILES
 pybind11_add_module(${PROJECT_NAME} MODULE ${SRC_FILES})
 set(PY_MODULE_NAME topologic)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PY_MODULE_NAME})
+
 # Include dir
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
@@ -58,7 +59,28 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAMESPACE}::TopologicCore)
 
 
+# install definitions
+install(TARGETS ${PROJECT_NAME}
+        DESTINATION lib/${PROJECT_NAME}
+        COMPONENT ${PROJECT_NAME}
+        )
+
+# set install rpaths to origin if TopologicCore is built as a shared lib
+# in this case TopologicCore is expected to be copied into the TopologicPythonBindings install dir post-install
+get_property(TopologicCore_TARGET_TYPE TARGET TopologicCore PROPERTY TYPE)
+if (${TopologicCore_TARGET_TYPE} STREQUAL SHARED_LIBRARY)
+    if(NOT CMAKE_INSTALL_RPATH)
+        if(NOT APPLE)
+            set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
+        endif()
+        if(APPLE)
+            set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path") # TODO
+        endif()
+    endif()
+endif()
+
+
 
 
 #include(CMakePrintHelpers)
-#cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES TYPE POSITION_INDEPENDENT_CODE LINK_LIBRARIES LINK_INTERFACE_LIBRARIES INTERFACE_LINK_LIBRARIES INTERFACE_LINK_LIBRARIES_DIRECT_EXCLUDE INTERFACE_COMPILE_DEFINITIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES INCLUDE_DIRECTORIES)
+#cmake_print_properties(TARGETS ${PROJECT_NAME} PROPERTIES TYPE POSITION_INDEPENDENT_CODE LINK_LIBRARIES LINK_INTERFACE_LIBRARIES INTERFACE_LINK_LIBRARIES INTERFACE_LINK_LIBRARIES_DIRECT_EXCLUDE INTERFACE_COMPILE_DEFINITIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES INCLUDE_DIRECTORIES INSTALL_RPATH)
