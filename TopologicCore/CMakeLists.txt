@@ -172,11 +172,22 @@ if (build_library_type STREQUAL STATIC)
   set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE True)
 endif()
 
-# pybind11 used by TopologicPythonBindings has LTO turned on by default
-# have to turn it on for static linking here, so just turn it on always
-include(CheckIPOSupported)
-check_ipo_supported() # simply fail if not supported
-set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+# pybind11 used by TopologicPythonBindings turns on LTO by default
+# if not turned off in CMAKE_INTERPROCEDURAL_OPTIMIZATION
+# as of 20221217, on conda on mac, cmake's check_ipo_supported() can't be used
+# but pybind11's own mechanism still turns on fat LTO, since that is available
+# therefore fall back here to turn on fat lto for clang, gcc explicitly by default, consider it as a requirement
+if(NOT DEFINED CMAKE_INTERPROCEDURAL_OPTIMIZATION OR CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        target_compile_options(${PROJECT_NAME} PRIVATE "-flto;-ffat-lto-objects")
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${PROJECT_NAME} PRIVATE "-flto=full")
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
+    else() # otherwise enable it through he property
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+    endif()
+endif()
 
 
 # Dependency: OpenCASCADE

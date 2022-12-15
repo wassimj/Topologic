@@ -3,10 +3,16 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
+  - pip
   # opencascade
   - occt
   # build tools
   - cxx-compiler
   - cmake
   - ninja
-
+  - pip:
+    - auditwheel ; platform_system == "Linux"
+    - patchelf ; platform_system == "Linux"
+    - delocate
+    - machomachomangler  ; platform_system == "Windows"
+    - pefile  ; platform_system == "Windows"

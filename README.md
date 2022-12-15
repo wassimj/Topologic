@@ -45,51 +45,42 @@ Prerequisites:
 git clone https://github.com/gy-k/Topologic
 cd Topologic
 git checkout  cmake-refactor
-git submodule init
-git submodule update
+git submodule update --init
 ```
-2. Create the Conda environment: a Conda environment with the name `topologic` will be created that contains the build dependencies (notable OpenCASCADE) and tools.
+2. Create the Conda environment: a Conda environment with the name `topologic` will be created that contains the build dependencies (notable OpenCASCADE) and tools. The environment contains Python 3.10 which matches Blender's version as of 20221217.
 ```
 conda env create -f conda_env_topoplogic_py310.yml
 ```
 
-### Build Instructions for Windows
+### Build Instructions
 1. Activate the Conda environment:
 ```
 conda activate topologic
-```
-2. Run the build, both TopologicCore and TopologicPythonBindings are going to be built:
-```
-mkdir build1
-cd build1
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CONFIGURATION_TYPES=Release
-cmake --build . --config Release
-```
-3. The build artifacts are going to be in `TopologicCore/Release/` and `TopologicPythonBindings/Release/`  
-To test the Python module:
-```
-cd TopologicPythonBindings/Release/
-cp ..\..\TopologicCore\Release\TopologicCore.dll .
-python ..\..\..\TopologicPythonBindings\test\topologictest01.py
-python ..\..\..\TopologicPythonBindings\test\topologictest02.py
 ```
 
-### Build Instructions for Linux
-1. Activate the Conda environment:
+2. To build TopologicCore separately, if needed:
 ```
-conda activate topologic
+python build.py --build-type Release --source-dir . --build-dir build --build-target TopologicCore
 ```
-2. Run the build, both TopologicCore and TopologicPythonBindings are going to be built:
+The built library is found in `build/TopologicCore/`.
+
+3. To build the Python extension:
+- Windows
 ```
-mkdir build1
-cd build1
-cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build .
+cd ToplogicPythonBindings
+.\build_windows_conda.bat
 ```
-3. The build artifacts are going to be in `TopologicCore/` and `TopologicPythonBindings/`  
-   To test the Python module:
+- Linux
+ ```
+cd ToplogicPythonBindings
+./build_linux.sh
 ```
-cd TopologicPythonBindings/
-python ../../TopologicPythonBindings/test/topologictest01.py
-python ../../TopologicPythonBindings/test/topologictest02.py
+- MacOS
 ```
+cd ToplogicPythonBindings
+./build_macos.sh
+```
+
+The build output is found in `wheelhouse/`.
+The build output is a Python wheel that contains the extension, in this case with TopologicCore linked into it, as well as its external dependencies.  
+It can be installed with `pip` or its contents can be unzipped.
