@@ -151,7 +151,7 @@ file(GLOB TOPOLOGICCORE_H_FILES include/*.h)
 file(GLOB TOPOLOGICCORE_UTILITIES_H_FILES include/Utilities/*.h)
 
 
-# Library target
+# Target
 add_library(${PROJECT_NAME} ${build_library_type} ${ALL_FILES})
 add_library(${PROJECT_NAMESPACE}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
@@ -159,36 +159,6 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Set version
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "0.0.0" SOVERSION "0")
-
-
-if (build_library_type STREQUAL SHARED)
-    if (WIN32)
-        target_compile_definitions(${PROJECT_NAME} PUBLIC TOPOLOGICCORE_WINDLL) # propagate __declspec(dllimport)
-        target_compile_definitions(${PROJECT_NAME} PRIVATE TOPOLOGICCORE_WINDLL_EXPORTS)
-    endif()
-endif()
-
-if (build_library_type STREQUAL STATIC)
-  set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE True)
-endif()
-
-# pybind11 used by TopologicPythonBindings turns on LTO by default
-# if not turned off in CMAKE_INTERPROCEDURAL_OPTIMIZATION
-# as of 20221217, on conda on mac, cmake's check_ipo_supported() can't be used
-# but pybind11's own mechanism still turns on fat LTO, since that is available
-# therefore fall back here to turn on fat lto for clang, gcc explicitly by default, consider it as a requirement
-if(NOT DEFINED CMAKE_INTERPROCEDURAL_OPTIMIZATION OR CMAKE_INTERPROCEDURAL_OPTIMIZATION)
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        target_compile_options(${PROJECT_NAME} PRIVATE "-flto;-ffat-lto-objects")
-        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        target_compile_options(${PROJECT_NAME} PRIVATE "-flto=full")
-        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
-    else() # otherwise enable it through he property
-        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
-    endif()
-endif()
-
 
 # Dependency: OpenCASCADE
 find_package(OpenCASCADE REQUIRED)
@@ -222,6 +192,35 @@ if(VCPKG_INSTALLED_DIR)
     target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
 endif()
 
+
+# compilation tweaks
+if (build_library_type STREQUAL SHARED)
+    if (WIN32)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE TOPOLOGICCORE_WINDLL_EXPORTS) # define for __declspec(dllexport)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC TOPOLOGICCORE_WINDLL) # propagate define for __declspec(dllimport) to consumers
+    endif()
+endif()
+
+if (build_library_type STREQUAL STATIC)
+  set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE True)
+endif()
+
+# pybind11 used by TopologicPythonBindings turns on LTO by default
+# if not turned off in CMAKE_INTERPROCEDURAL_OPTIMIZATION
+# as of 20221217, on conda on mac, cmake's check_ipo_supported() can't be used
+# but pybind11's own mechanism still turns on fat LTO, since that is available
+# therefore fall back here to turn on fat lto for clang, gcc explicitly by default, consider it as a requirement
+if(NOT DEFINED CMAKE_INTERPROCEDURAL_OPTIMIZATION OR CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        target_compile_options(${PROJECT_NAME} PRIVATE "-flto;-ffat-lto-objects")
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${PROJECT_NAME} PRIVATE "-flto=full")
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION False) # shadow
+    else() # otherwise enable it through he property
+        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+    endif()
+endif()
 
 # hacky: if not on windows, remove propagated OpenCASCADE linkage when building a shared library
 # the API of TopologicPythonBindings references symbols from OpenCASCADE directly
