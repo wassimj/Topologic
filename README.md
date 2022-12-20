@@ -49,7 +49,7 @@ git submodule update --init
 ```
 2. Create the Conda environment: a Conda environment with the name `topologic` will be created that contains the build dependencies (notable OpenCASCADE) and tools. The environment contains Python 3.10 which matches Blender's version as of 20221217.
 ```
-conda env create -f conda_env_topoplogic_py310.yml
+conda env create -f conda_env_topologic_py310.yml
 ```
 
 ### Build Instructions
@@ -67,17 +67,17 @@ The built library is found in `build/TopologicCore/`.
 3. To build the Python extension:
 - Windows
 ```
-cd ToplogicPythonBindings
+cd TopologicPythonBindings
 .\build_windows_conda.bat
 ```
 - Linux
  ```
-cd ToplogicPythonBindings
+cd TopologicPythonBindings
 ./build_linux.sh
 ```
 - MacOS
 ```
-cd ToplogicPythonBindings
+cd TopologicPythonBindings
 ./build_macos.sh
 ```
 
