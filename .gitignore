@@ -4,6 +4,7 @@ build-conda/
 install-conda/
 build-vcpkg/
 install-vcpkg/
+wheelhouse/
 
 
 # generated gitignores:
