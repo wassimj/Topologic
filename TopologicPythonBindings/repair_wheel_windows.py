@@ -4,9 +4,9 @@
 
 from pathlib import Path
 
-# excluding api-ms-crt from mangling
+# excluding api-ms-crt from mangling (found in conda envs)
 EXCLUDES = [r"^python3.*\.dll", r"^api-ms-win-crt-.*\.dll"]
-OUTDIR = Path.cwd() / "wheelhouse"
+OUTDIR = Path.cwd() / "wheelhouse"  # auditwheel default
 
 
 import os

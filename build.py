@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# script to wrap invocation of cmake generation, build, install
+
+
 import logging
 logger = logging.getLogger(__name__)
 log = logger.info

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# script wrapping the invocation of auditwheel to vendor in shared libraries on linux
+# output dir: wheelhouse (auditwheel default)
+
 import argparse
 import subprocess
 import sysconfig

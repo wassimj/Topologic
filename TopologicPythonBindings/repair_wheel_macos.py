@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# script wrapping the invocation of delocate to vendor in shared libraries on macos
+# output dir: wheelhouse (auditwheel default)
+
 from pathlib import Path
 
 OUTDIR = Path.cwd() / "wheelhouse"
