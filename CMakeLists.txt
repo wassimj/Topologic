@@ -91,4 +91,5 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 add_subdirectory(TopologicCore)
+add_subdirectory(Python-Bindings)
 

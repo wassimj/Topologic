@@ -25,11 +25,11 @@ include_directories(./include)
 # This is a hardcoded path as we expect OpenCASCADE to be exactly
 # in this directory. Revisit if this changes!
 IF(MSVC)
-  include_directories(C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/inc)
-  SET(CUSTOM_LIB_PATH "C:/OpenCASCADE-7.4.0-vc14-64/opencascade-7.4.0/win64/vc14/lib")
+  include_directories(OCC_INCLUDE_DIR)
+  SET(CUSTOM_LIB_PATH OCC_LIB_DIR)
 ENDIF(MSVC)
 
-add_library(TopologicCore SHARED IMPORTED)
+#add_library(TopologicCore SHARED IMPORTED)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "TKernel;TKMath"
 )
