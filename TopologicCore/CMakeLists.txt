@@ -24,9 +24,6 @@ MACRO(UNIFY_ENVVARS_AND_CACHE VAR)
         ENDIF()
 ENDMACRO()
 
-UNIFY_ENVVARS_AND_CACHE(OCC_INCLUDE_DIR)
-UNIFY_ENVVARS_AND_CACHE(OCC_LIB_DIR)
-
 ################################################################################
 # Source groups
 ################################################################################
@@ -212,39 +209,14 @@ endif()
 ################################################################################
 
 # Find opencascade
-IF("${OCC_INCLUDE_DIR}" STREQUAL "")
-        SET(OCC_INCLUDE_DIR "/usr/include/opencascade/" CACHE FILEPATH "Open CASCADE header files")
-        MESSAGE(STATUS "Looking for Open CASCADE include files in: ${OCC_INCLUDE_DIR}")
-        MESSAGE(STATUS "Use OCC_INCLUDE_DIR to specify another directory")
-ELSE()
-        SET(OCC_INCLUDE_DIR ${OCC_INCLUDE_DIR} CACHE FILEPATH "Open CASCADE header files")
-        MESSAGE(STATUS "Looking for Open CASCADE include files in: ${OCC_INCLUDE_DIR}")
-ENDIF()
+find_package(OpenCASCADE 7.7.0 REQUIRED)
+SET(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
+SET(OCC_LIB_DIR ${OpenCASCADE_LIBRARY_DIR})
+include_directories(${OpenCASCADE_INCLUDE_DIR})
+link_directories(${OpenCASCADE_LIBRARY_DIR})
 
-if(DEFINED OCC_INCLUDE_DIR)
-  if(NOT DEFINED OCC_LIB_DIR)
-    #message(FATAL_ERROR "OCC_LIB_DIR must be defined")
-  endif(NOT DEFINED OCC_LIB_DIR)
-  set(OCC_INCLUDE_DIR ${OCC_INCLUDE_DIR} CACHE PATH "OCC include path")
-  set(OCC_LIB_DIR ${OCC_LIB_DIR} CACHE PATH "OCC lib path")
-  include_directories(${OCC_INCLUDE_DIR})
-  link_directories(${OCC_LIB_DIR})
-# if OCC_INCLUDE_DIR is not passed at command line,
-# find OCC automatically
-else(OCC_INCLUDE_DIR)
-  find_package(OpenCASCADE 7.7.0 REQUIRED)
-  if(OpenCASCADE_FOUND)
-    message(STATUS "OpenCASCADE version found: " ${OpenCASCADE_MAJOR_VERSION} "." ${OpenCASCADE_MINOR_VERSION} "." ${OpenCASCADE_MAINTENANCE_VERSION})
-    message(STATUS "OpenCASCADE include directory: " ${OpenCASCADE_INCLUDE_DIR})
-    message(STATUS "OpenCASCADE binary directory: " ${OpenCASCADE_BINARY_DIR})
-    include_directories(${OpenCASCADE_INCLUDE_DIR})
-  else(OpenCASCADE_FOUND)  # set default paths
-    set(OCC_INCLUDE_DIR /usr/local/include/oce CACHE PATH "OCE include path")
-    set(OCC_LIB_DIR /usr/local/lib CACHE PATH "OCE lib path")
-    include_directories(${OCC_INCLUDE_DIR})
-    link_directories(${OCC_LIB_DIR})
-  endif(OpenCASCADE_FOUND)
-endif(DEFINED OCC_INCLUDE_DIR)
+message(STATUS "OpenCASCADE INCLUDE Dir: " ${OCC_INCLUDE_DIR})
+message(STATUS "OpenCASCADE LIB Dir: " ${OCC_LIB_DIR})
 
 # After the OCC paths are properly set up,
 find_file(gp_Pnt_hxx "gp_Pnt.hxx" PATHS ${OCC_INCLUDE_DIR})
@@ -459,6 +431,8 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     "TKTopAlgo;"
     "TKernel;"
     "TKMath;"
+    "TKBrep;"
+    "TKStep;"
     "uuid;"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
@@ -480,22 +454,22 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
 endif()
 
 if (MSVC OR APPLE)
-    set (ADDITIONAL_LIBRARY_DEPENDENCIES "${ADDITIONAL_LIBRARY_DEPENDENCIES};TKBrep;TKStep;")
+    #set (ADDITIONAL_LIBRARY_DEPENDENCIES "${ADDITIONAL_LIBRARY_DEPENDENCIES};TKBrep;TKStep;")
 endif()
-
+MESSAGE (STATUS "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 #find_library(TEST_LIB NAMES TKCAF)
 
 #target_link_libraries(${PROJECT_NAME} PUBLIC "${TEST_LIB};${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-if(MSVC)
-    SET (CUSTOM_LIB_PATH OCC_LIB_DIR)
-ELSE()
-    SET (CUSTOM_LIB_PATH "/usr/lib64")
-    
-ENDIF()
+#if(MSVC)
+#    SET (CUSTOM_LIB_PATH OCC_LIB_DIR)
+#ELSE()
+#    SET (CUSTOM_LIB_PATH "/usr/lib64")   
+#ENDIF()
 
 MESSAGE (STATUS "Target: ${CMAKE_VS_PLATFORM_NAME}")
 
+SET (CUSTOM_LIB_PATH ${OpenCASCADE_LIBRARY_DIR})
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Any CPU")
     target_link_directories(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:Debug>:"
@@ -544,7 +518,6 @@ IF (APPLE)
 ELSE ()
     target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 ENDIF()
-
 
 # CMake installation targets
 INSTALL(FILES ${TOPOLOGICCORE_H_FILES}
