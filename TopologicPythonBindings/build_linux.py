@@ -26,7 +26,6 @@ if __name__ == '__main__':
 
     wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic")
 
-    subprocess.run([sys.executable, "repair_wheel_windows.py",
-                    "--wheel", wheel,
-                    "--dll-dir", os.environ["CONDA_PREFIX"] + "\\Library\\bin"],
+    subprocess.run([sys.executable, "repair_wheel_linux.py",
+                    "--wheel", wheel],
                    check=True)

@@ -39,6 +39,7 @@ TODO: this is only a placeholder describing current testing.
 
 Prerequisites:
  - Anaconda or Miniconda
+ - On Windows: Microsoft Visual Studio 2022 with "Desktop development with C++" workload installed
 
 1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
@@ -47,40 +48,40 @@ cd Topologic
 git checkout  cmake-refactor
 git submodule update --init
 ```
-2. Create the Conda environment: a Conda environment with the name `topologic` will be created that contains the build dependencies (notable OpenCASCADE) and tools. The environment contains Python 3.10 which matches Blender's version as of 20221217.
+2. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
+As of 20221217, Blender comes with Python 3.10; the following instructions are for this version.  
 ```
 conda env create -f conda_env_topologic_py310.yml
+```  
+(Developer note: keep the contents of the `conda_env_topologic_*.yml` files in sync.)
+
+3. Activate the Conda environment:
+```
+conda activate conda activate topologic_py310
 ```
 
-### Build Instructions
-1. Activate the Conda environment:
-```
-conda activate topologic
-```
-
-2. To build TopologicCore separately, if needed:
+4. To build TopologicCore separately, if needed:
 ```
 python build.py --build-type Release --source-dir . --build-dir build --build-target TopologicCore
 ```
 The built library is found in `build/TopologicCore/`.
 
-3. To build the Python extension:
+5. To build the Python extension:
 - Windows
 ```
 cd TopologicPythonBindings
-.\build_windows_conda.bat
+python build_windows_conda.py
 ```
 - Linux
  ```
 cd TopologicPythonBindings
-./build_linux.sh
+python build_linux.py
 ```
 - MacOS
 ```
 cd TopologicPythonBindings
-./build_macos.sh
+python build_macos.py
 ```
 
 The build output is found in `wheelhouse/`.
-The build output is a Python wheel that contains the extension, in this case with TopologicCore linked into it, as well as its external dependencies.  
-It can be installed with `pip` or its contents can be unzipped.
+The build output is a Python wheel that contains the extension module with TopologicCore linked into it and its OpenCASCADE dependecies "vendored-in" from the Conda-based build environment.  It can be installed with `pip` or its contents can be unzipped.
