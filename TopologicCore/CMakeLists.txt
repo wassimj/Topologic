@@ -157,8 +157,8 @@ add_library(${PROJECT_NAMESPACE}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 # Include dir
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
-# Set version
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "0.0.0" SOVERSION "0")
+# Set version: for now sync manually with: TopologicCore/src/About.cpp
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "3.0.0" SOVERSION "3")
 
 # Dependency: OpenCASCADE
 find_package(OpenCASCADE REQUIRED)

@@ -70,7 +70,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name="topologic",
-    version="0.0.0",
+    version="3.0.0", # for now sync manually with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="None",
     description="TopologicPythonBindings wrapper package",
