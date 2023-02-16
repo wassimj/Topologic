@@ -43,10 +43,9 @@ Prerequisites:
 
 1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
-git clone https://github.com/gy-k/Topologic
+git clone https://github.com/wassimj/Topologic
 cd Topologic
-git checkout  cmake-refactor
-git submodule update --init
+
 ```
 2. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
 As of 20221217, Blender comes with Python 3.10; the following instructions are for this version.  
