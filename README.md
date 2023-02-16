@@ -1,13 +1,6 @@
-# Topologic
-
-[<img src="assets/Topologic-Logo-ColourOnWhite.png" width="250"/>](image.png)
-
-## Introduction
-[**Topologic**](https://topologic.app/) is a FOSS C++ with python bindings software modeling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology. 
-
 **Table of Contents**
 
-1. Introduction (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
+1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
 2. Installation Instructions:
      1. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
      2. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
@@ -41,7 +34,8 @@ TopologicCore contains the following main classes:
 * CellComplex: A CellComplex is a contiguous collection of Cells where adjacent Cells are connected by shared Faces. It is non- manifold.
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
-## Installation Instructions
+## Build Instructions
+TODO: this is only a placeholder describing current testing.
 
 Prerequisites:
  - Anaconda or Miniconda
@@ -49,8 +43,9 @@ Prerequisites:
 
 1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
-git clone https://github.com/wassimj/Topologic
+git clone https://github.com/gy-k/Topologic
 cd Topologic
+git checkout  cmake-refactor
 git submodule update --init
 ```
 2. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
@@ -58,12 +53,14 @@ As of 20221217, Blender comes with Python 3.10; the following instructions are f
 ```
 conda env create -f conda_env_topologic_py310.yml
 ```  
+(Developer note: keep the contents of the `conda_env_topologic_*.yml` files in sync.)
+b
 3. Activate the Conda environment:
 ```
 conda activate conda activate topologic_py310
 ```
 
-4. To build TopologicCore separately, if needed (you only need to do this once and not for each python version):
+4. To build TopologicCore separately, if needed:
 ```
 python build.py --build-type Release --source-dir . --build-dir build --build-target TopologicCore
 ```
@@ -73,7 +70,7 @@ The built library is found in `build/TopologicCore/`.
 - Windows
 ```
 cd TopologicPythonBindings
-python build_windows.py
+python build_windows_conda.py
 ```
 - Linux
  ```
