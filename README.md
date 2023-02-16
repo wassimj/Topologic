@@ -1,19 +1,9 @@
-**Table of Contents**
-
-1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
-2. Installation Instructions:
-     1. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
-     2. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
-     3. MacOS: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-MacOS)
-
 # Topologic
-Topologic is a software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology.
 
-The project website is located here: https://topologic.app/
-
+[<img src="assets/Topologic-Logo-ColourOnWhite.png" width="250"/>](image.png)
 
 ## Introduction
-Topologic is a software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology (NMT). Topologic is designed as a core library and additional plugins to visual data flow programming (VDFP) applications and parametric modelling platforms commonly used in architectural design practice. These applications provide workspaces with visual programming nodes and connections for architects to interact with Topologic and perform architectural design and analysis tasks.
+[**Topologic**](https://topologic.app/) is a FOSS software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology. Topologic is designed as a core library and additional plugins to visual data flow programming (VDFP) applications and parametric modelling platforms commonly used in architectural design practice. These applications provide workspaces with visual programming nodes and connections for architects to interact with Topologic and perform architectural design and analysis tasks.
 
 Topologic is well-suited to create a lightweight representation of a building as an external envelope and the subdivision of the enclosed space into separate spaces and zones using zero-thickness internal surfaces. Because Topologic maintains topological consistency, a user can query these cellular spaces and surfaces regarding their topological data and thus conduct various analyses. For example, this lightweight and consistent representation was found to be well-matched with the input data requirements for energy analysis simulation software. Because Topologic allows entities with mixed dimensionalities and those that are optionally independent (e.g. a line, a surface, a volume) to co-exist, structural models can be represented in a coherent manner where lines can represent columns and beams, surfaces can represent walls and slabs, and volumes can represent solids. In addition, non-building entities, such as structural loads can be efficiently attached to the structure. This creates a lightweight model that is well-matched with the input data requirements for structural analysis simulation software.
 
@@ -35,7 +25,6 @@ TopologicCore contains the following main classes:
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
 ## Build Instructions
-TODO: this is only a placeholder describing current testing.
 
 Prerequisites:
  - Anaconda or Miniconda
@@ -43,9 +32,8 @@ Prerequisites:
 
 1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
-git clone https://github.com/gy-k/Topologic
+git clone https://github.com/wassimj/Topologic
 cd Topologic
-git checkout  cmake-refactor
 git submodule update --init
 ```
 2. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
@@ -70,7 +58,7 @@ The built library is found in `build/TopologicCore/`.
 - Windows
 ```
 cd TopologicPythonBindings
-python build_windows_conda.py
+python build_windows.py
 ```
 - Linux
  ```
