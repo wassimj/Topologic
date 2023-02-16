@@ -1,6 +1,13 @@
+# Topologic
+
+[<img src="assets/Topologic-Logo-ColourOnWhite.png" width="250"/>](image.png)
+
+## Introduction
+[**Topologic**](https://topologic.app/) is a FOSS C++ with python bindings software modeling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology. 
+
 **Table of Contents**
 
-1. Description (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
+1. Introduction (https://github.com/wassimj/Topologic/blob/main/README.md#Topologic)
 2. Installation Instructions:
      1. Windows 10: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-windows-10)
      2. Linux: (https://github.com/wassimj/Topologic/blob/main/README.md#installation-instructions-for-Linux)
@@ -34,8 +41,7 @@ TopologicCore contains the following main classes:
 * CellComplex: A CellComplex is a contiguous collection of Cells where adjacent Cells are connected by shared Faces. It is non- manifold.
 * Cluster: A Cluster is a collection of any topologic entities. It may be contiguous or not and may be manifold or non- manifold. Clusters can be nested within other Clusters.
 
-## Build Instructions
-TODO: this is only a placeholder describing current testing.
+## Installation Instructions
 
 Prerequisites:
  - Anaconda or Miniconda
@@ -52,14 +58,12 @@ As of 20221217, Blender comes with Python 3.10; the following instructions are f
 ```
 conda env create -f conda_env_topologic_py310.yml
 ```  
-(Developer note: keep the contents of the `conda_env_topologic_*.yml` files in sync.)
-
 3. Activate the Conda environment:
 ```
 conda activate conda activate topologic_py310
 ```
 
-4. To build TopologicCore separately, if needed:
+4. To build TopologicCore separately, if needed (you only need to do this once and not for each python version):
 ```
 python build.py --build-type Release --source-dir . --build-dir build --build-target TopologicCore
 ```
@@ -69,7 +73,7 @@ The built library is found in `build/TopologicCore/`.
 - Windows
 ```
 cd TopologicPythonBindings
-python build_windows_conda.py
+python build_windows.py
 ```
 - Linux
  ```
