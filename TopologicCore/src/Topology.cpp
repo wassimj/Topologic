@@ -1265,9 +1265,22 @@ namespace TopologicCore
 		return ContextManager::GetInstance().Find(rkOcctShape, rContexts);
 	}
 
-	bool Topology::ExportToBRep(const std::string & rkFilePath) const
+	bool Topology::ExportToBRep(const std::string & rkFilePath , const int kVersion = 3) const
 	{
-		return BRepTools::Write(GetOcctShape(), rkFilePath.c_str());;
+		version = TopTools_FormatVersion_CURRENT
+		if (kVersion == 1)
+		{
+			version = TopTools_FormatVersion_VERSION_1
+		}
+		else if (kVersion == 2)
+		{
+			version = TopTools_FormatVersion_VERSION_2
+		}
+		else if (kVersion == 3)
+		{
+			version = TopTools_FormatVersion_VERSION_3
+		}
+		return BRepTools::Write(GetOcctShape(), rkFilePath.c_str(), true, false, version);
 	}
 
 	Topology::Ptr Topology::ByImportedBRep(const std::string & rkFilePath)
@@ -1291,10 +1304,23 @@ namespace TopologicCore
 		return pTopology;
 	}
 
-	std::string Topology::String() const
+	std::string Topology::String(const int kVersion = 3) const
 	{
 		std::ostringstream oss(std::ios_base::out);
-		BRepTools::Write(GetOcctShape(), oss);
+		version = TopTools_FormatVersion_CURRENT
+		if (kVersion == 1)
+		{
+			version = TopTools_FormatVersion_VERSION_1
+		}
+		else if (kVersion == 2)
+		{
+			version = TopTools_FormatVersion_VERSION_2
+		}
+		else if (kVersion == 3)
+		{
+			version = TopTools_FormatVersion_VERSION_3
+		}
+		BRepTools::Write(GetOcctShape(), oss, false, true, version);
 		return oss.str();
 	}
 

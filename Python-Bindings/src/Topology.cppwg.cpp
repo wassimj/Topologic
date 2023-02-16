@@ -296,7 +296,7 @@ void register_Topology_class(py::module& m) {
             " ", py::arg("kpHostTopology"))
         .def(
             "ExportToBRep",
-            (bool(Topology::*)(::std::string const&) const) & Topology::ExportToBRep,
+            (bool(Topology::*)(::std::string const&) const, int const) & Topology::ExportToBRep,
             " ", py::arg("rkFilePath"))
         .def_static(
             "ByImportedBRep",
@@ -308,7 +308,7 @@ void register_Topology_class(py::module& m) {
             " ", py::arg("rkBrepString"))
         .def(
             "String",
-            (::std::string(Topology::*)() const) & Topology::String,
+            (::std::string(Topology::*)() const , int const) & Topology::String,
             " ")
         .def_static(
             "Filter",
