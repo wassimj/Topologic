@@ -44,6 +44,7 @@ Prerequisites:
 1. Clone the repository, switch to the branch and initialize submodules (pybind11)
 ```
 git clone https://github.com/wassimj/Topologic
+git submodule update --init
 cd Topologic
 
 ```
