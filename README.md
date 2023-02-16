@@ -8,8 +8,7 @@
 Topologic is well-suited to create a lightweight representation of a building as an external envelope and the subdivision of the enclosed space into separate spaces and zones using zero-thickness internal surfaces. Because Topologic maintains topological consistency, a user can query these cellular spaces and surfaces regarding their topological data and thus conduct various analyses. For example, this lightweight and consistent representation was found to be well-matched with the input data requirements for energy analysis simulation software. Because Topologic allows entities with mixed dimensionalities and those that are optionally independent (e.g. a line, a surface, a volume) to co-exist, structural models can be represented in a coherent manner where lines can represent columns and beams, surfaces can represent walls and slabs, and volumes can represent solids. In addition, non-building entities, such as structural loads can be efficiently attached to the structure. This creates a lightweight model that is well-matched with the input data requirements for structural analysis simulation software.
 
 ## Examples of use
-Toplogic can be used to support energy modelling - say dimensioning the windows on different sides of a hospital to avoid summer overheating
-Topologic can be be used to plot paths such as fire egress routes, the least disruptive route for a new service pipe or the most congested location in a city layout
+Toplogic can be used to support energy modelling - say dimensioning the windows on different sides of a hospital to avoid summer overheating. Topologic can be be used to plot paths such as fire egress routes, the least disruptive route for a new service pipe or compute the most congested location in a city layout.
 
 ## Rigorous Class Hierarchy
 TopologicCore contains the following main classes:
