@@ -37,7 +37,7 @@ TopologicCore contains the following main classes:
 # Installation Instructions for Windows 10
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git). If you just want to use Topologic (e.g. with Blender), you do not need to follow these instructions. Instead, just download the ZIP binaries from https://github.com/wassimj/TopologicSverchok/Releases
 
-The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Adminstrator priviliges.
+The instructions below are for Microsoft Windows 10. In these instructions we assume *Visual Studio Community 2019* *opencascade 7.4.0*. We also assume that your account has Administrator privileges.
 
 1. **Install Opencascade 7.4.0**
 
@@ -142,7 +142,7 @@ Note that you only need a handful of the opencascade *.dll files, not all of the
 # Installation Instructions for Linux
 This projects builds TopologicCore from the C++ sources (available at https://github.com/wassimj/Topologic.git)
 
-The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Adminstrator priviliges.
+The instructions below are for Ubuntu (Tested) and Fedors (Untested) Linux. We assume that your account has Administrator privileges.
 
 1. **Install Opencascade 7.4.0 and dependencies**
 
@@ -225,7 +225,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
-You can repeat the above proces to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
+You can repeat the above process to build bindings for other versions of python (e.g. for 3.6, 3.7, and 3.8). You can bundle all the resulting .so files in the same distribution so they work with different python versions.
 
 5. **To make a distributable library that can be installed in different locations on a variety of Linux systems:**
 
@@ -278,55 +278,105 @@ These untested instructions are from Filipe Brandão <Filipe_Jorge_Brandao@iscte
           1. ActiveTCL 8.5 includes both Tcl and Tk (https://www.activestate.com/products/tcl/)
           2. FreeType: https://dev.opencascade.org/resources/download/3rd-party-components
      3. Build: I used Cmake to generate the make files you can find detailed instructions here
-          1.	Create a folder for OCCT_Source
-          2.	Create a folder for the build process
-          3.	Optionally create a destination folder
-          4.	Open CMake UI or Ccmake and configure the locations of the source and build directories, and third party binaries (Freetype, TCL and TK) 
-          5.	Set the generator to UNIX Makefiles
-          6.	Change CMAKE_OSX_DEPLOYMENT_TARGET to the desired version of macOS (I missed this)
-          7.	(optional) Change the install directories under INSTALL_DIR
-          8.	Configure
-          9.	Generate
-          10.	In the terminal cd into the build directory
-          11.	make
-          12.	sudo make install
+          1.	Extract .tar file and create folder structure for Open Cascade
+          ```
+          tar -xf opencascade-7.4.0.tar
+          tar -xf freetype-2.10.4-macos-x86_64.txz
+          mkdir build
+          ```
+          2. Run cmake
+          ```
+          cd build
+          cmake ../opencascade-7.4.0 -D3RDPARTY_FREETYPE_DIR=<freetype path>
+          ```
+
+          Optional parameters to be use in cmake:
+          - ``-DCMAKE_OSX_DEPLOYMENT_TARGET=<target_macosx_version>`` to set your desired macosx version
+          - ``-D3RDPARTY_TCL_DIR=<tcl_dir>`` (if you didn't install it with its installer)
+          - ``-D3RDPARTY_TK_DIR=<tk_dir>`` (if you didn't install it with its installer)
+          - ``-DCMAKE_INSTALL_PREFIX=<install_path>`` to change installation path
+          3. Build
+          
+          ```
+          make
+          ```
+          or for parallel build
+          ```
+          make -j<cpu_count>
+          ```
+          4. Install
+          ```
+          sudo make install
+          ```
 
 2.	Build TopologicCore from binaries
-     1.	create a folder for TopologicBim source files
-     2.	open a terminal and cd into it 
-     3.	git clone https://github.com/wassimj/Topologic
-     4.	mkdir BUILD
-     5.	cd BUILD
-     6.	Open Make UI or ccmake from the terminal
-     7.	Provide the locations of the source and build folder (remember to use UNIX Makefiles generator)
-     8.	Configure
-     9.	Set the location of OpenCascade binaries OCC_INCLUDE_DIR and gp_Pnt_hxx
-     10.	Set the CMAKE_OSX_DEPLOYMENT_TARGET to the desired version of macOS (I missed this)
-     11.	Optionally set the install folder of Topologic CMAKE_INSTALL_PREFIX
-     12.	Configure
-     13.	Generate
-     14.	make
-     15.	sudo make install
+     1.	Clone repo and create folder structure for TopologicBim
+     ```
+     mkdir TopologicBim
+     cd TopologicBim
+     git clone https://github.com/wassimj/Topologic
+     mkdir build
+     cd build
+     ```
+     2. Run cmake
+     ```
+     cmake ../TopologicBim
+     ```
+     - You can set the location of OpenCascade binaries OCC_INCLUDE_DIR and gp_Pnt_hxx if you didn't install them into system with: ``-DOCC_INCLUDE_DIR=<occ_include_path>``and ``-Dgp_Pnt_hxx=<gp_Pnt_hxx_path>``
+     - ``-DCMAKE_OSX_DEPLOYMENT_TARGET=<target_macosx_version>`` to set your desired macosx version
+     - ``-DCMAKE_INSTALL_PREFIX=<install_path>`` to change installation path
+     3. Build
+     ```
+     make
+     ```
+     or for parallel build
+     ```
+     make -j<cpu_count>
+     ```
+     4. Install
+     ```
+     sudo make install
+     ```
 
 3.	Build Python bindings
      1.	Create an environment with Anaconda, set python to the desired version and open a terminal
-     2.	conda activate NAME_OF_ENV
-     3.	cd into Python-Bindings folder
-     4.	mkdir build
-     5.	cd build
-     6.	ccmake 
-     7.	configure as previously
-     8.	use t-key to open the advance mode and change CMAKE_CXX_FLAGS to the directory of the opencascade binaries(suppose it is /usr/local/lib) -L/usr/local/lib 
-     9.	generate
-     10.	make
+     
+     ```
+     conda create --name py397 python=3.9.7
+     conda activate py397
+     ```
+     2. Generate folder structure
+     ```
+     cd TopologicBim/Python-Bindings
+     mkdir build
+     cd build
+     
+     cmake .. -DCMAKE_CXX_FLAGS=/usr/local/lib/
+     ```
+     3. Build
+     ```
+     make
+     ```
+     or for parallel build
+     ```
+     make -j<cpu_count>
+     ```
 
-4.	Make the files redistributable: In this last step you need to ensure that your executable topologic.cpython-39-darwin.so and all the other libraries are correctly configured
+4.	Make the files redistributable 
 
-   1.	go to the final install dir of topologic where all the OpenCascade and Topologic dylib files and topologic.cpython-39-darwin.so are 
-   2.	install_name_tool -add_rpath @loader_path topologic.cpython-39-darwin.so (we set the LC_RPATH of the executable)
-   3.	check the which libraries are loaded by topologic.cpython-39-darwin.so using: otool -L topologic.cpython-39-darwin.so
-   4.	install_name_tool -id @rpath topologic.cpython-39-darwin.so (change the id of the executable)
-   5.	change all of the libraries OpenCascade and Topologic dylib paths to start with @rpath/... using: install_name_tool -change [old name] [new name] topologic.cpython-39-darwin.so
-   6.	run renameLib.sh to change all the other libraries ids and paths
+     Bring together all output files:
+     - copy all files under ``<opencascade_build_dir>/mac64/clang/lib/`` into dist folder
+     - copy all files under ``<TopologicCore_build_dir>/TopologicCore/libTopologicCorexxx.xxx.dylib`` into dist folder
+     - copy ``topologic.cpython-39-darwin.so`` file into dist folder
+
+
+In this last step you need to ensure that your executable topologic.cpython-39-darwin.so and all the other libraries are correctly configured
+
+     1.	go to the final install dir of topologic where all the OpenCascade and Topologic dylib files and topologic.cpython-39-darwin.so are 
+     2.	install_name_tool -add_rpath @loader_path topologic.cpython-39-darwin.so (we set the LC_RPATH of the executable)
+     3.	check the which libraries are loaded by topologic.cpython-39-darwin.so using: otool -L topologic.cpython-39-darwin.so
+     4.	install_name_tool -id @rpath topologic.cpython-39-darwin.so (change the id of the executable)
+     5.	change all of the libraries OpenCascade and Topologic dylib paths to start with @rpath/... using: install_name_tool -change [old name] [new name] topologic.cpython-39-darwin.so
+     6.	run renameLib.sh to change all the other libraries ids and paths
 
 

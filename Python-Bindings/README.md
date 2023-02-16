@@ -58,5 +58,5 @@
 ```
 	python topologictest01.py
 ```
-4. You should see a `Congratulations! Test is succesful.` print out at the end of the test.
+4. You should see a `Congratulations! Test is successful.` print out at the end of the test.
 	

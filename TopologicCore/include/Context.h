@@ -84,7 +84,7 @@ namespace TopologicCore
 		double m_u;
 
 		/// <summary>
-		/// The V parametr
+		/// The V parameter
 		/// </summary>
 		double m_v;
 		
