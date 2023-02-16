@@ -37,6 +37,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
+#include <TopTools_FormatVersion.hxx>
 
 #include <limits>
 #include <list>
@@ -363,7 +364,7 @@ namespace TopologicCore
 		/// </summary>
 		/// <param name="rkFilePath"></param>
 		/// <returns></returns>
-		TOPOLOGIC_API bool ExportToBRep(const std::string& rkFilePath) const;
+		TOPOLOGIC_API bool ExportToBRep(const std::string& rkFilePath, const int kVersion) const;
 
 		/// <summary>
 		/// 
@@ -374,7 +375,7 @@ namespace TopologicCore
 
 		TOPOLOGIC_API static Topology::Ptr ByString(const std::string& rkBrepString);
 
-		TOPOLOGIC_API std::string String() const;
+		TOPOLOGIC_API std::string String(const int kVersion) const;
 
 		static TOPOLOGIC_API void Filter(const std::list<Topology::Ptr>& rkTopologies, const int kTypeFilter, std::list<Topology::Ptr>& rFilteredTopologies);
 

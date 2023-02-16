@@ -296,8 +296,8 @@ void register_Topology_class(py::module& m) {
             " ", py::arg("kpHostTopology"))
         .def(
             "ExportToBRep",
-            (bool(Topology::*)(::std::string const&) const, int const) & Topology::ExportToBRep,
-            " ", py::arg("rkFilePath"))
+            (bool(Topology::*)(::std::string const&, int const) const) & Topology::ExportToBRep,
+            " ", py::arg("rkFilePath"), py::arg("rkVersion"))
         .def_static(
             "ByImportedBRep",
             (::TopologicCore::Topology::Ptr(*)(::std::string const&)) & Topology::ByImportedBRep,
@@ -308,8 +308,8 @@ void register_Topology_class(py::module& m) {
             " ", py::arg("rkBrepString"))
         .def(
             "String",
-            (::std::string(Topology::*)() const , int const) & Topology::String,
-            " ")
+            (::std::string(Topology::*)(int const) const) & Topology::String,
+            " ", py::arg("rkVersion"))
         .def_static(
             "Filter",
             (void(*)(::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> const&, int const, ::std::list<std::shared_ptr<TopologicCore::Topology>, std::allocator<std::shared_ptr<TopologicCore::Topology>>> &)) & Topology::Filter,
