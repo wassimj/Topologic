@@ -5,10 +5,12 @@ import sysconfig
 
 
 def find_wheel(pa_dir, name):
-    # construct the wheel file name using the sysconfig vars VERSION and EXT_SUFFIX and using glob
-    py_version = sysconfig.get_config_var("VERSION")
-    abi_tag = sysconfig.get_config_var('EXT_SUFFIX').split(".")[1]
-    wheel_pattern = f"{name}-*-*{py_version}-{abi_tag}.whl"
+    # construct a glob pattern for the wheel file name using sysconfig.get_platform() as the abi tag
+    py_version = f"{sys.version_info.major}{sys.version_info.minor}"
+    abi_tag = sysconfig.get_platform()
+    abi_tag = abi_tag.replace("-", "_")
+    abi_tag = abi_tag.replace(".", "_")
+    wheel_pattern = f"{name}-*-*{py_version}-*{abi_tag}.whl"
 
     wheels = glob.glob(os.path.join(pa_dir, wheel_pattern))
     if len(wheels) == 0:
