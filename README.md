@@ -44,7 +44,7 @@ conda env create -f conda_env_topologic_py310.yml
 b
 3. Activate the Conda environment:
 ```
-conda activate conda activate topologic_py310
+conda activate topologic_py310
 ```
 
 4. To build TopologicCore separately, if needed:
