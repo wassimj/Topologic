@@ -42,6 +42,16 @@
     <ClCompile Include=".\src\VertexFactory.cpp" />
     <ClCompile Include=".\src\Wire.cpp" />
     <ClCompile Include=".\src\WireFactory.cpp" />
+    <ClCompile Include="src\Utilities\CellUtility.cpp" />
+    <ClCompile Include="src\Utilities\Direction.cpp" />
+    <ClCompile Include="src\Utilities\EdgeUtility.cpp" />
+    <ClCompile Include="src\Utilities\FaceUtility.cpp" />
+    <ClCompile Include="src\Utilities\ShellUtility.cpp" />
+    <ClCompile Include="src\Utilities\TopologyUtility.cpp" />
+    <ClCompile Include="src\Utilities\TransformationMatrix2D.cpp" />
+    <ClCompile Include="src\Utilities\Vector.cpp" />
+    <ClCompile Include="src\Utilities\VertexUtility.cpp" />
+    <ClCompile Include="src\Utilities\WireUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\About.h" />
@@ -98,5 +108,11 @@
     <ClInclude Include="include\Utilities\Vector.h" />
     <ClInclude Include="include\Utilities\VertexUtility.h" />
     <ClInclude Include="include\Utilities\WireUtility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Doxyfile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>
