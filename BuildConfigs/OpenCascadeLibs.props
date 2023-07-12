@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+	<OCCFoundationLibs>TKernel.lib;TKMath.lib</OCCFoundationLibs>
+	<OCCModelDataLibs>TKG2d.lib;TKG3d.lib;TKGeomBase.lib;TKBRep.lib</OCCModelDataLibs>       
+	<OCCModelAlgoLibs>TKGeomAlgo.lib;TKTopAlgo.lib;TKPrim.lib;TKBO.lib;TKShHealing.lib;TKBool.lib;TKHLR.lib;TKFillet.lib;TKOffset.lib;TKFeat.lib;TKMesh.lib;TKXMesh.lib</OCCModelAlgoLibs>
+	<OCCVisualisationLibs>TKService.lib;TKV3d.lib;TKOpenGl.lib;TKMeshVS.lib</OCCVisualisationLibs>
+	<OCCAppFrameworkLibs>TKCDF.lib;TKLCAF.lib;TKCAF.lib;TKBinL.lib;TKXmlL.lib;TKBin.lib;TKXml.lib;TKStdL.lib;TKStd.lib;TKTObj.lib;TKBinTObj.lib;TKXmlTObj.lib;TKVCAF.lib</OCCAppFrameworkLibs>    
+	<OCCDataExchangeLibs>TKXSBase.lib;TKSTEPBase.lib;TKSTEPAttr.lib;TKSTEP209.lib;TKSTEP.lib;TKIGES.lib;TKXCAF.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKSTL.lib;TKVRML.lib;TKXmlXCAF.lib;TKBinXCAF.lib;TKRWMesh.lib</OCCDataExchangeLibs>
+	<OCCFoundationDLLs>TKernel.dll;TKMath.dll</OCCFoundationDLLs>
+	<OCCModelDataDLLs>TKG2d.dll;TKG3d.dll;TKGeomBase.dll;TKBRep.dll</OCCModelDataDLLs>
+	<OCCModelAlgoDLLs>TKGeomAlgo.dll;TKTopAlgo.dll;TKPrim.dll;TKBO.dll;TKShHealing.dll;TKBool.dll;TKHLR.dll;TKFillet.dll;TKOffset.dll;TKFeat.dll;TKMesh.dll;TKXMesh.dll</OCCModelAlgoDLLs>
+	<OCCVisualisationDLLs>TKService.dll;TKV3d.dll;TKOpenGl.dll;TKMeshVS.dll</OCCVisualisationDLLs>
+	<OCCAppFrameworkDLLs>TKCDF.dll;TKLCAF.dll;TKCAF.dll;TKBinL.dll;TKXmlL.dll;TKBin.dll;TKXml.dll;TKStdL.dll;TKStd.dll;TKTObj.dll;TKBinTObj.dll;TKXmlTObj.dll;TKVCAF.dll</OCCAppFrameworkDLLs>
+	<OCCDataExchangeDLLs>TKXSBase.dll;TKSTEPBase.dll;TKSTEPAttr.dll;TKSTEP209.dll;TKSTEP.dll;TKIGES.dll;TKXCAF.dll;TKXDEIGES.dll;TKXDESTEP.dll;TKSTL.dll;TKVRML.dll;TKXmlXCAF.dll;TKBinXCAF.dll;TKRWMesh.dll</OCCDataExchangeDLLs>
+	<OCCAllLibs>TKernel.lib;TKMath.lib;TKG2d.lib;TKG3d.lib;TKGeomBase.lib;TKBRep.lib;TKGeomAlgo.lib;TKTopAlgo.lib;TKPrim.lib;TKBO.lib;TKShHealing.lib;TKBool.lib;TKHLR.lib;TKFillet.lib;TKOffset.lib;TKFeat.lib;TKMesh.lib;TKXMesh.lib;TKService.lib;TKV3d.lib;TKOpenGl.lib;TKMeshVS.lib;TKCDF.lib;TKLCAF.lib;TKCAF.lib;TKBinL.lib;TKXmlL.lib;TKBin.lib;TKXml.lib;TKStdL.lib;TKStd.lib;TKTObj.lib;TKBinTObj.lib;TKXmlTObj.lib;TKVCAF.lib;TKXSBase.lib;TKSTEPBase.lib;TKSTEPAttr.lib;TKSTEP209.lib;TKSTEP.lib;TKIGES.lib;TKXCAF.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKSTL.lib;TKVRML.lib;TKXmlXCAF.lib;TKBinXCAF.lib;TKRWMesh.lib;</OCCAllLibs>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+		<BuildMacro Include="OCCFoundationLibs">
+			<Value>$(OCCFoundationLibs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCModelDataLibs">
+			<Value>$(OCCModelDataLibs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	  <BuildMacro Include="OCCModelAlgoLibs">
+		  <Value>$(OCCModelAlgoLibs)</Value>
+		  <EnvironmentVariable>true</EnvironmentVariable>
+	  </BuildMacro>
+	  <BuildMacro Include="OCCVisualisationLibs">
+		  <Value>$(OCCVisualisationLibs)</Value>
+		  <EnvironmentVariable>true</EnvironmentVariable>
+	  </BuildMacro>
+	  <BuildMacro Include="OCCAppFrameworkLibs">
+			<Value>$(OCCAppFrameworkLibs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCDataExchangeLibs">
+			<Value>$(OCCDataExchangeLibs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	  <BuildMacro Include="OCCAllLibs">
+		  <Value>$(OCCAllLibs)</Value>
+		  <EnvironmentVariable>true</EnvironmentVariable>	  
+	  </BuildMacro>
+  </ItemGroup>
+	<ItemGroup>
+		<BuildMacro Include="OCCFoundationDLLs">
+			<Value>$(OCCFoundationDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCModelDataDLLs">
+			<Value>$(OCCModelDataDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCModelAlgoDLLs">
+			<Value>$(OCCModelAlgoDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCVisualisationDLLs">
+			<Value>$(OCCVisualisationDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCAppFrameworkDLLs">
+			<Value>$(OCCAppFrameworkDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OCCDataExchangeDLLs">
+			<Value>$(OCCDataExchangeDLLs)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	</ItemGroup>
+</Project>

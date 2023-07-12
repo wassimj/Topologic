@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+	<OpenCascadeIncludes>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\inc</OpenCascadeIncludes>
+	<OpenCascadeLibraries>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\win64\vc14\lib</OpenCascadeLibraries>
+	<OpenCascadeBinaries>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\win64\vc14\bin</OpenCascadeBinaries>
+	<PthreadsIncludes>$(SolutionDir)Vendor\pthreads\include</PthreadsIncludes>
+	<PthreadsLibraries>$(SolutionDir)Vendor\pthreads\lib</PthreadsLibraries>
+	<GenericIncludes>$(SolutionDir)Vendor\EXT\include</GenericIncludes>
+	<GenericLibraries>$(SolutionDir)Vendor\EXT\lib</GenericLibraries>
+	<GenericBinaries>$(SolutionDir)Vendor\EXT\bin</GenericBinaries>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+	<ItemGroup>
+		<BuildMacro Include="OpenCascadeIncludes">
+			<Value>$(OpenCascadeIncludes)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OpenCascadeLibraries">
+			<Value>$(OpenCascadeLibraries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="OpenCascadeBinaries">
+			<Value>$(OpenCascadeBinaries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	</ItemGroup>
+	<ItemGroup>
+		<BuildMacro Include="PthreadsIncludes">
+			<Value>$(PthreadsIncludes)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="PthreadsLibraries">
+			<Value>$(PthreadsLibraries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	</ItemGroup>
+	<ItemGroup>
+		<BuildMacro Include="BoundPythonIncludes">
+			<Value>$(BoundPythonIncludes)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="BoundPythonLibraries">
+			<Value>$(BoundPythonLibraries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	</ItemGroup>	
+	<ItemGroup>
+		<BuildMacro Include="GenericIncludes">
+			<Value>$(GenericIncludes)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="GenericLibraries">
+			<Value>$(GenericLibraries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+		<BuildMacro Include="GenericBinaries">
+			<Value>$(GenericBinaries)</Value>
+			<EnvironmentVariable>true</EnvironmentVariable>
+		</BuildMacro>
+	</ItemGroup>
+</Project>
