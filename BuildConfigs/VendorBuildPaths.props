@@ -5,11 +5,7 @@
 	<OpenCascadeIncludes>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\inc</OpenCascadeIncludes>
 	<OpenCascadeLibraries>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\win64\vc14\lib</OpenCascadeLibraries>
 	<OpenCascadeBinaries>C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\win64\vc14\bin</OpenCascadeBinaries>
-	<PthreadsIncludes>$(SolutionDir)Vendor\pthreads\include</PthreadsIncludes>
-	<PthreadsLibraries>$(SolutionDir)Vendor\pthreads\lib</PthreadsLibraries>
-	<GenericIncludes>$(SolutionDir)Vendor\EXT\include</GenericIncludes>
-	<GenericLibraries>$(SolutionDir)Vendor\EXT\lib</GenericLibraries>
-	<GenericBinaries>$(SolutionDir)Vendor\EXT\bin</GenericBinaries>
+	<GenericBinaries>$(SolutionDir)Vendor</GenericBinaries>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
@@ -28,34 +24,6 @@
 		</BuildMacro>
 	</ItemGroup>
 	<ItemGroup>
-		<BuildMacro Include="PthreadsIncludes">
-			<Value>$(PthreadsIncludes)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
-		<BuildMacro Include="PthreadsLibraries">
-			<Value>$(PthreadsLibraries)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
-	</ItemGroup>
-	<ItemGroup>
-		<BuildMacro Include="BoundPythonIncludes">
-			<Value>$(BoundPythonIncludes)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
-		<BuildMacro Include="BoundPythonLibraries">
-			<Value>$(BoundPythonLibraries)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
-	</ItemGroup>	
-	<ItemGroup>
-		<BuildMacro Include="GenericIncludes">
-			<Value>$(GenericIncludes)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
-		<BuildMacro Include="GenericLibraries">
-			<Value>$(GenericLibraries)</Value>
-			<EnvironmentVariable>true</EnvironmentVariable>
-		</BuildMacro>
 		<BuildMacro Include="GenericBinaries">
 			<Value>$(GenericBinaries)</Value>
 			<EnvironmentVariable>true</EnvironmentVariable>

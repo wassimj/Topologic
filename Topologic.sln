@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Topologic", "TopologicCore\TopologicCore.vcxproj", "{A31E9180-6AA6-4713-9824-FAEA207B0C5A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TopologicCore", "TopologicCore\TopologicCore.vcxproj", "{A31E9180-6AA6-4713-9824-FAEA207B0C5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TopologicCoreCppTest", "TopologicCore\TopologicCoreCppTest\TopologicCoreCppTest.vcxproj", "{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A31E9180-6AA6-4713-9824-FAEA207B0C5A} = {A31E9180-6AA6-4713-9824-FAEA207B0C5A}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6915310-9901-4651-8E73-9472C07DAA35}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +31,14 @@ Global
 		{A31E9180-6AA6-4713-9824-FAEA207B0C5A}.Release|x64.Build.0 = Release|x64
 		{A31E9180-6AA6-4713-9824-FAEA207B0C5A}.Release|x86.ActiveCfg = Release|Win32
 		{A31E9180-6AA6-4713-9824-FAEA207B0C5A}.Release|x86.Build.0 = Release|Win32
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Debug|x64.ActiveCfg = Debug|x64
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Debug|x64.Build.0 = Debug|x64
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Debug|x86.ActiveCfg = Debug|Win32
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Debug|x86.Build.0 = Debug|Win32
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Release|x64.ActiveCfg = Release|x64
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Release|x64.Build.0 = Release|x64
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Release|x86.ActiveCfg = Release|Win32
+		{FB9B0672-C9A2-4714-8578-DFF3FCEB4653}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
