@@ -345,7 +345,7 @@ namespace TopologicUtilities
 		TopologicCore::Wire::Ptr pCopyInputWire = std::dynamic_pointer_cast<TopologicCore::Wire>(kpWire->ShallowCopy());
 		TopologicCore::Face::Ptr pFace = TrimByWireImpl(pCopyInputFace, pCopyInputWire->GetOcctWire(), kReverseWire);
 		TopologicCore::Face::Ptr pCopyOutputFace = std::dynamic_pointer_cast<TopologicCore::Face>(pFace->DeepCopy());
-		TopologicCore::GlobalCluster::GetInstance().AddTopology(pCopyOutputFace->GetOcctFace());
+		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCopyOutputFace->GetOcctFace());
 		return pCopyOutputFace;
 	}
 
