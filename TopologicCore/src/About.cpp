@@ -16,7 +16,7 @@
 
 #include "About.h"
 
-#define MAJOR_VERSION 3
+#define MAJOR_VERSION 4
 #define MINOR_VERSION 0
 #define BUGFIX_VERSION 0
 #define INTERNAL_BUILD_VERSION 1

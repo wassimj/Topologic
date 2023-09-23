@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
   "name": "topologic",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": [
     {
       "name": "opencascade",
