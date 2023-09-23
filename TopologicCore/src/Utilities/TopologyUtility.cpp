@@ -68,7 +68,7 @@ namespace TopologicUtilities
 			pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
 
-		TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
+		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -111,7 +111,7 @@ namespace TopologicUtilities
 			pCoreTransformedTopology = pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
 
-		TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
+		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -155,7 +155,7 @@ namespace TopologicUtilities
 
 		}
 
-		TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
+		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -208,7 +208,7 @@ namespace TopologicUtilities
 			transformedSubcontents.push_back(transformedSubcontent);
 			pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
-		TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
+		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 

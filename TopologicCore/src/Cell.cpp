@@ -273,7 +273,7 @@ namespace TopologicCore
 		Cell::Ptr copyFixedCell = TopologicalQuery::Downcast<Cell>(fixedCell->DeepCopy());
 
 		// Register to Global Cluster
-		//GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
+		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
 
 		// Copy the Dictionaries
 		if (kCopyAttributes)

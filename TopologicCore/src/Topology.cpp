@@ -390,10 +390,10 @@ namespace TopologicCore
 		{
 			m_numOfTopologies = 0;
 		}
-		if (m_numOfTopologies == 0)
+		/* if (m_numOfTopologies == 0)
 		{
 			GlobalCluster::GetInstance().Clear();
-		}
+		} */
 	}
 
 	Topology::Ptr Topology::ByGeometry(Handle(Geom_Geometry) pGeometry)

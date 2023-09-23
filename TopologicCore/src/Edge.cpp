@@ -186,7 +186,7 @@ namespace TopologicCore
 
 		TopoDS_Edge occtFixedEdge = OcctShapeFix(occtMakeEdge);
 		Edge::Ptr pEdge = std::make_shared<Edge>(occtFixedEdge);
-		GlobalCluster::GetInstance().AddTopology(pEdge->GetOcctEdge());
+		// GlobalCluster::GetInstance().AddTopology(pEdge->GetOcctEdge());
 		return pEdge;
 	}
 
@@ -219,7 +219,7 @@ namespace TopologicCore
 			AttributeManager::GetInstance().DeepCopyAttributes(endVertex->GetOcctVertex(), pCopyEdge->GetOcctEdge());
 		}
 	
-		GlobalCluster::GetInstance().AddTopology(pCopyEdge->GetOcctEdge());
+		// GlobalCluster::GetInstance().AddTopology(pCopyEdge->GetOcctEdge());
 		return pCopyEdge;
 	}
 
