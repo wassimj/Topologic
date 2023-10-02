@@ -86,20 +86,19 @@ namespace TopologicCore
 
 		TopoDS_CompSolid occtCompSolid = ByOcctSolids(occtShapes);
 		CellComplex::Ptr pCellComplex = std::make_shared<CellComplex>(occtCompSolid);
-		CellComplex::Ptr pCopyCellComplex = std::dynamic_pointer_cast<CellComplex>(pCellComplex->DeepCopy());
 		if (kCopyAttributes)
 		{
 			std::list<Topology::Ptr> cellsAsTopologies;
 			for (const Cell::Ptr& kpCell : rkCells)
 			{
 				cellsAsTopologies.push_back(kpCell);
-				AttributeManager::GetInstance().DeepCopyAttributes(kpCell->GetOcctSolid(), pCopyCellComplex->GetOcctCompSolid());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpCell->GetOcctSolid(), pCellComplex->GetOcctCompSolid());
 			}
-			CellComplex::Ptr pCopyCellComplex = TopologicalQuery::Downcast<CellComplex>(pCellComplex->DeepCopyAttributesFrom(cellsAsTopologies));
+			pCellComplex->DeepCopyAttributesFrom(cellsAsTopologies);
 		}
 		//GlobalCluster::GetInstance().AddTopology(pCopyCellComplex->GetOcctCompSolid());
 
-		return pCopyCellComplex;
+		return pCellComplex;
 	}
 
 	TopoDS_CompSolid CellComplex::ByOcctSolids(const TopTools_ListOfShape& rkOcctSolids)
@@ -166,8 +165,7 @@ namespace TopologicCore
 		}
 
 		// Should get us a CellComplex, otherwise an exception.
-		CellComplex::Ptr pCopyCellComplex = std::dynamic_pointer_cast<CellComplex>(pCellComplex->DeepCopy());
-		return pCopyCellComplex->GetOcctCompSolid();
+		return pCellComplex->GetOcctCompSolid();
 	}
 
 	CellComplex::Ptr CellComplex::ByFaces(const std::list<Face::Ptr>& rkFaces, const double kTolerance, const bool kCopyAttributes)
@@ -228,7 +226,6 @@ namespace TopologicCore
 		TopoDS_CompSolid occtFixedCompSolid = OcctShapeFix(cellComplex->GetOcctCompSolid());
 
 		CellComplex::Ptr fixedCellComplex = std::make_shared<CellComplex>(occtFixedCompSolid);
-		CellComplex::Ptr copyFixedCellComplex = TopologicalQuery::Downcast<CellComplex>(fixedCellComplex->DeepCopy());
 
 		//GlobalCluster::GetInstance().AddTopology(copyFixedCellComplex->GetOcctCompSolid());
 		if (kCopyAttributes)
@@ -237,11 +234,11 @@ namespace TopologicCore
 			for (const Face::Ptr& kpFace : rkFaces)
 			{
 				facesAsTopologies.push_back(kpFace);
-				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCellComplex->GetOcctCompSolid());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), fixedCellComplex->GetOcctCompSolid());
 			}
-			copyFixedCellComplex->DeepCopyAttributesFrom(facesAsTopologies);
+			fixedCellComplex->DeepCopyAttributesFrom(facesAsTopologies);
 		}
-		return copyFixedCellComplex;
+		return fixedCellComplex;
 	}
 
 	Cell::Ptr CellComplex::ExternalBoundary() const
@@ -292,9 +289,8 @@ namespace TopologicCore
 		for (TopExp_Explorer occtExplorer(occtEnvelopeShape, TopAbs_SOLID); occtExplorer.More(); occtExplorer.Next())
 		{
 			 Cell::Ptr pCell = std::make_shared<Cell>(TopoDS::Solid(occtExplorer.Current()));
-			 Cell::Ptr pCellCopy = TopologicalQuery::Downcast<TopologicCore::Cell>(pCell->DeepCopy());
 			 //GlobalCluster::GetInstance().AddTopology(pCellCopy->GetOcctShape());
-			 return pCellCopy;
+			 return pCell;
 		}
 		return nullptr;
 	}
