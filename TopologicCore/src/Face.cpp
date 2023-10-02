@@ -233,11 +233,10 @@ namespace TopologicCore
 		TopoDS_Face occtFixedFace = OcctShapeFix(occtMakeFace);
 
 		Face::Ptr pFace = std::make_shared<Face>(occtFixedFace);
-		Face::Ptr pCopyFace = std::dynamic_pointer_cast<Face>(pFace->DeepCopy());
 		std::list<Topology::Ptr> wiresAsTopologies;
 		if (kCopyAttributes)
 		{
-			AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+			AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pFace->GetOcctFace());
 		}
 		wiresAsTopologies.push_back(pkExternalBoundary);
 		for (const Wire::Ptr& kpInternalBoundary : rkInternalBoundaries)
@@ -245,16 +244,16 @@ namespace TopologicCore
 			wiresAsTopologies.push_back(kpInternalBoundary);
 			if (kCopyAttributes)
 			{
-				AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pFace->GetOcctFace());
 			}
 		}
 		if (kCopyAttributes)
 		{
-			pCopyFace->DeepCopyAttributesFrom(wiresAsTopologies);
+			pFace->DeepCopyAttributesFrom(wiresAsTopologies);
 		}
 
 		//GlobalCluster::GetInstance().AddTopology(pCopyFace->GetOcctFace());
-		return pCopyFace;
+		return pFace;
 	}
 
 	Face::Ptr Face::ByEdges(const std::list<Edge::Ptr>& rkEdges, const bool kCopyAttributes)
