@@ -30,7 +30,6 @@
 #include "InstanceGUIDManager.h"
 #include "TopologyFactory.h"
 #include "TopologyFactoryManager.h"
-#include "GlobalCluster.h"
 #include "Bitwise.h"
 #include "Attribute.h"
 #include "AttributeManager.h"
@@ -390,10 +389,6 @@ namespace TopologicCore
 		{
 			m_numOfTopologies = 0;
 		}
-		/* if (m_numOfTopologies == 0)
-		{
-			GlobalCluster::GetInstance().Clear();
-		} */
 	}
 
 	Topology::Ptr Topology::ByGeometry(Handle(Geom_Geometry) pGeometry)
@@ -651,8 +646,6 @@ namespace TopologicCore
 			if (selectedSubtopology != nullptr)
 			{
 				Topology::Ptr pCopyContentTopology = std::dynamic_pointer_cast<Topology>(kpContentTopology->DeepCopy());
-				//GlobalCluster::GetInstance().AddTopology(pCopyContentTopology->GetOcctShape());
-
 				ContentManager::GetInstance().Add(selectedSubtopology->GetOcctShape(), pCopyContentTopology);
 
 				const double kDefaultParameter = 0.0; // TODO: calculate the parameters
@@ -664,8 +657,6 @@ namespace TopologicCore
 					));
 			}
 		}
-
-		//GlobalCluster::GetInstance().AddTopology(pCopyTopology->GetOcctShape());
 
 		return pCopyTopology;
 	}
@@ -733,7 +724,6 @@ namespace TopologicCore
 		}
 
 		Topology::Ptr copyTopology = ShallowCopy()->AddContents(addedContents, 0);
-		//GlobalCluster::GetInstance().AddTopology(copyTopology);
 		return copyTopology;
 	}
 
@@ -763,8 +753,6 @@ namespace TopologicCore
 			contentInstanceGUID = pCopyTopology->GetInstanceGUID();
 
 			Topology::Ptr pCopyContextTopology = std::dynamic_pointer_cast<Topology>(kpContext->Topology()->DeepCopy());
-			//GlobalCluster::GetInstance().AddTopology(pCopyContextTopology->GetOcctShape());
-
 			ContentManager::GetInstance().Add(pCopyContextTopology->GetOcctShape(), pCopyTopology);
 
 			const double kDefaultParameter = 0.0; // TODO: calculate the parameters
@@ -775,8 +763,6 @@ namespace TopologicCore
 					kDefaultParameter, kDefaultParameter, kDefaultParameter
 				));
 		}
-
-		//GlobalCluster::GetInstance().AddTopology(pCopyTopology->GetOcctShape());
 
 		return pCopyTopology;
 	}
@@ -816,7 +802,6 @@ namespace TopologicCore
 			}
 		}
 
-		//GlobalCluster::GetInstance().AddTopology(copyTopology);
 		return copyTopology;
 	}
 
@@ -985,8 +970,6 @@ namespace TopologicCore
 
 			rkDictionaryIterator++;
 		}
-
-		//GlobalCluster::GetInstance().AddTopology(pCopyTopology->GetOcctShape());
 
 		return pCopyTopology;
 	}
@@ -1185,7 +1168,6 @@ namespace TopologicCore
 		{
 			BooleanTransferDictionary(this, kpOtherTopology.get(), pPostprocessedShape.get(), true);
 		}
-		//GlobalCluster::GetInstance().AddTopology(pCopyPostprocessedShape->GetOcctShape());
 		return pPostprocessedShape;
 	}
 
@@ -1279,8 +1261,6 @@ namespace TopologicCore
 		BRep_Builder occtBRepBuilder;
 		bool returnValue = BRepTools::Read(occtShape, rkFilePath.c_str(), occtBRepBuilder);
 		Topology::Ptr pTopology = Topology::ByOcctShape(occtShape, "");
-
-		//GlobalCluster::GetInstance().AddTopology(pTopology);
 		return pTopology;
 	}
 
@@ -2198,7 +2178,6 @@ namespace TopologicCore
 		//{
 		//	BooleanTransferDictionary(this, kpOtherTopology.get(), pCopyPostprocessedShape.get(), true);
 		//}
-		//GlobalCluster::GetInstance().AddTopology(pCopyPostprocessedShape);
 		//return pCopyPostprocessedShape;
 	}
 
@@ -3201,21 +3180,6 @@ namespace TopologicCore
 		return false;
 	}
 
-// #ifdef _DEBUG
-	void Topology::GlobalClusterSubTopologies(std::list<Topology::Ptr>& rSubTopologies) const
-	{
-		TopTools_ListOfShape occtListMembers;
-		Topology::SubTopologies(GlobalCluster::GetInstance().GetOcctCompound(), occtListMembers);
-		for (TopTools_ListIteratorOfListOfShape occtIterator(occtListMembers);
-			occtIterator.More();
-			occtIterator.Next())
-		{
-			Topology::Ptr pMemberTopology = Topology::ByOcctShape(occtIterator.Value(), "");
-			rSubTopologies.push_back(pMemberTopology);
-		}
-	}
-// #endif
-
 	void Topology::UpwardNavigation(const TopoDS_Shape & rkOcctHostTopology, const int kTopologyType, std::list<std::shared_ptr<Topology>>& rAncestors) const
 	{
 		switch (kTopologyType)
@@ -3369,7 +3333,6 @@ namespace TopologicCore
 			}
 			//pShapeCopy->AddContent(pCopyContentTopology, filterType);
 		}
-		// GlobalCluster::GetInstance().AddTopology(pShapeCopy);
 		return pShapeCopy;
 	}
 
@@ -3391,8 +3354,6 @@ namespace TopologicCore
 	{
 		BRepBuilderAPI_Copy occtShapeCopy(rkOcctShape);
 		TopoDS_Shape occtCopyShape = occtShapeCopy.Shape();
-
-		//GlobalCluster::GetInstance().AddTopology(occtCopyShape);
 		return occtCopyShape;
 	}
 

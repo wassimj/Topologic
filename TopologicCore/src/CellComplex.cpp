@@ -23,7 +23,6 @@
 #include "Wire.h"
 #include "Shell.h"
 #include "CellComplexFactory.h"
-//#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <BOPAlgo_MakerVolume.hxx>
@@ -96,7 +95,6 @@ namespace TopologicCore
 			}
 			pCellComplex->DeepCopyAttributesFrom(cellsAsTopologies);
 		}
-		//GlobalCluster::GetInstance().AddTopology(pCopyCellComplex->GetOcctCompSolid());
 
 		return pCellComplex;
 	}
@@ -227,7 +225,6 @@ namespace TopologicCore
 
 		CellComplex::Ptr fixedCellComplex = std::make_shared<CellComplex>(occtFixedCompSolid);
 
-		//GlobalCluster::GetInstance().AddTopology(copyFixedCellComplex->GetOcctCompSolid());
 		if (kCopyAttributes)
 		{
 			std::list<Topology::Ptr> facesAsTopologies;
@@ -289,7 +286,6 @@ namespace TopologicCore
 		for (TopExp_Explorer occtExplorer(occtEnvelopeShape, TopAbs_SOLID); occtExplorer.More(); occtExplorer.Next())
 		{
 			 Cell::Ptr pCell = std::make_shared<Cell>(TopoDS::Solid(occtExplorer.Current()));
-			 //GlobalCluster::GetInstance().AddTopology(pCellCopy->GetOcctShape());
 			 return pCell;
 		}
 		return nullptr;

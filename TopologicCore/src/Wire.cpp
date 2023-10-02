@@ -19,7 +19,6 @@
 #include "Edge.h"
 #include "Face.h"
 #include "WireFactory.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/VertexUtility.h>
@@ -229,7 +228,6 @@ namespace TopologicCore
 			}
 		}
 
-		//GlobalCluster::GetInstance().AddTopology(pCopyWire->GetOcctWire());
 		return pWire;
 	}
 

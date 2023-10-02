@@ -20,7 +20,6 @@
 
 #include <Edge.h>
 #include <Vertex.h>
-#include <GlobalCluster.h>
 #include <Cluster.h>
 
 #include <BRep_Tool.hxx>

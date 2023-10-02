@@ -19,7 +19,6 @@
 #include <Utilities/FaceUtility.h>
 
 #include <Aperture.h>
-#include <GlobalCluster.h>
 
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>

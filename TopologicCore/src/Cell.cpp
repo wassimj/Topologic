@@ -22,7 +22,6 @@
 #include "Shell.h"
 #include "CellComplex.h"
 #include "CellFactory.h"
-//#include "GlobalCluster.h"
 #include "AttributeManager.h"
 #include <Utilities/EdgeUtility.h>
 
@@ -46,7 +45,6 @@ namespace TopologicCore
 	{
 		// Get a map of Face->Solid[]
 		TopTools_IndexedDataMapOfShapeListOfShape occtFaceSolidMap;
-		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
 		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
 
 		// Find the constituent Faces
@@ -222,9 +220,6 @@ namespace TopologicCore
 		TopoDS_Solid occtFixedSolid = OcctShapeFix(occtSolid);
 		Cell::Ptr fixedCell = std::make_shared<Cell>(occtFixedSolid);
 
-		// Register to Global Cluster
-		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
-
 		// Copy the Dictionaries
 		if (kCopyAttributes)
 		{
@@ -265,9 +260,6 @@ namespace TopologicCore
 		// Shape fix the solid
 		TopoDS_Solid occtFixedSolid = OcctShapeFix(occtMakeSolid);
 		Cell::Ptr fixedCell = std::make_shared<Cell>(occtFixedSolid);
-
-		// Register to Global Cluster
-		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
 
 		// Copy the Dictionaries
 		if (kCopyAttributes)

@@ -23,7 +23,6 @@
 #include "CellComplex.h"
 #include "EdgeFactory.h"
 #include "Cluster.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/EdgeUtility.h>
@@ -186,7 +185,6 @@ namespace TopologicCore
 
 		TopoDS_Edge occtFixedEdge = OcctShapeFix(occtMakeEdge);
 		Edge::Ptr pEdge = std::make_shared<Edge>(occtFixedEdge);
-		// GlobalCluster::GetInstance().AddTopology(pEdge->GetOcctEdge());
 		return pEdge;
 	}
 

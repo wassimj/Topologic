@@ -20,7 +20,6 @@
 
 #include <Cell.h>
 #include <Face.h>
-#include <GlobalCluster.h>
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -56,7 +55,6 @@ namespace TopologicUtilities
 			throw std::runtime_error("Loft error");
 		}
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(TopoDS::Solid(occtLoft.Shape()));
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctShape());
 		return pCell;
 	}
 
@@ -80,7 +78,6 @@ namespace TopologicUtilities
 		occtMakeBox.Build();
 
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(occtMakeBox.Solid());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctSolid());
 		return pCell;
 	}
 
@@ -89,7 +86,6 @@ namespace TopologicUtilities
 		BRepPrimAPI_MakeSphere occtMakeSphere(gp_Pnt(kCenterX, kCenterY, kCenterZ), kRadius);
 
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(occtMakeSphere.Solid());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctSolid());
 		return pCell;
 	}
 
@@ -100,7 +96,6 @@ namespace TopologicUtilities
 			kpMaxVertex->Point()->Pnt());
 
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(occtMakeBox.Solid());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctSolid());
 		return pCell;
 		return TopologicCore::Cell::Ptr();
 	}
@@ -115,7 +110,6 @@ namespace TopologicUtilities
 				gp_Dir(kNormalX, kNormalY, kNormalZ)),
 			kRadius, kHeight);
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(occtMakeCylinder.Solid());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctSolid());
 		return pCell;
 	}
 
@@ -132,7 +126,6 @@ namespace TopologicUtilities
 				gp_Dir(kXDirectionX, kXDirectionY, kDirectionZ)),
 			kRadius1, kRadius2, kHeight);
 		TopologicCore::Cell::Ptr pCell = std::make_shared<TopologicCore::Cell>(occtMakeCone.Solid());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCell->GetOcctSolid());
 		return pCell;
 	}
 

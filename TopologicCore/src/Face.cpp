@@ -22,7 +22,6 @@
 #include "Wire.h"
 #include "FaceFactory.h"
 #include "Utilities.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/FaceUtility.h>
@@ -62,7 +61,6 @@ namespace TopologicCore
 	{
 		// Iterate through the edges and find the incident faces which are not this face.
 		TopTools_IndexedDataMapOfShapeListOfShape occtEdgeFaceMap;
-		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
 		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
 
 		// Find the constituent faces
@@ -252,7 +250,6 @@ namespace TopologicCore
 			pFace->DeepCopyAttributesFrom(wiresAsTopologies);
 		}
 
-		//GlobalCluster::GetInstance().AddTopology(pCopyFace->GetOcctFace());
 		return pFace;
 	}
 
@@ -292,7 +289,6 @@ namespace TopologicCore
 		ShapeFix_Face occtShapeFix(occtMakeFace);
 		occtShapeFix.Perform();
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 
@@ -466,7 +462,6 @@ namespace TopologicCore
 		occtShapeFix.Perform();
 
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 
