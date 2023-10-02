@@ -52,22 +52,19 @@ namespace TopologicCore
 			pCluster->AddTopology(kpTopology.get());
 		}
 
-		// Deep copy
-		Cluster::Ptr pCopyCluster = std::dynamic_pointer_cast<Cluster>(pCluster->DeepCopy());
-
 		// Transfer the attributes
 		if (kCopyAttributes)
 		{
 			for (const Topology::Ptr& kpTopology : rkTopologies)
 			{
-				AttributeManager::GetInstance().DeepCopyAttributes(kpTopology->GetOcctShape(), pCopyCluster->GetOcctCompound());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpTopology->GetOcctShape(), pCluster->GetOcctCompound());
 			}
-			pCopyCluster->DeepCopyAttributesFrom(rkTopologies);
+			pCluster->DeepCopyAttributesFrom(rkTopologies);
 		}
 
 		// Add to the Global Cluster
 		//GlobalCluster::GetInstance().AddTopology(pCopyCluster->GetOcctCompound());
-		return pCopyCluster;
+		return pCluster;
 	}
 
 	TopoDS_Compound Cluster::ByOcctTopologies(const TopTools_MapOfShape & rkOcctShapes)
