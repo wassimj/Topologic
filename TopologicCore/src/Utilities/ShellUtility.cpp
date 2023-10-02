@@ -71,10 +71,7 @@ namespace TopologicUtilities
 		{
 			throw std::runtime_error("Loft error");
 		}
-		TopologicCore::Shell::Ptr pShell = std::make_shared<TopologicCore::Shell>(TopoDS::Shell(occtLoft.Shape()));
-		TopologicCore::Shell::Ptr pCopyShell = std::dynamic_pointer_cast<TopologicCore::Shell>(pShell->DeepCopy());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCopyShell);
-		return pCopyShell;
+		return std::make_shared<TopologicCore::Shell>(TopoDS::Shell(occtLoft.Shape()));
 	}
 
 }
