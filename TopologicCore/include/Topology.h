@@ -17,10 +17,11 @@
 #pragma once
 
 #include "Utilities.h"
-#include "GlobalCluster.h"
 #include "TopologicalQuery.h"
 #include "Dictionary.h"
 
+#include <TopoDS_Builder.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <BOPAlgo_CellsBuilder.hxx>
@@ -828,12 +829,6 @@ namespace TopologicCore
 			rMembers.push_back(TopologicalQuery::Downcast<Subclass>(ByOcctShape(GetOcctShape(), GetInstanceGUID())));
 		}
 	}
-
-	/*template <class Subclass>
-	void Topology::UpwardNavigation(std::list<std::shared_ptr<Subclass>>& rAncestors) const
-	{
-		UpwardNavigation(GlobalCluster::GetInstance().GetOcctCompound(), rAncestors);
-	}*/
 
 	template<class Subclass>
 	inline void Topology::UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, std::list<std::shared_ptr<Subclass>>& rAncestors) const
