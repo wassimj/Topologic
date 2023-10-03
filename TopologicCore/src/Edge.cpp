@@ -23,7 +23,6 @@
 #include "CellComplex.h"
 #include "EdgeFactory.h"
 #include "Cluster.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/EdgeUtility.h>
@@ -186,11 +185,10 @@ namespace TopologicCore
 
 		TopoDS_Edge occtFixedEdge = OcctShapeFix(occtMakeEdge);
 		Edge::Ptr pEdge = std::make_shared<Edge>(occtFixedEdge);
-		// GlobalCluster::GetInstance().AddTopology(pEdge->GetOcctEdge());
 		return pEdge;
 	}
 
-	Edge::Ptr Edge::ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes)
+	Edge::Ptr Edge::ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes __attribute__((unused)))
 	{
 		if (kpStartVertex == nullptr || kpEndVertex == nullptr)
 		{
@@ -207,20 +205,7 @@ namespace TopologicCore
 
 		TopoDS_Edge occtFixedEdge = OcctShapeFix(occtMakeEdge);
 
-		Edge::Ptr pEdge = std::make_shared<Edge>(occtFixedEdge);
-		Vertex::Ptr startVertex = pEdge->StartVertex();
-		Vertex::Ptr endVertex = pEdge->EndVertex();
-		Edge::Ptr pCopyEdge = std::dynamic_pointer_cast<Edge>(pEdge->DeepCopy());
-		if (kCopyAttributes)
-		{
-			#include <iostream>
-			std::cout << "Copying Attributes" << std::endl;
-			AttributeManager::GetInstance().DeepCopyAttributes(startVertex->GetOcctVertex(), pCopyEdge->GetOcctEdge());
-			AttributeManager::GetInstance().DeepCopyAttributes(endVertex->GetOcctVertex(), pCopyEdge->GetOcctEdge());
-		}
-	
-		// GlobalCluster::GetInstance().AddTopology(pCopyEdge->GetOcctEdge());
-		return pCopyEdge;
+		return std::make_shared<Edge>(occtFixedEdge);
 	}
 
 	void Edge::SharedVertices(const Edge::Ptr& kpAnotherEdge, std::list<std::shared_ptr<Vertex>>& rSharedVertices) const

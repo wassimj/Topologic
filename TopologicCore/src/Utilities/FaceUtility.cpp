@@ -20,7 +20,6 @@
 
 #include <Edge.h>
 #include <Vertex.h>
-#include <GlobalCluster.h>
 #include <Cluster.h>
 
 #include <BRep_Tool.hxx>
@@ -343,10 +342,7 @@ namespace TopologicUtilities
 	{
 		TopologicCore::Face::Ptr pCopyInputFace = std::dynamic_pointer_cast<TopologicCore::Face>(kpFace->ShallowCopy());
 		TopologicCore::Wire::Ptr pCopyInputWire = std::dynamic_pointer_cast<TopologicCore::Wire>(kpWire->ShallowCopy());
-		TopologicCore::Face::Ptr pFace = TrimByWireImpl(pCopyInputFace, pCopyInputWire->GetOcctWire(), kReverseWire);
-		TopologicCore::Face::Ptr pCopyOutputFace = std::dynamic_pointer_cast<TopologicCore::Face>(pFace->DeepCopy());
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCopyOutputFace->GetOcctFace());
-		return pCopyOutputFace;
+		return TrimByWireImpl(pCopyInputFace, pCopyInputWire->GetOcctWire(), kReverseWire);
 	}
 
 	void FaceUtility::Triangulate(const TopologicCore::Face::Ptr & kpFace, const double kDeflection, std::list<TopologicCore::Face::Ptr>& rTriangles)

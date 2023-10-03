@@ -19,7 +19,6 @@
 #include "Edge.h"
 #include "Face.h"
 #include "WireFactory.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/VertexUtility.h>
@@ -221,17 +220,15 @@ namespace TopologicCore
 
 		TopoDS_Wire occtWire = ByOcctEdges(occtEdges);
 		Wire::Ptr pWire = std::make_shared<Wire>(occtWire);
-		Wire::Ptr pCopyWire = std::dynamic_pointer_cast<Wire>(pWire->DeepCopy());
 		if (kCopyAttributes)
 		{
 			for (const Edge::Ptr& kpEdge : rkEdges)
 			{
-				AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pCopyWire->GetOcctWire());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpEdge->GetOcctEdge(), pWire->GetOcctWire());
 			}
 		}
 
-		//GlobalCluster::GetInstance().AddTopology(pCopyWire->GetOcctWire());
-		return pCopyWire;
+		return pWire;
 	}
 
 	TopoDS_Wire Wire::ByOcctEdges(const TopTools_ListOfShape & rkOcctEdges)

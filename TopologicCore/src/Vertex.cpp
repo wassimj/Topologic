@@ -23,7 +23,6 @@
 #include "CellComplex.h"
 #include "Cluster.h"
 #include "VertexFactory.h"
-#include "GlobalCluster.h"
 
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRep_Tool.hxx>
@@ -52,7 +51,6 @@ namespace TopologicCore
 		TopoDS_Vertex occtVertex = BRepBuilderAPI_MakeVertex(pOcctPoint->Pnt());
 		TopoDS_Vertex occtFixedVertex = TopoDS::Vertex(Topology::FixShape(occtVertex));
 		Vertex::Ptr pVertex = std::make_shared<Vertex>(occtFixedVertex);
-		//GlobalCluster::GetInstance().AddTopology(pVertex->GetOcctVertex());
 		return pVertex;
 	}
 
@@ -61,7 +59,6 @@ namespace TopologicCore
 		TopoDS_Vertex occtVertex = BRepBuilderAPI_MakeVertex(gp_Pnt(kX, kY, kZ));
 		TopoDS_Vertex occtFixedVertex = TopoDS::Vertex(Topology::FixShape(occtVertex));
 		Vertex::Ptr pVertex = std::make_shared<Vertex>(occtFixedVertex);
-		//GlobalCluster::GetInstance().AddTopology(pVertex->GetOcctVertex());
 		return pVertex;
 	}
 

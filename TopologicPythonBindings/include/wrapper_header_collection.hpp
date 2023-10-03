@@ -2,7 +2,6 @@
 #define topologic_HEADERS_HPP_
 
 // Includes
-#include "GlobalCluster.h"
 #include "FaceFactory.h"
 #include "ContentManager.h"
 #include "ClusterFactory.h"
@@ -53,7 +52,6 @@
 #include "Utilities/CellUtility.h"
 #include "Utilities/TopologyUtility.h"
 #include "Utilities/FaceUtility.h"
-#include "GlobalCluster.h"
 
 // Instantiate Template Classes 
 //TopologicCore::Dictionary dict;
