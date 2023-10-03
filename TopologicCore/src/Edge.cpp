@@ -188,7 +188,7 @@ namespace TopologicCore
 		return pEdge;
 	}
 
-	Edge::Ptr Edge::ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes __attribute__((unused)))
+	Edge::Ptr Edge::ByStartVertexEndVertex(const std::shared_ptr<Vertex>& kpStartVertex, const std::shared_ptr<Vertex>& kpEndVertex, const bool kCopyAttributes)
 	{
 		if (kpStartVertex == nullptr || kpEndVertex == nullptr)
 		{
