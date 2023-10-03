@@ -75,8 +75,8 @@ namespace TopologicCore
 			}
 			catch (Standard_NoSuchObject)
 			{
-				assert("Cannot find a Face in the global Cluster.");
-				throw std::runtime_error("Cannot find a Face in the global Cluster.");
+				assert("Cannot find a Face in the host topology.");
+				throw std::runtime_error("Cannot find a Face in the host topology.");
 			}
 		}
 
