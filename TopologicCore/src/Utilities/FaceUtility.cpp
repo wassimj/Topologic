@@ -504,7 +504,7 @@ namespace TopologicUtilities
 		TopologicCore::Vertex::Ptr vertexA = TopologicCore::Vertex::ByPoint(new Geom_CartesianPoint(pointA));
 		TopologicCore::Vertex::Ptr vertexB = TopologicCore::Vertex::ByPoint(new Geom_CartesianPoint(pointB));
 
-		TopologicCore::Edge::Ptr edge = TopologicCore::Edge::ByStartVertexEndVertex(vertexA, vertexB, false);
+		TopologicCore::Edge::Ptr edge = TopologicCore::Edge::ByStartVertexEndVertex(vertexA, vertexB);
 
 		TopologicCore::Topology::Ptr sliceResult = edge->Slice(kpFace);
 		
