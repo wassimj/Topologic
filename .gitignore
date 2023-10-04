@@ -6,6 +6,8 @@ build-vcpkg/
 install-vcpkg/
 wheelhouse/
 
+# Microsoft Visual Studio 2022 
+vcpkg_installed
 
 # generated gitignores:
 
@@ -198,7 +200,6 @@ poetry.toml
 # User-specific files
 *.rsuser
 *.suo
-*.user
 *.userosscache
 *.sln.docstates
 

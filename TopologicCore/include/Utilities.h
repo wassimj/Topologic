@@ -19,14 +19,17 @@
 #include <TopoDS_Shape.hxx>
 
 #if defined(TOPOLOGICCORE_WINDLL) && (_WIN32)
-#ifdef TOPOLOGICCORE_WINDLL_EXPORTS
-#define TOPOLOGIC_API __declspec(dllexport)
+	#ifdef TOPOLOGICCORE_WINDLL_EXPORTS
+		#define TOPOLOGIC_API __declspec(dllexport)
+	#else
+		#define TOPOLOGIC_API __declspec(dllimport)
+	#endif
 #else
-#define TOPOLOGIC_API __declspec(dllimport)
+	#ifndef TOPOLOGIC_API
+		#define TOPOLOGIC_API
+	#endif
 #endif
-#else
-#define TOPOLOGIC_API
-#endif
+
 
 namespace TopologicCore {
 	enum TopologyType

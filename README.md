@@ -72,3 +72,22 @@ python build_macos.py
 
 The build output is found in `wheelhouse/`.
 The build output is a Python wheel that contains the extension module with TopologicCore linked into it and its OpenCASCADE dependecies "vendored-in" from the Conda-based build environment.  It can be installed with `pip` or its contents can be unzipped.
+
+## Alternative Build Instructions (Windows Only) - Microsoft Visual Studio 2022
+Update 12th July 2023: The alternative build instructions provide a more conventional, comfortable, self-contained build and utilization of the TopologicCore libraries. 
+
+### Pre-Requisites
+This solution utilizes the OpenCascade 7.7.0 installation, note it may work for earlier/newer than the one highlighted here, however, it was not tested for it.
+You can download OCC binaries here: https://dev.opencascade.org/system/files/occt/OCC_7.7.0_release/opencascade-7.7.0-vc14-64.exe . When you install it, you only
+need the binaries and include headers. When installed, if OCC is installed to a different location than 'C:\OpenCASCADE-7.7.0-vc14-64\opencascade-7.7.0\' please make sure
+to update the paths in BuildConfigs/VendorBuildPaths, accordingly. 
+
+### Building the Solution
+Open the Topologic.sln solution file in VS 2022 and build the solution containing two VCX projects:
+- TopologicCore
+- TopologicCoreCppTest
+The output binaries will be located under x64/Debug or x64/Release. Depending as to what target configuration we built the solution for.
+
+### Running an Example
+The 'TopologicCoreCppTest' serves to demonstrate the usage of the TopologicCore API. 
+Make sure to right click on the project in the Solution Explorer and click on 'Set as Startup Project' to run the sample code.
