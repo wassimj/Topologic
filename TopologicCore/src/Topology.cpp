@@ -3509,4 +3509,11 @@ namespace TopologicCore
 		return dict;
 	}
 
+	void Topology::Cleanup()
+	{
+		AttributeManager::GetInstance().ClearAll();
+		ContentManager::GetInstance().ClearAll();
+		InstanceGUIDManager::GetInstance().ClearAll();
+		TopologyFactoryManager::GetInstance().ClearAll();
+	}
 }

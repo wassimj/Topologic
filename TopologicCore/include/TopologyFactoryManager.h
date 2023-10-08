@@ -45,6 +45,8 @@ namespace TopologicCore
 
 		bool Find(const std::string& rkGuid, std::shared_ptr<TopologyFactory>& rTopologyFactory);
 
+		void ClearAll();
+
 		static std::shared_ptr<TopologyFactory> GetDefaultFactory(const TopAbs_ShapeEnum kOcctType);
 
 	protected:

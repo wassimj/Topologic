@@ -652,6 +652,11 @@ namespace TopologicCore
 
 		TOPOLOGIC_API Dictionary GetDictionary();
 
+		/// <summary>
+		/// Clean up all resources in which are managed by this library.
+		/// </summary>
+		TOPOLOGIC_API static void Cleanup();
+
 	protected:
 		TOPOLOGIC_API Topology(const int kDimensionality, const TopoDS_Shape& rkOcctShape, const std::string& rkGuid = "");
 		TOPOLOGIC_API void AddUnionInternalStructure(const TopoDS_Shape& rkOcctShape, TopTools_ListOfShape& rUnionArguments);
