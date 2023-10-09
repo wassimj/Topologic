@@ -568,7 +568,7 @@ void register_Topology_class(py::module& m) {
             " ")
         .def_static(
             "Cleanup",
-            (void(*)()) & Topology::Cleanup,
+            (void(*)(::TopologicCore::Topology::Ptr const&)) & Topology::Cleanup,
             " ")
         ;
 }

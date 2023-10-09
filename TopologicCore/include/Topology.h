@@ -653,9 +653,15 @@ namespace TopologicCore
 		TOPOLOGIC_API Dictionary GetDictionary();
 
 		/// <summary>
-		/// Clean up all resources in which are managed by this library.
+		/// Clean up all resources in which are managed by this library or all resources belonging to a single topology
 		/// </summary>
-		TOPOLOGIC_API static void Cleanup();
+		TOPOLOGIC_API static void Cleanup(const Topology::Ptr& kpTopology = nullptr);
+
+		/// <summary>
+		/// Clean up all resources belonging to a single topology
+		/// </summary>
+		/// <param name="kpTopology"></param>
+		TOPOLOGIC_API static void CleanOne(const Topology::Ptr& kpTopology);
 
 	protected:
 		TOPOLOGIC_API Topology(const int kDimensionality, const TopoDS_Shape& rkOcctShape, const std::string& rkGuid = "");
