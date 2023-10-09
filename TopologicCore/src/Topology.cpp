@@ -3513,6 +3513,7 @@ namespace TopologicCore
 	{
 		AttributeManager::GetInstance().ClearAll();
 		ContentManager::GetInstance().ClearAll();
+		ContextManager::GetInstance().ClearAll();
 		InstanceGUIDManager::GetInstance().ClearAll();
 		TopologyFactoryManager::GetInstance().ClearAll();
 	}
