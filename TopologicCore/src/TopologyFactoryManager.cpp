@@ -46,6 +46,11 @@ namespace TopologicCore
 		return false;
 	}
 
+	void TopologyFactoryManager::ClearAll()
+	{
+		m_topologyFactoryMap.clear();
+	}
+
 	TopologyFactory::Ptr TopologyFactoryManager::GetDefaultFactory(const TopAbs_ShapeEnum kOcctType)
 	{
 		switch (kOcctType)

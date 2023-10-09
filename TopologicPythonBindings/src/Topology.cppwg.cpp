@@ -566,5 +566,9 @@ void register_Topology_class(py::module& m) {
             "GetDictionary",
             (::TopologicCore::Dictionary(Topology::*)()) & Topology::GetDictionary,
             " ")
+        .def_static(
+            "Cleanup",
+            (void(*)()) & Topology::Cleanup,
+            " ")
         ;
 }
