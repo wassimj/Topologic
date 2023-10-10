@@ -3509,11 +3509,37 @@ namespace TopologicCore
 		return dict;
 	}
 
-	void Topology::Cleanup()
+	void Topology::Cleanup(const Topology::Ptr& kpTopology)
 	{
-		AttributeManager::GetInstance().ClearAll();
-		ContentManager::GetInstance().ClearAll();
-		InstanceGUIDManager::GetInstance().ClearAll();
-		TopologyFactoryManager::GetInstance().ClearAll();
+		if (kpTopology)
+		{
+			CleanOne(kpTopology);
+		}
+		else
+		{
+			AttributeManager::GetInstance().ClearAll();
+			ContentManager::GetInstance().ClearAll();
+			ContextManager::GetInstance().ClearAll();
+			InstanceGUIDManager::GetInstance().ClearAll();
+			TopologyFactoryManager::GetInstance().ClearAll();
+		}
+	}
+
+	void Topology::CleanOne(const Topology::Ptr& kpTopology)
+	{
+		// Sanity check
+		if (!kpTopology)
+		{
+			return;
+		}
+
+		TopoDS_Shape occtShape = kpTopology->GetOcctShape();
+		std::string kGuid = kpTopology->GetClassGUID();
+
+		AttributeManager::GetInstance().ClearOne(occtShape);
+		ContentManager::GetInstance().ClearOne(occtShape);
+		ContextManager::GetInstance().ClearOne(occtShape);
+		InstanceGUIDManager::GetInstance().ClearOne(occtShape);
+		TopologyFactoryManager::GetInstance().ClearOne(kGuid);
 	}
 }

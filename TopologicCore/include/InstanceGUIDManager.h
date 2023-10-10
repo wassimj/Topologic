@@ -46,6 +46,8 @@ namespace TopologicCore
 
 		bool Find(const TopoDS_Shape& rkOcctShape, std::string& rkGUID);
 
+		void ClearOne(const TopoDS_Shape& rkOcctShape);
+
 		void ClearAll();
 
 	protected:
