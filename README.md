@@ -121,7 +121,61 @@ In order to update the path you can use the tool install_name_tool that is avail
 
 For example:
 ```
-install_name_tool -change @rpath/libc++.1.dylib @loader_path/libc++.1.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKOffset.7.7.dylib @loader_path/libTKOffset.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKMesh.7.7.dylib @loader_path/libTKMesh.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKBO.7.7.dylib @loader_path/libTKBO.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKPrim.7.7.dylib @loader_path/libTKPrim.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKShHealing.7.7.dylib @loader_path/libTKShHealing.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKTopAlgo.7.7.dylib @loader_path/libTKTopAlgo.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKGeomAlgo.7.7.dylib @loader_path/libTKGeomAlgo.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKBRep.7.7.dylib @loader_path/libTKBRep.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKGeomBase.7.7.dylib @loader_path/libTKGeomBase.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKG3d.7.7.dylib @loader_path/libTKG3d.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKG2d.7.7.dylib @loader_path/libTKG2d.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKMath.7.7.dylib @loader_path/libTKMath.7.7.dylib ./topologic.cpython-38-darwin.so
+install_name_tool -change @rpath/libTKernel.7.7.dylib @loader_path/libTKernel.7.7.dylib ./topologic.cpython-38-darwin.so
+
+install_name_tool -change @rpath/libTKOffset.7.7.dylib @loader_path/libTKOffset.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKMesh.7.7.dylib @loader_path/libTKMesh.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKBO.7.7.dylib @loader_path/libTKBO.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKPrim.7.7.dylib @loader_path/libTKPrim.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKShHealing.7.7.dylib @loader_path/libTKShHealing.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKTopAlgo.7.7.dylib @loader_path/libTKTopAlgo.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKGeomAlgo.7.7.dylib @loader_path/libTKGeomAlgo.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKBRep.7.7.dylib @loader_path/libTKBRep.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKGeomBase.7.7.dylib @loader_path/libTKGeomBase.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKG3d.7.7.dylib @loader_path/libTKG3d.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKG2d.7.7.dylib @loader_path/libTKG2d.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKMath.7.7.dylib @loader_path/libTKMath.7.7.dylib ./topologic.cpython-39-darwin.so
+install_name_tool -change @rpath/libTKernel.7.7.dylib @loader_path/libTKernel.7.7.dylib ./topologic.cpython-39-darwin.so
+
+install_name_tool -change @rpath/libTKOffset.7.7.dylib @loader_path/libTKOffset.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKMesh.7.7.dylib @loader_path/libTKMesh.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKBO.7.7.dylib @loader_path/libTKBO.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKPrim.7.7.dylib @loader_path/libTKPrim.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKShHealing.7.7.dylib @loader_path/libTKShHealing.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKTopAlgo.7.7.dylib @loader_path/libTKTopAlgo.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKGeomAlgo.7.7.dylib @loader_path/libTKGeomAlgo.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKBRep.7.7.dylib @loader_path/libTKBRep.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKGeomBase.7.7.dylib @loader_path/libTKGeomBase.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKG3d.7.7.dylib @loader_path/libTKG3d.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKG2d.7.7.dylib @loader_path/libTKG2d.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKMath.7.7.dylib @loader_path/libTKMath.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKernel.7.7.dylib @loader_path/libTKernel.7.7.dylib ./topologic.cpython-310-darwin.so
+
+install_name_tool -change @rpath/libTKOffset.7.7.dylib @loader_path/libTKOffset.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKMesh.7.7.dylib @loader_path/libTKMesh.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKBO.7.7.dylib @loader_path/libTKBO.7.7.dylib ./topologic.cpython-310-darwin.so
+install_name_tool -change @rpath/libTKPrim.7.7.dylib @loader_path/libTKPrim.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKShHealing.7.7.dylib @loader_path/libTKShHealing.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKTopAlgo.7.7.dylib @loader_path/libTKTopAlgo.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKGeomAlgo.7.7.dylib @loader_path/libTKGeomAlgo.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKBRep.7.7.dylib @loader_path/libTKBRep.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKGeomBase.7.7.dylib @loader_path/libTKGeomBase.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKG3d.7.7.dylib @loader_path/libTKG3d.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKG2d.7.7.dylib @loader_path/libTKG2d.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKMath.7.7.dylib @loader_path/libTKMath.7.7.dylib ./topologic.cpython-311-darwin.so
+install_name_tool -change @rpath/libTKernel.7.7.dylib @loader_path/libTKernel.7.7.dylib ./topologic.cpython-311-darwin.so
 ```
 
-After that command, you will replace the this path `@rpath/libc++.1.dylib` with this one `@loader_path/libc++.1.dylib`, So if you run again `otool -L topologic.cpython-310-darwin.so` you should see your change  applied.
+If you run again `otool -L topologic.cpython-310-darwin.so` you should see your changes applied.
