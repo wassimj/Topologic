@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 project(TopologicCore CXX)
 set(PROJECT_NAMESPACE Topologic)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+
 # Build shared library by default
 option(TOPOLOGICCORE_BUILD_SHARED "Build ${PROJECT_NAME} as a shared library" ON)
 
@@ -117,6 +119,7 @@ set(Utilities
     "include/Utilities/Direction.h"
     "include/Utilities/EdgeUtility.h"
     "include/Utilities/FaceUtility.h"
+    "include/Utilities/Guid.h"
     "include/Utilities/ShellUtility.h"
     "include/Utilities/TopologyUtility.h"
     "include/Utilities/TransformationMatrix2D.h"
@@ -127,6 +130,7 @@ set(Utilities
     "src/Utilities/CellUtility.cpp"
     "src/Utilities/Direction.cpp"
     "src/Utilities/EdgeUtility.cpp"
+    "src/Utilities/Guid.cpp"
     "src/Utilities/FaceUtility.cpp"
     "src/Utilities/ShellUtility.cpp"
     "src/Utilities/TopologyUtility.cpp"
@@ -177,17 +181,35 @@ set(DEPENDENCIES_OpenCASCADE
         "TKFillet;"
         "TKBool;"
         )
+
 if(NOT CMAKE_LINK_GROUP_USING_RESCAN_SUPPORTED)
-    target_link_libraries(${PROJECT_NAME} PUBLIC "${DEPENDENCIES_OpenCASCADE}")
+    set(LIBDEPS "${DEPENDENCIES_OpenCASCADE}")
 else()
     # help static linking with RESCAN
-    target_link_libraries(${PROJECT_NAME} PUBLIC "$<LINK_GROUP:RESCAN,${DEPENDENCIES_OpenCASCADE}>")
+    set(LIBDEPS "$<LINK_GROUP:RESCAN,${DEPENDENCIES_OpenCASCADE}>")
 endif()
+set(TopologicCore_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
+
+if(WIN32)
+elseif(APPLE)
+    find_library(CFLIB CoreFoundation REQUIRED)
+    set(LIBDEPS ${LIBDEPS} ${CFLIB})
+else()
+    find_package(Libuuid REQUIRED)
+    if (NOT Libuuid_FOUND)
+        message(FATAL_ERROR
+            "You might need to run 'sudo apt-get install uuid-dev' or similar")
+    endif()
+    set(TopologicCore_INCLUDE_DIR ${TopologicCore_INCLUDE_DIR} ${Libuuid_INCLUDE_DIRS})
+    set(LIBDEPS ${LIBDEPS} ${Libuuid_LIBRARIES})
+endif()
+
+target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBDEPS})
 
 # workaround for the include path from the vcpkg OpenCASCADE
 if(VCPKG_INSTALLED_DIR)
     message(STATUS "workaround for vcpkg: adding OpenCASCADE_INCLUDE_DIR directory to target: ${PROJECT_NAME}: ${OpenCASCADE_INCLUDE_DIR}")
-    target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
+    target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${TopologicCore_INCLUDE_DIR})
 endif()
 
 
@@ -232,7 +254,7 @@ if (build_library_type STREQUAL SHARED)
         # setting INTERFACE_LINK_LIBRARIES to an empty list since there are not other dependencies for now
         set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_LINK_LIBRARIES "")
         # restore propagation of OpenCASCADE include dir
-        target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OpenCASCADE_INCLUDE_DIR})
+        target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${TopologicCore_INCLUDE_DIR})
     endif()
 endif()
 
