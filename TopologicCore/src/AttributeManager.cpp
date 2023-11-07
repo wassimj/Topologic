@@ -48,6 +48,16 @@ namespace TopologicCore
 		m_occtShapeToAttributesMap[rkOcctShape][kAttributeName] = kpAttribute;
 	}
 
+	void AttributeManager::Add(const std::string& graphGuid, const std::string& kAttributeName, const std::shared_ptr<Attribute>& kpAttribute)
+	{
+		if (m_graphToAttributesMap.find(graphGuid) == m_graphToAttributesMap.end())
+		{
+			std::map<std::string, Attribute::Ptr> attributeMap;
+			m_graphToAttributesMap.insert(std::pair<std::string, AttributeMap>(graphGuid, attributeMap));
+		}
+		m_graphToAttributesMap[graphGuid][kAttributeName] = kpAttribute;
+	}
+
 	void AttributeManager::Remove(const TopologicCore::Topology::Ptr& kpTopology, const std::string& kAttributeName)
 	{
 		Remove(kpTopology->GetOcctShape(), kAttributeName);
@@ -58,6 +68,14 @@ namespace TopologicCore
 		if (m_occtShapeToAttributesMap.find(rkOcctShape) != m_occtShapeToAttributesMap.end())
 		{
 			m_occtShapeToAttributesMap[rkOcctShape].erase(kAttributeName);
+		}
+	}
+
+	void AttributeManager::Remove(const std::string& graphGuid, const std::string& kAttributeName)
+	{
+		if (m_graphToAttributesMap.find(graphGuid) != m_graphToAttributesMap.end())
+		{
+			m_graphToAttributesMap[graphGuid].erase(kAttributeName);
 		}
 	}
 
@@ -87,6 +105,17 @@ namespace TopologicCore
 		return false;
 	}
 
+	bool AttributeManager::FindAll(const std::string& graphGuid, std::map<std::string, std::shared_ptr<Attribute>>& rAttributes)
+	{
+		if (m_graphToAttributesMap.find(graphGuid) != m_graphToAttributesMap.end())
+		{
+			rAttributes = m_graphToAttributesMap[graphGuid];
+			return true;
+		}
+
+		return false;
+	}
+
 	void AttributeManager::ClearOne(const TopoDS_Shape & rkOcctShape)
 	{
 		if (m_occtShapeToAttributesMap.find(rkOcctShape) != m_occtShapeToAttributesMap.end())
@@ -96,9 +125,19 @@ namespace TopologicCore
 		}
 	}
 
+	void AttributeManager::ClearOne(const std::string& graphGuid)
+	{
+		if (m_graphToAttributesMap.find(graphGuid) != m_graphToAttributesMap.end())
+		{
+			m_graphToAttributesMap[graphGuid].clear();
+			m_graphToAttributesMap.erase(graphGuid);
+		}
+	}
+
 	void AttributeManager::ClearAll()
 	{
 		m_occtShapeToAttributesMap.clear();
+		m_graphToAttributesMap.clear();
 	}
 
 	void AttributeManager::CopyAttributes(const TopoDS_Shape& rkOcctOriginShape, const TopoDS_Shape& rkOcctDestinationShape, const bool addDuplicateEntries)
