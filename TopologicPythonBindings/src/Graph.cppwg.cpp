@@ -266,5 +266,17 @@ py::class_<Graph  , std::shared_ptr<Graph >   >(m, "Graph")
                     rEdges.append(x);
             },
             " ", py::arg("kpVertex"), py::arg("kTolerance"), py::arg("rEdges"))
+        .def(
+            "GetGUID",
+            (::std::string(Graph::*)() const ) & Graph::GetGUID,
+            " ")
+        .def(
+            "SetDictionary",
+            (void(Graph::*)(::TopologicCore::Dictionary const&)) & Graph::SetDictionary,
+            " ", py::arg("dictionary"))
+        .def(
+            "GetDictionary",
+            (::TopologicCore::Dictionary(Graph::*)()) & Graph::GetDictionary,
+            " ")
     ;
 }

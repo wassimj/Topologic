@@ -24,6 +24,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <unordered_map>
 
 namespace TopologicCore
 {
@@ -36,6 +37,7 @@ namespace TopologicCore
 		typedef std::shared_ptr<AttributeManager> Ptr;
 		typedef std::map<std::string, std::shared_ptr<Attribute>> AttributeMap;
 		typedef std::map<TopoDS_Shape, AttributeMap, TopologicCore::OcctShapeComparator> ShapeToAttributesMap;
+		typedef std::unordered_map<std::string, AttributeMap> GraphToAttributesMap;
 
 	public:
 		TOPOLOGIC_API static AttributeManager& GetInstance();
@@ -44,15 +46,23 @@ namespace TopologicCore
 
 		TOPOLOGIC_API void Add(const TopoDS_Shape& rkOcctShape, const std::string& kAttributeName, const std::shared_ptr<Attribute>& kpAttribute);
 
+		TOPOLOGIC_API void Add(const std::string& graphGuid, const std::string& kAttributeName, const std::shared_ptr<Attribute>& kpAttribute);
+
 		TOPOLOGIC_API void Remove(const std::shared_ptr<TopologicCore::Topology>& kpTopology, const std::string& kAttributeName);
 
 		TOPOLOGIC_API void Remove(const TopoDS_Shape& rkOcctShape, const std::string& kAttributeName);
+
+		TOPOLOGIC_API void Remove(const std::string& graphGuid, const std::string& kAttributeName);
 
 		TOPOLOGIC_API std::shared_ptr<Attribute> Find(const TopoDS_Shape& rkOcctShape, const std::string& rkAttributeName);
 
 		TOPOLOGIC_API bool FindAll(const TopoDS_Shape & rkOcctShape, std::map<std::string, std::shared_ptr<Attribute>>& rAttributes);
 
+		TOPOLOGIC_API bool FindAll(const std::string& graphGuid, std::map<std::string, std::shared_ptr<Attribute>>& rAttributes);
+
 		TOPOLOGIC_API void ClearOne(const TopoDS_Shape& rkOcctShape);
+
+		TOPOLOGIC_API void ClearOne(const std::string& graphGuid);
 
 		TOPOLOGIC_API void ClearAll();
 
@@ -63,6 +73,7 @@ namespace TopologicCore
 		void GetAttributesInSubshapes(const TopoDS_Shape& rkOcctShape, ShapeToAttributesMap& rShapesToAttributesMap);
 
 	protected:
-		ShapeToAttributesMap  m_occtShapeToAttributesMap;
+		ShapeToAttributesMap m_occtShapeToAttributesMap;
+		GraphToAttributesMap m_graphToAttributesMap;
 	};
 }

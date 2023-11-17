@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "Dictionary.h"
 #include "Utilities.h"
 #include "Vertex.h"
 #include "Edge.h"
@@ -180,6 +181,12 @@ namespace TopologicCore
 
 		TOPOLOGIC_API void IncidentEdges(const std::shared_ptr<Vertex>& kpVertex, const double kTolerance, std::list<std::shared_ptr<TopologicCore::Edge>>& rEdges) const;
 
+		TOPOLOGIC_API std::string GetGUID() const;
+
+		TOPOLOGIC_API void SetDictionary(const Dictionary& dictionary);
+
+		TOPOLOGIC_API Dictionary GetDictionary();
+
 	protected:
 
 		typedef std::map<TopoDS_Vertex, TopTools_MapOfShape, OcctShapeComparator> GraphMap;
@@ -263,5 +270,6 @@ namespace TopologicCore
 
 		GraphMap m_graphDictionary;
 		TopTools_MapOfShape m_occtEdges;
+		std::string m_guid;
 	};
 }

@@ -30,6 +30,7 @@
 #include <Utilities/EdgeUtility.h>
 #include <Utilities/FaceUtility.h>
 #include <Utilities/CellUtility.h>
+#include <Utilities/Guid.h>
 
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -118,11 +119,15 @@ namespace TopologicCore
 
 		// 2. Add the edges
 		AddEdges(rkEdges, 0.0001);
+
+		auto guid = TopologicUtilities::newGuid();
+		m_guid = guid.str();
 	}
 
 	Graph::Graph(const Graph* kpAnotherGraph)
 		: m_graphDictionary(kpAnotherGraph->m_graphDictionary)
 		, m_occtEdges(kpAnotherGraph->m_occtEdges)
+		, m_guid(TopologicUtilities::newGuid().str())
 	{
 	}
 
@@ -1322,6 +1327,30 @@ namespace TopologicCore
 
 			rEdges.push_back(edge);
 		}
+	}
+
+	std::string Graph::GetGUID() const
+	{
+		return m_guid;
+	}
+
+	void Graph::SetDictionary(const Dictionary& attributes)
+	{
+		AttributeManager& attrManager = AttributeManager::GetInstance();
+
+		attrManager.ClearOne(m_guid);
+
+		for (auto entry : attributes)
+		{
+			attrManager.Add(m_guid, entry.first, entry.second);
+		}
+	}
+
+	Dictionary Graph::GetDictionary()
+	{
+		TopologicCore::Dictionary dict;
+		AttributeManager::GetInstance().FindAll(m_guid, dict);
+		return dict;
 	}
 
 	Vertex::Ptr CalculateGraphVertexFromAperture(const Aperture::Ptr kpAperture, const bool kUseFaceInternalVertex, const double kTolerance)
