@@ -22,7 +22,6 @@
 #include "Face.h"
 #include "Aperture.h"
 #include "ShellFactory.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -120,7 +119,6 @@ namespace TopologicCore
 				}
 			}
 			Shell::Ptr pShell = std::make_shared<Shell>(occtShell);
-			//GlobalCluster::GetInstance().AddTopology(pShell);
 			return pShell;
 		}
 

@@ -17,10 +17,11 @@
 #pragma once
 
 #include "Utilities.h"
-#include "GlobalCluster.h"
 #include "TopologicalQuery.h"
 #include "Dictionary.h"
 
+#include <TopoDS_Builder.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <BOPAlgo_CellsBuilder.hxx>
@@ -641,10 +642,6 @@ namespace TopologicCore
 
 		TOPOLOGIC_API static bool IsContainerType(const TopoDS_Shape& rkOcctShape);
 
-// #ifdef _DEBUG
-		TOPOLOGIC_API void GlobalClusterSubTopologies(std::list<Topology::Ptr>& rSubTopologies) const;
-// #endif
-
 		TOPOLOGIC_API void RegisterFactory(const std::string& rkGuid, const std::shared_ptr<TopologyFactory>& kpTopologyFactory);
 
 		TOPOLOGIC_API bool IsReversed();
@@ -654,6 +651,17 @@ namespace TopologicCore
 		TOPOLOGIC_API void SetDictionary(const Dictionary& dictionary);
 
 		TOPOLOGIC_API Dictionary GetDictionary();
+
+		/// <summary>
+		/// Clean up all resources in which are managed by this library or all resources belonging to a single topology
+		/// </summary>
+		TOPOLOGIC_API static void Cleanup(const Topology::Ptr& kpTopology = nullptr);
+
+		/// <summary>
+		/// Clean up all resources belonging to a single topology
+		/// </summary>
+		/// <param name="kpTopology"></param>
+		TOPOLOGIC_API static void CleanOne(const Topology::Ptr& kpTopology);
 
 	protected:
 		TOPOLOGIC_API Topology(const int kDimensionality, const TopoDS_Shape& rkOcctShape, const std::string& rkGuid = "");
@@ -832,12 +840,6 @@ namespace TopologicCore
 			rMembers.push_back(TopologicalQuery::Downcast<Subclass>(ByOcctShape(GetOcctShape(), GetInstanceGUID())));
 		}
 	}
-
-	/*template <class Subclass>
-	void Topology::UpwardNavigation(std::list<std::shared_ptr<Subclass>>& rAncestors) const
-	{
-		UpwardNavigation(GlobalCluster::GetInstance().GetOcctCompound(), rAncestors);
-	}*/
 
 	template<class Subclass>
 	inline void Topology::UpwardNavigation(const TopoDS_Shape& rkOcctHostTopology, std::list<std::shared_ptr<Subclass>>& rAncestors) const

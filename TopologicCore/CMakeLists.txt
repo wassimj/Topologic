@@ -26,7 +26,6 @@ set(no_group_source_files
     "include/Dictionary.h"
     "include/Edge.h"
     "include/Face.h"
-    "include/GlobalCluster.h"
     "include/Graph.h"
     "include/InstanceGUIDManager.h"
     "include/Shell.h"
@@ -46,7 +45,6 @@ set(no_group_source_files
     "src/Dictionary.cpp"
     "src/Edge.cpp"
     "src/Face.cpp"
-    "src/GlobalCluster.cpp"
     "src/Graph.cpp"
     "src/InstanceGUIDManager.cpp"
     "src/Shell.cpp"
@@ -158,7 +156,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 # Include dir
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Set version: for now sync manually with: TopologicCore/src/About.cpp
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "4.0.0" SOVERSION "4")
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "5.0.0" SOVERSION "5")
 
 # Dependency: OpenCASCADE
 find_package(OpenCASCADE REQUIRED)

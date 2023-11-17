@@ -46,6 +46,19 @@ namespace TopologicCore
 		return false;
 	}
 
+	void TopologyFactoryManager::ClearOne(const std::string& rkGuid)
+	{
+		if (m_topologyFactoryMap.find(rkGuid) != m_topologyFactoryMap.end())
+		{
+			m_topologyFactoryMap.erase(rkGuid);
+		}
+	}
+
+	void TopologyFactoryManager::ClearAll()
+	{
+		m_topologyFactoryMap.clear();
+	}
+
 	TopologyFactory::Ptr TopologyFactoryManager::GetDefaultFactory(const TopAbs_ShapeEnum kOcctType)
 	{
 		switch (kOcctType)

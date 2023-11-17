@@ -41,6 +41,14 @@ namespace TopologicCore
 		return false;
 	}
 
+	void InstanceGUIDManager::ClearOne(const TopoDS_Shape& rkOcctShape)
+	{
+		if (m_occtShapeToGUIDMap.find(rkOcctShape) != m_occtShapeToGUIDMap.end())
+		{
+			m_occtShapeToGUIDMap.erase(rkOcctShape);
+		}
+	}
+
 	void InstanceGUIDManager::ClearAll()
 	{
 		m_occtShapeToGUIDMap.clear();

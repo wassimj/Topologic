@@ -22,7 +22,6 @@
 #include "Wire.h"
 #include "FaceFactory.h"
 #include "Utilities.h"
-#include "GlobalCluster.h"
 #include "AttributeManager.h"
 
 #include <Utilities/FaceUtility.h>
@@ -62,7 +61,6 @@ namespace TopologicCore
 	{
 		// Iterate through the edges and find the incident faces which are not this face.
 		TopTools_IndexedDataMapOfShapeListOfShape occtEdgeFaceMap;
-		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
 		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_EDGE, TopAbs_FACE, occtEdgeFaceMap);
 
 		// Find the constituent faces
@@ -233,11 +231,10 @@ namespace TopologicCore
 		TopoDS_Face occtFixedFace = OcctShapeFix(occtMakeFace);
 
 		Face::Ptr pFace = std::make_shared<Face>(occtFixedFace);
-		Face::Ptr pCopyFace = std::dynamic_pointer_cast<Face>(pFace->DeepCopy());
 		std::list<Topology::Ptr> wiresAsTopologies;
 		if (kCopyAttributes)
 		{
-			AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+			AttributeManager::GetInstance().DeepCopyAttributes(pkExternalBoundary->GetOcctWire(), pFace->GetOcctFace());
 		}
 		wiresAsTopologies.push_back(pkExternalBoundary);
 		for (const Wire::Ptr& kpInternalBoundary : rkInternalBoundaries)
@@ -245,16 +242,15 @@ namespace TopologicCore
 			wiresAsTopologies.push_back(kpInternalBoundary);
 			if (kCopyAttributes)
 			{
-				AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pCopyFace->GetOcctFace());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpInternalBoundary->GetOcctWire(), pFace->GetOcctFace());
 			}
 		}
 		if (kCopyAttributes)
 		{
-			pCopyFace->DeepCopyAttributesFrom(wiresAsTopologies);
+			pFace->DeepCopyAttributesFrom(wiresAsTopologies);
 		}
 
-		//GlobalCluster::GetInstance().AddTopology(pCopyFace->GetOcctFace());
-		return pCopyFace;
+		return pFace;
 	}
 
 	Face::Ptr Face::ByEdges(const std::list<Edge::Ptr>& rkEdges, const bool kCopyAttributes)
@@ -293,7 +289,6 @@ namespace TopologicCore
 		ShapeFix_Face occtShapeFix(occtMakeFace);
 		occtShapeFix.Perform();
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 
@@ -467,7 +462,6 @@ namespace TopologicCore
 		occtShapeFix.Perform();
 
 		Face::Ptr pFace = std::make_shared<Face>(TopoDS::Face(occtShapeFix.Result()));
-		//GlobalCluster::GetInstance().AddTopology(pFace->GetOcctFace());
 		return pFace;
 	}
 

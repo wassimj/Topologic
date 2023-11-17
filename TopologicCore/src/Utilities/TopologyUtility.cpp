@@ -16,7 +16,6 @@
 
 #include <Utilities/TopologyUtility.h>
 
-#include <GlobalCluster.h>
 #include <AttributeManager.h>
 #include <Context.h>
 #include <Shell.h>
@@ -68,7 +67,6 @@ namespace TopologicUtilities
 			pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
 
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -111,7 +109,6 @@ namespace TopologicUtilities
 			pCoreTransformedTopology = pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
 
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -155,7 +152,6 @@ namespace TopologicUtilities
 
 		}
 
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 
@@ -208,7 +204,6 @@ namespace TopologicUtilities
 			transformedSubcontents.push_back(transformedSubcontent);
 			pCoreTransformedTopology->AddContents(transformedSubcontents, contextType);
 		}
-		// TopologicCore::GlobalCluster::GetInstance().AddTopology(pCoreTransformedTopology);
 		return pCoreTransformedTopology;
 	}
 

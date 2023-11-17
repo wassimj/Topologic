@@ -22,7 +22,6 @@
 #include "Shell.h"
 #include "CellComplex.h"
 #include "CellFactory.h"
-//#include "GlobalCluster.h"
 #include "AttributeManager.h"
 #include <Utilities/EdgeUtility.h>
 
@@ -46,7 +45,6 @@ namespace TopologicCore
 	{
 		// Get a map of Face->Solid[]
 		TopTools_IndexedDataMapOfShapeListOfShape occtFaceSolidMap;
-		//TopExp::MapShapesAndUniqueAncestors(GlobalCluster::GetInstance().GetOcctCompound(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
 		TopExp::MapShapesAndUniqueAncestors(kpHostTopology->GetOcctShape(), TopAbs_FACE, TopAbs_SOLID, occtFaceSolidMap);
 
 		// Find the constituent Faces
@@ -77,8 +75,8 @@ namespace TopologicCore
 			}
 			catch (Standard_NoSuchObject)
 			{
-				assert("Cannot find a Face in the global Cluster.");
-				throw std::runtime_error("Cannot find a Face in the global Cluster.");
+				assert("Cannot find a Face in the host topology.");
+				throw std::runtime_error("Cannot find a Face in the host topology.");
 			}
 		}
 
@@ -222,12 +220,6 @@ namespace TopologicCore
 		TopoDS_Solid occtFixedSolid = OcctShapeFix(occtSolid);
 		Cell::Ptr fixedCell = std::make_shared<Cell>(occtFixedSolid);
 
-		// Deep copy the Cell
-		Cell::Ptr copyFixedCell = TopologicalQuery::Downcast<Cell>(fixedCell->DeepCopy());
-
-		// Register to Global Cluster
-		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
-
 		// Copy the Dictionaries
 		if (kCopyAttributes)
 		{
@@ -235,11 +227,11 @@ namespace TopologicCore
 			for (const Face::Ptr& kpFace : rkFaces)
 			{
 				facesAsTopologies.push_back(kpFace);
-				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), copyFixedCell->GetOcctSolid());
+				AttributeManager::GetInstance().DeepCopyAttributes(kpFace->GetOcctFace(), fixedCell->GetOcctSolid());
 			}
-			copyFixedCell->DeepCopyAttributesFrom(facesAsTopologies);
+			fixedCell->DeepCopyAttributesFrom(facesAsTopologies);
 		}
-		return copyFixedCell;
+		return fixedCell;
 	}
 
 	Cell::Ptr Cell::ByShell(const Shell::Ptr& kpShell, const bool kCopyAttributes)
@@ -269,19 +261,13 @@ namespace TopologicCore
 		TopoDS_Solid occtFixedSolid = OcctShapeFix(occtMakeSolid);
 		Cell::Ptr fixedCell = std::make_shared<Cell>(occtFixedSolid);
 
-		// Deep copy the Cell
-		Cell::Ptr copyFixedCell = TopologicalQuery::Downcast<Cell>(fixedCell->DeepCopy());
-
-		// Register to Global Cluster
-		// GlobalCluster::GetInstance().AddTopology(fixedCell->GetOcctSolid());
-
 		// Copy the Dictionaries
 		if (kCopyAttributes)
 		{
-			AttributeManager::GetInstance().DeepCopyAttributes(kpShell->GetOcctShell(), copyFixedCell->GetOcctSolid());
+			AttributeManager::GetInstance().DeepCopyAttributes(kpShell->GetOcctShell(), fixedCell->GetOcctSolid());
 		}
 
-		return copyFixedCell;
+		return fixedCell;
 	}
 
 	void Cell::SharedEdges(const Cell::Ptr& kpAnotherCell, std::list<Edge::Ptr>& rEdges) const
