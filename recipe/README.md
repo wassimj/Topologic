@@ -1,7 +1,7 @@
 # Build recipes
 
-These are the scripts to build Topologic Python bindings for Linux and Windows.
-Compiled files can be found in `TopologicPythonBindings/wheelhouse/`.
+These are the scripts to build Topologic Python bindings for Linux, macOS, and
+Windows. Compiled files can be found in `TopologicPythonBindings/wheelhouse/`.
 
 
 ## Linux x86_64
@@ -40,6 +40,34 @@ To build only openCASCADE:
 Do not build openCASCADE:
 
     build_linux_x86_64_noconda.sh --no-deps
+
+
+## macOS ARM64
+
+### Using Conda: build_macos_arm64_conda.sh
+
+Installs Miniconda if it is not found in `$HOME/miniconda`. Builds Topologic
+Python bindings for macOS with Miniconda. Currently, Miniconda runs with Python
+up to v3.12. Below commands should work, the build will target macOS 11.0:
+
+    ./build_macos_arm64_conda.sh 312 11
+
+    ./build_macos_arm64_conda.sh 311 11
+
+    ./build_macos_arm64_conda.sh 310 11
+
+    ./build_macos_arm64_conda.sh 39 11
+
+    ./build_macos_arm64_conda.sh 38 11
+
+### Without using Conda: build_macos_arm64_noconda.sh
+
+Builds Topologic Python bindings for macOS without Miniconda as it is not
+shipped with Python greater than 3.12 yet. Assumed, you have Python installed
+on your macOS machine, and it is added into your environment paths, so `pip`
+just works in command line. The build will target your current macOS version:
+
+    ./build_macos_arm64_noconda.sh
 
 
 ## Windows amd64
