@@ -34,6 +34,8 @@ def _cmd_gen_add_extra_args(cmd, args):
     extras = args.extra_cmake_args if args.extra_cmake_args else []
     for x in extras:
         cmd = cmd + " " + x
+    if "TOPOLOGIC_EXTRA_CMAKE_ARGS" in os.environ:
+        cmd = cmd + " " + os.environ['TOPOLOGIC_EXTRA_CMAKE_ARGS']
     return cmd
 
 
