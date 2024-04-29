@@ -26,7 +26,15 @@ if __name__ == '__main__':
 
     wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic")
 
-    subprocess.run([sys.executable, "repair_wheel_windows.py",
+    if "CONDA_PREFIX" in os.environ:
+        subprocess.run([sys.executable, "repair_wheel_windows.py",
                     "--wheel", wheel,
                     "--dll-dir", os.environ["CONDA_PREFIX"] + "\\Library\\bin"],
                    check=True)
+    elif "TOPOLOGIC_EXTRA_DLL_DIR" in os.environ:
+        subprocess.run([sys.executable, "repair_wheel_windows.py",
+                    "--wheel", wheel,
+                    "--dll-dir", os.environ["TOPOLOGIC_EXTRA_DLL_DIR"]],
+                   check=True)
+    else:
+        raise Exception(f"CONDA_PREFIX or TOPOLOGIC_EXTRA_DLL_DIR required in environment variable")
