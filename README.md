@@ -25,35 +25,165 @@ TopologicCore contains the following main classes:
 
 ## Build Instructions
 
-Prerequisites:
- - Anaconda or Miniconda
- - On Windows: Microsoft Visual Studio 2022 with "Desktop development with C++" workload installed
+### Get source code
 
-1. Clone the repository, switch to the branch and initialize submodules (pybind11)
+Clone the repository, switch to the branch and initialize submodules
+(`pybind11`):
+
 ```
 git clone https://github.com/wassimj/Topologic
 cd Topologic
 git submodule update --init
 ```
-2. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
+
+### Use pre-made build recipes for Linux, Windows, and macOS
+
+#### Prerequisites:
+
+ - Anaconda or Miniconda (optional)
+ - On Windows: Microsoft Visual Studio 2022 with "Desktop development with C++" workload installed
+
+There are pre-made recipes to build Topologic Python bindings for Linux, macOS,
+and Windows which you may find in the directory `recipe/`.
+
+#### Pre-made recipe for Linux x86_64
+
+##### Compilation using Anaconda/Miniconda: `recipe/build_linux_x86_64_conda.sh`
+
+This script installs Miniconda if it is not found in `$HOME/miniconda` and
+builds Topologic Python bindings for Linux with Miniconda. Currently, Miniconda
+runs with Python up to v3.12. Below commands should work (`312` corresponds to
+Python v3.12, and so on):
+
+    recipe/build_linux_x86_64_conda.sh 312
+
+    recipe/build_linux_x86_64_conda.sh 311
+
+    recipe/build_linux_x86_64_conda.sh 310
+
+    recipe/build_linux_x86_64_conda.sh 39
+
+    recipe/build_linux_x86_64_conda.sh 38
+
+##### Compilation without using Anaconda/Miniconda: `recipe/build_linux_x86_64_noconda.sh`
+
+This script builds Topologic Python bindings for Linux without using
+Anaconda/Miniconda as it is not shipped with Python greater than 3.12 yet.
+Assumed, you have Python installed on your Linux machine, and it is added into
+your environment paths, so `pip` just works in command line.
+
+The script will also download and build openCASCADE 7.8 what may take around 1h:
+
+    recipe/build_linux_x86_64_noconda.sh
+
+To build only openCASCADE:
+
+    recipe/build_linux_x86_64_noconda.sh --only-deps
+
+Do not build openCASCADE:
+
+    recipe/build_linux_x86_64_noconda.sh --no-deps
+
+
+#### Pre-made recipe for macOS ARM64
+
+##### Compilation using Anaconda/Miniconda: `recipe/build_macos_arm64_conda.sh`
+
+This script installs Miniconda if it is not found in `$HOME/miniconda` and
+builds Topologic Python bindings for macOS with Miniconda. Currently, Miniconda
+runs with Python up to v3.12. Below commands should work (the build will target
+macOS 11.0; `312` corresponds to Python v3.12, and so on):
+
+    recipe/build_macos_arm64_conda.sh 312 11
+
+    recipe/build_macos_arm64_conda.sh 311 11
+
+    recipe/build_macos_arm64_conda.sh 310 11
+
+    recipe/build_macos_arm64_conda.sh 39 11
+
+    recipe/build_macos_arm64_conda.sh 38 11
+
+#### Compilation without using Anaconda/Miniconda: `recipe/build_macos_arm64_noconda.sh`
+
+This script builds Topologic Python bindings for macOS without Miniconda as it
+is not shipped with Python greater than 3.12 yet. Assumed, you have Python
+installed on your macOS machine, and it is added into your environment paths, so
+`pip` just works in command line. The build will target your current macOS
+version:
+
+    recipe/build_macos_arm64_noconda.sh
+
+
+#### Pre-made recipe for Windows amd64
+
+##### Compilation using Anaconda/Miniconda:`recipe\build_win_amd64_conda.bat`
+
+This script installs Miniconda if it is not found in `C:\Miniconda` and builds
+Topologic Python bindings for Windows with Miniconda. Currently, Miniconda runs
+with Python up to v3.12. Below commands should work (`312` corresponds to Python
+v3.12, and so on):
+
+    recipe\build_win_amd64_conda.bat /createenv 312
+    recipe\build_win_amd64_conda.bat /useenv 312
+
+    recipe\build_win_amd64_conda.bat /createenv 311
+    recipe\build_win_amd64_conda.bat /useenv 311
+
+    recipe\build_win_amd64_conda.bat /createenv 310
+    recipe\build_win_amd64_conda.bat /useenv 310
+
+    recipe\build_win_amd64_conda.bat /createenv 39
+    recipe\build_win_amd64_conda.bat /useenv 39
+
+    recipe\build_win_amd64_conda.bat /createenv 38
+    recipe\build_win_amd64_conda.bat /useenv 38
+
+
+#### Compilation without using Anaconda/Miniconda: `recipe\build_win_amd64_noconda.bat`
+
+This script builds Topologic Python bindings for Windows without Miniconda as it
+is not shipped with Python greater than 3.12 yet. Assumed, you have Python
+installed on your Windows machine, and it is added into your environment paths,
+so `pip` just works in command line.
+
+The script will use compiled openCASCADE 7.8 for Windows AMD64 from the official
+portal:
+
+    recipe/build_win_amd64_noconda.bat
+
+
+### Alternative build instructions for Anaconda/Miniconda users and writers of alternative build recipes
+
+If the above pre-made build recipes are not working for you for some reason, you
+may have Anaconda/Miniconda prepared your way.
+
+#### Prerequisites:
+
+ - Anaconda or Miniconda (mandatory)
+ - On Windows: Microsoft Visual Studio 2022 with "Desktop development with C++" workload installed
+
+#### The instructions for using purely with Anaconda/Miniconda
+
+1. Create the Conda-based build environment for the target Python version: the files `conda_env_topologic_*.yml` where `*` is `py310`, `py311`, etc. for Python 3.10, 3.11, etc. define Conda environments named `topologic_py310`, `topologic_py311`, etc. that contain the build dependencies, notably OpenCASCADE, and build tools.  
 As of 20221217, Blender comes with Python 3.10; the following instructions are for this version.  
 ```
 conda env create -f conda_env_topologic_py310.yml
 ```  
 (Developer note: keep the contents of the `conda_env_topologic_*.yml` files in sync.)
-b
-3. Activate the Conda environment:
+
+2. Activate the Conda environment:
 ```
 conda activate topologic_py310
 ```
 
-4. To build TopologicCore separately, if needed:
+3. To build TopologicCore separately, if needed:
 ```
 python build.py --build-type Release --source-dir . --build-dir build --build-target TopologicCore
 ```
 The built library is found in `build/TopologicCore/`.
 
-5. To build the Python extension:
+4. To build the Python extension:
 - Windows
 ```
 cd TopologicPythonBindings
@@ -70,6 +200,7 @@ cd TopologicPythonBindings
 python build_macos.py
 ```
 
+### Conclusion
 The build output is found in `wheelhouse/`.
 The build output is a Python wheel that contains the extension module with TopologicCore linked into it and its OpenCASCADE dependecies "vendored-in" from the Conda-based build environment.  It can be installed with `pip` or its contents can be unzipped.
 
@@ -179,3 +310,4 @@ install_name_tool -change @rpath/libTKernel.7.7.dylib @loader_path/libTKernel.7.
 ```
 
 If you run again `otool -L topologic.cpython-310-darwin.so` you should see your changes applied.
+
