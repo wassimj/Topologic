@@ -67,6 +67,17 @@ class CMakeBuild(build_ext):
         self.announce(f"copying {cp_dst} -> {cp_dst}")
         shutil.copyfile(cp_src, cp_dst)
 
+# For 'bdist_wheel', a custom platform name may be required.
+# Apply and use the name if it is set in 'TOPOLOGIC_PLAT_NAME' env variable.
+def build_options():
+    if "TOPOLOGIC_PLAT_NAME" in os.environ:
+        return {
+            'bdist_wheel': {
+                'universal': False,
+                'plat_name': os.environ['TOPOLOGIC_PLAT_NAME']
+            }
+        }
+    return {};
 
 setup(
     name="topologic",
@@ -82,4 +93,5 @@ setup(
     zip_safe=False, # install as dir
     extras_require={},
     python_requires=">=3.8",
+    options=build_options()
 )
