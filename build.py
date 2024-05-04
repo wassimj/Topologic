@@ -61,7 +61,7 @@ def _cmd_install(args):
 
 def build_win32(args):
     # letting cmake decide the generator on windows
-    cmd = f"cmake -S '{args.source_dir}' -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}' -DCMAKE_CONFIGURATION_TYPES='{args.build_type}'"
+    cmd = f"cmake -S '{args.source_dir}' -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}' -DCMAKE_CONFIGURATION_TYPES='{args.build_type}' -DBUILD_VERSION='{args.build_version}'"
     cmd = _cmd_gen_add_extra_args(cmd, args)
     syscmd(cmd)
     cmd = f"cmake --build '{args.build_dir}' --config '{args.build_type}'"
@@ -73,7 +73,7 @@ def build_win32(args):
 
 def build_linux(args):
     # use ninja on linux
-    cmd = f"cmake -S '{args.source_dir}' -G Ninja -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}'"
+    cmd = f"cmake -S '{args.source_dir}' -G Ninja -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}' -DBUILD_VERSION='{args.build_version}'"
     cmd = _cmd_gen_add_extra_args(cmd, args)
     syscmd(cmd)
     cmd = f"cmake --build '{args.build_dir}'"
@@ -85,7 +85,7 @@ def build_linux(args):
 
 def build_darwin(args):
     # use ninja on moacos
-    cmd = f"cmake -S '{args.source_dir}' -G Ninja -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}'"
+    cmd = f"cmake -S '{args.source_dir}' -G Ninja -B '{args.build_dir}' -DCMAKE_BUILD_TYPE='{args.build_type}' -DBUILD_VERSION='{args.build_version}'"
     cmd = _cmd_gen_add_extra_args(cmd, args)
     syscmd(cmd)
     cmd = f"cmake --build '{args.build_dir}'"
@@ -138,6 +138,7 @@ def script():
     p.add_argument("--install-component", required=False, metavar="<name>")
     p.add_argument("--dry-run", action='store_true')
     p.add_argument("--verbose", action='store_true')
+    p.add_argument("--build-version", required=False, metavar="<version>")
     p.add_argument('--extra-cmake-args', nargs=argparse.REMAINDER, metavar="<args>")
     args = p.parse_args()
 
