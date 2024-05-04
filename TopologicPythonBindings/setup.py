@@ -8,6 +8,8 @@ from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
 from setuptools.dist import Distribution
 
+with open("../README.md", "r") as readme_file:
+    readme = readme_file.read()
 
 # taken from: https://github.com/pybind/cmake_example/blob/master/setup.py
 # A CMakeExtension needs a sourcedir instead of a file list.
@@ -111,7 +113,8 @@ setup_kwargs = dict(
     author="Topologic Authors",
     author_email="None",
     description="TopologicPythonBindings wrapper package",
-    long_description="",
+    long_description=readme,
+    long_description_content_type="text/markdown",
     ext_modules=[CMakeExtension("topologic_core.topologic_core")],
     packages=["topologic_core"],
     package_dir={"topologic_core": 'python/topologic_core'},
