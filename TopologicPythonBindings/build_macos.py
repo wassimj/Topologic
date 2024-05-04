@@ -32,9 +32,9 @@ if __name__ == '__main__':
     
     #edit os.curdir gives "." causing glob matching problems
     #!!! this should be tested on other mac as I dont know if this change breaks anything
-    #wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic")
+    #wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic_core")
     path = os.getcwd();
-    wheel = find_wheel(os.path.join(path, "dist"), "topologic")
+    wheel = find_wheel(os.path.join(path, "dist"), "topologic_core")
 
     subprocess.run([sys.executable, "repair_wheel_macos.py",
                     "--wheel", wheel],

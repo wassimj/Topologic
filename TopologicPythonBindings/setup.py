@@ -8,6 +8,7 @@ from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
 from setuptools.dist import Distribution
 
+
 # taken from: https://github.com/pybind/cmake_example/blob/master/setup.py
 # A CMakeExtension needs a sourcedir instead of a file list.
 # The name must be the _single_ output extension from the CMake build.
@@ -105,15 +106,15 @@ def print_wheel_name_to_output(**kwargs):
     f.close()
 
 setup_kwargs = dict(
-    name="topologic",
+    name="topologic-core",
     version=try_read_actual_version(default_version="5.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="None",
     description="TopologicPythonBindings wrapper package",
     long_description="",
-    ext_modules=[CMakeExtension("topologic.topologic")],
-    packages=["topologic"],
-    package_dir={"topologic": 'python/topologic'},
+    ext_modules=[CMakeExtension("topologic_core.topologic_core")],
+    packages=["topologic_core"],
+    package_dir={"topologic_core": 'python/topologic_core'},
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False, # install as dir
     extras_require={},
