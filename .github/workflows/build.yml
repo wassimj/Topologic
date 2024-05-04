@@ -1,0 +1,830 @@
+#
+# Anything pushed into the branch `releases/*` with a tag will be published
+# on GitHub Release Page as draft upon succesful build and test on three
+# operating systems and Python >= 3.8.
+#
+# Recommended branch names for releases: `releases/5.x`, `releases/6.x`.
+# Git tag specifies exact version. Example of git tags: `v5.0.0`,
+# `v6.0.0`, `v6.5.1`.
+#
+# Anything pushed into a different branch will be built and tested without
+# making any release on GitHub Release Page.
+#
+# Pull Requests will be built and tested without making any release on GitHub
+# Release Page. Merge the branch 'releases/*' with the Pull Request and get
+# a new GitHub Release (draft), if git tag is set.
+#
+# Normally, validated Pull Requests are going into `main` branch.
+# Once it is considered that the release can be made, just place
+# any commits from `main` into `releases/*` (e.g. `releases/6.x`) and
+# set appropriate tag, e.g. `v6.0.7`, then push the releases branch to GitHub.
+# This way GitHub Release Page creation can be automated.
+#
+# If you pushed the release branch to GitHub and forgot to set tag name,
+# the release won't published (as draft) on GitHub Release Page. No worries,
+# add the tag later and restart the workflow in GitHub Actions for the
+# commit which already was in the workflow.
+#
+
+name: build
+on:
+  pull_request:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  prepare-build-info:
+    if: true
+    name: Prepare Build Information
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Obtain tag name (if set), version, and human readable name
+        id: got-tag
+        run: |
+            echo "tagname=`git tag --points-at ${{ github.sha }} | head -n 1`" >> "$GITHUB_OUTPUT"
+            echo "anyname=`git describe --abbrev=0 --tags --always ${{ github.sha }} | head -n 1`" >> "$GITHUB_OUTPUT"
+            echo "anyversion=`git describe --abbrev=0 --tags --always ${{ github.sha }} | head -n 1 | sed 's/^v//'`" >> "$GITHUB_OUTPUT"
+    outputs:
+      tagname: ${{ steps.got-tag.outputs.tagname }}
+      anyname: ${{ steps.got-tag.outputs.anyname }}
+      anyversion: ${{ steps.got-tag.outputs.anyversion }}
+      branchname: ${{ github.head_ref || github.ref_name }}
+
+  ##############################################################################
+  # All stable Linux builds.
+  ##############################################################################
+
+  build-linux-py312:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.12
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_linux_x86_64_conda.sh 312
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-linux-py311:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.11
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_linux_x86_64_conda.sh 311
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-linux-py310:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.10
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_linux_x86_64_conda.sh 310
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-linux-py39:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.9
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_linux_x86_64_conda.sh 39
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-linux-py38:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.8
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_linux_x86_64_conda.sh 38
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # All stable Windows builds.
+  ##############################################################################
+
+  build-windows-py312:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.12
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Prepare Miniconda environment
+        run: recipe/build_win_amd64_conda.bat /createenv 312
+        shell: cmd
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_win_amd64_conda.bat /useenv 312
+        shell: cmd
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-windows-py311:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.11
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Prepare Miniconda environment
+        run: recipe/build_win_amd64_conda.bat /createenv 311
+        shell: cmd
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_win_amd64_conda.bat /useenv 311
+        shell: cmd
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-windows-py310:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.10
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Prepare Miniconda environment
+        run: recipe/build_win_amd64_conda.bat /createenv 310
+        shell: cmd
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_win_amd64_conda.bat /useenv 310
+        shell: cmd
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-windows-py39:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.9
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Prepare Miniconda environment
+        run: recipe/build_win_amd64_conda.bat /createenv 39
+        shell: cmd
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_win_amd64_conda.bat /useenv 39
+        shell: cmd
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-windows-py38:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.8
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Prepare Miniconda environment
+        run: recipe/build_win_amd64_conda.bat /createenv 38
+        shell: cmd
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_win_amd64_conda.bat /useenv 38
+        shell: cmd
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # All stable macOS 14 builds. Currently, only `macos-14` is ARM64.
+  # There's `macos-13-xlarge` on ARM64 which is not free.
+  ##############################################################################
+
+  build-macos-py312:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.12
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_macos_arm64_conda.sh 312 11
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-macos-py311:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.11
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_macos_arm64_conda.sh 311 11
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-macos-py310:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.10
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_macos_arm64_conda.sh 310 11
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-macos-py39:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.9
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_macos_arm64_conda.sh 39 11
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  build-macos-py38:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.8
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Build Python bindings with Miniconda
+        run: recipe/build_macos_arm64_conda.sh 38 11
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # Unstable Linux build (currently Python 3.13 alpha).
+  ##############################################################################
+
+  build-linux-py313:
+    needs: prepare-build-info
+    if: true
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.13
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      ##########################################################################
+      # Try to download dependencies previously built.
+      ##########################################################################
+      - name: Download artifact (precompiled openCASCADE)
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          path: my-artifact
+          run-id: ${{ vars.ARTIFACT_RUN_ID_FOR_OCCT_WITH_LINUX_PY313_REV1 }}
+      - name: Extract artifact (built openCASCADE) as ./occt-installed/
+        if: ${{ vars.ARTIFACT_RUN_ID_FOR_OCCT_WITH_LINUX_PY313_REV1 }}
+        id: extract-artifact
+        run: |
+          if test -f my-artifact/occt-installed.tar.gz/occt-installed.tar.gz; then
+            tar xvfz my-artifact/occt-installed.tar.gz/occt-installed.tar.gz
+            echo "extracted=true" >> "$GITHUB_OUTPUT"
+            ls -l
+          fi
+
+      ##########################################################################
+      # If there are no dependencies previously built, then build them now.
+      ##########################################################################
+      - name: Build OpenCASCADE 7.8.1 (takes 1h in a small container)
+        if: ${{ steps.extract-artifact.outputs.extracted != 'true' }}
+        run: recipe/build_linux_x86_64_noconda.sh --only-deps
+      - name: Upload OpenCASCADE artifact
+        if: ${{ steps.extract-artifact.outputs.extracted != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: occt-installed.tar.gz
+          path: ${{ github.workspace }}/occt-installed.tar.gz
+          if-no-files-found: error
+          retention-days: 90
+
+      ##########################################################################
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+          allow-prereleases: true
+      # To solve: "error: invalid command 'bdist_wheel'"
+      - name: Upgrade wheel and setuptools
+        run: |
+          pip install wheel
+          pip install --upgrade --force setuptools
+      - name: Build Python bindings
+        run: recipe/build_linux_x86_64_noconda.sh --no-deps
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # Unstable Windows build (currently Python 3.13 alpha).
+  ##############################################################################
+
+  build-windows-py313:
+    needs: prepare-build-info
+    if: true
+    runs-on: windows-2022
+    name: Build for Windows + Python 3.13
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+          allow-prereleases: true
+      # To solve: "error: invalid command 'bdist_wheel'"
+      - name: Upgrade wheel and setuptools
+        run: |
+          pip install wheel
+          pip install --upgrade --force setuptools
+      - name: Build Python bindings
+        run: recipe/build_win_amd64_noconda.bat
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # Unstable macOS 12 and 14 builds (currently Python 3.13 alpha).
+  ##############################################################################
+
+  build-macos-py313:
+    needs: prepare-build-info
+    if: true
+    runs-on: macos-14
+    name: Build for macOS + Python 3.13
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+          allow-prereleases: true
+      # To solve: "error: invalid command 'bdist_wheel'"
+      - name: Upgrade wheel and setuptools
+        run: |
+          pip install wheel
+          pip install --upgrade --force setuptools
+      - name: Build Python bindings
+        run: recipe/build_macos_arm64_noconda.sh
+        env:
+          TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+  ##############################################################################
+  # Publish release if previous job 'prepare-build-info' succeeded and
+  # `tagname` and `branchname` are satisfied.
+  ##############################################################################
+
+  make-release:
+    needs:
+      - prepare-build-info
+      - build-linux-py313
+      - build-linux-py312
+      - build-linux-py311
+      - build-linux-py310
+      - build-linux-py39
+      - build-linux-py38
+      - build-windows-py313
+      - build-windows-py312
+      - build-windows-py311
+      - build-windows-py310
+      - build-windows-py39
+      - build-windows-py38
+      - build-macos-py313
+      - build-macos-py312
+      - build-macos-py311
+      - build-macos-py310
+      - build-macos-py39
+      - build-macos-py38
+    name: Make Release
+    runs-on: ubuntu-22.04
+    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && startsWith(needs.prepare-build-info.outputs.branchname, 'releases/') }}
+    permissions:
+      # IMPORTANT: mandatory for GitHub Releases
+      contents: write
+    steps:
+      - name: Download all artifact files (.whl)
+        uses: actions/download-artifact@v4
+        with:
+          path: all-artifacts
+      - name: Display structure of downloaded files
+        run: ls -R all-artifacts
+      - name: Create release for the tag
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: false
+          release_name: ${{ needs.prepare-build-info.outputs.tagname }}
+          tag_name: ${{ needs.prepare-build-info.outputs.tagname }}
+          body: Changes in this Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      ##########################################################################
+      # Add each file one by one for publishing on GitHub Release Page.
+      ##########################################################################
+
+      #########
+      # Linux #
+      #########
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
+        if: ${{ needs.build-linux-py313 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
+        if: ${{ needs.build-linux-py312 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
+        if: ${{ needs.build-linux-py311 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
+        if: ${{ needs.build-linux-py310 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
+        if: ${{ needs.build-linux-py39 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
+        if: ${{ needs.build-linux-py38 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
+          asset_content_type: application/zip
+
+      #########
+      # macOS #
+      #########
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl
+        if: ${{ needs.build-macos-py313 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-macosx_14_0_arm64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl
+        if: ${{ needs.build-macos-py312 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-macosx_11_0_arm64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl
+        if: ${{ needs.build-macos-py311 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-macosx_11_0_arm64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl
+        if: ${{ needs.build-macos-py310 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-macosx_11_0_arm64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl
+        if: ${{ needs.build-macos-py39 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-macosx_11_0_arm64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl
+        if: ${{ needs.build-macos-py38 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-macosx_11_0_arm64.whl
+          asset_content_type: application/zip
+
+      ###########
+      # Windows #
+      ###########
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl
+        if: ${{ needs.build-windows-py313 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-win_amd64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl
+        if: ${{ needs.build-windows-py312 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-win_amd64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl
+        if: ${{ needs.build-windows-py311 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-win_amd64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl
+        if: ${{ needs.build-windows-py310 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-win_amd64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl
+        if: ${{ needs.build-windows-py39 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-win_amd64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl
+        if: ${{ needs.build-windows-py38 }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-win_amd64.whl
+          asset_content_type: application/zip
