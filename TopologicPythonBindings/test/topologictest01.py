@@ -6,7 +6,7 @@ release = os.path.join(home, "topologicbim", "Topologic", "output", "x64", "Rele
 print(release)
 sys.path.append(release) ; sys.path.append(".")
 
-from topologic import Vertex, Edge, Wire, Face, Shell, Cell, CellComplex, Cluster, Aperture, Dictionary, Topology
+from topologic_core import Vertex, Edge, Wire, Face, Shell, Cell, CellComplex, Cluster, Aperture, Dictionary, Topology
 
 def classByType(argument):
 	switcher = {

@@ -83,16 +83,25 @@ pip install auditwheel patchelf delocate
 PYTHONVER=`python -c 'import sys; print(f"{sys.version_info[0]}{sys.version_info[1]}")'`
 echo "Parsed PYTHONVER is ${PYTHONVER}"
 
-# Build the project.
-export TOPOLOGIC_EXTRA_CMAKE_ARGS=-DOpenCASCADE_DIR=${OCCT_INSTALL_DIR}/lib/cmake/opencascade
 cd TopologicPythonBindings
+
+# By using TOPOLOGIC_OUTPUT_ID environment variable, it's possible to collect
+# variables printed by setup.py to file "${TOPOLOGIC_OUTPUT_ID}.log".
+export TOPOLOGIC_OUTPUT_ID=${RANDOM}${RANDOM}${RANDOM}
+TOPOLOGIC_OUTPUT_FILE_PATH=${PWD}/${TOPOLOGIC_OUTPUT_ID}.log
+trap '{ rm -f -- "$TOPOLOGIC_OUTPUT_FILE_PATH"; }' EXIT
+export TOPOLOGIC_EXTRA_CMAKE_ARGS=-DOpenCASCADE_DIR=${OCCT_INSTALL_DIR}/lib/cmake/opencascade
+
 # Custom LD_LIBRARY_PATH is required for 'repair_wheel_linux.py' to look at
 # the directory with all dependencies.
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${OCCT_INSTALL_DIR}/lib \
     python build_linux.py
 
+# Obtain wheel name, e.g. "topologic-5.0.0-cp312-cp312-linux_x86_64.whl"
+WHEEL_NAME=$(grep --color=never -Po "^WHEEL_NAME=\K.*" "$TOPOLOGIC_OUTPUT_FILE_PATH")
+
 # Run the tests.
-pip install wheelhouse/topologic-5.0.0-cp${PYTHONVER}-cp${PYTHONVER}-linux_x86_64.whl
+pip install "wheelhouse/${WHEEL_NAME}"
 cd test
 python topologictest01.py
 python topologictest02.py

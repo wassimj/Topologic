@@ -30,7 +30,7 @@ namespace py = pybind11;
 #include "TopologyUtility.Binding.h"
 #include "FaceUtility.Binding.h"
 
-PYBIND11_MODULE(topologic, m)
+PYBIND11_MODULE(topologic_core, m)
 {
     register_TopoDS_Shape_class(m);
     register_TopologicalQuery_class(m);

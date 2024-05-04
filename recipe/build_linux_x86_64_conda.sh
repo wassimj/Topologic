@@ -29,12 +29,22 @@ fi
 conda activate topologic_py${PYTHONVER}
 python --version
 
-# Build the project.
 cd TopologicPythonBindings
+
+# By using TOPOLOGIC_OUTPUT_ID environment variable, it's possible to collect
+# variables printed by setup.py to file "${TOPOLOGIC_OUTPUT_ID}.log".
+export TOPOLOGIC_OUTPUT_ID=${RANDOM}${RANDOM}${RANDOM}
+TOPOLOGIC_OUTPUT_FILE_PATH=${PWD}/${TOPOLOGIC_OUTPUT_ID}.log
+trap '{ rm -f -- "$TOPOLOGIC_OUTPUT_FILE_PATH"; }' EXIT
+
+# Build the project.
 python build_linux.py
 
+# Obtain wheel name, e.g. "topologic-5.0.0-cp312-cp312-linux_x86_64.whl"
+WHEEL_NAME=$(grep --color=never -Po "^WHEEL_NAME=\K.*" "$TOPOLOGIC_OUTPUT_FILE_PATH")
+
 # Run the tests.
-pip install wheelhouse/topologic-5.0.0-cp${PYTHONVER}-cp${PYTHONVER}-linux_x86_64.whl
+pip install "wheelhouse/${WHEEL_NAME}"
 cd test
 python topologictest01.py
 python topologictest02.py

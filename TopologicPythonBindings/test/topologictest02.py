@@ -7,7 +7,7 @@ print(release)
 sys.path.append(release)
 sys.path.append(".")
 
-from topologic import Vertex, Topology, Dictionary, Attribute, IntAttribute, DoubleAttribute, StringAttribute
+from topologic_core import Vertex, Topology, Dictionary, Attribute, IntAttribute, DoubleAttribute, StringAttribute
 
 print("Starting Test...")
 # Create an Integer Value

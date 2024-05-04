@@ -24,7 +24,7 @@ if __name__ == '__main__':
                     "-w", "dist", "-v"],
                    check=True)
 
-    wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic")
+    wheel = find_wheel(os.path.join(os.curdir, "dist"), "topologic_core")
 
     subprocess.run([sys.executable, "repair_wheel_linux.py",
                     "--wheel", wheel],

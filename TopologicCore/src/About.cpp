@@ -15,11 +15,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "About.h"
-
-#define MAJOR_VERSION 5
-#define MINOR_VERSION 0
-#define BUGFIX_VERSION 0
-#define INTERNAL_BUILD_VERSION 1
+#include "TopologicConfig.h"
 
 namespace TopologicCore
 {

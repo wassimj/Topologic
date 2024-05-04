@@ -1,0 +1,59 @@
+#
+# Once GitHub Release Page is published (includes changing from
+# draft to release), all .whl files included in the release are
+# collected and prepared for publishing on PyPI using GitHub Actions.
+#
+# Publishing on PyPI is done with a Trusted Publisher:
+#
+# Please advice at https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/
+# for creating/linking PyPI projects with your GitHub repository and
+# this GitHub Actions Workflow (`publish.yml`).
+#
+# The name of this project on PyPI is to be `topologic-core`.
+# Environment name is to be `release`.
+#
+# Once it is done on PyPI side, you may try to publish a sample GitHub Release
+# (changing it from draft status to release), and expect full automatation of
+# PyPI publishing for the project.
+#
+
+on:
+  release:
+    types: [published]
+
+name: release
+
+jobs:
+  pipy:
+    name: Publish Python distribution ${{ github.event.release.tag_name }} to PyPI
+    runs-on: ubuntu-22.04
+    permissions:
+      # IMPORTANT: mandatory for trusted publishing
+      id-token: write
+    environment:
+      name: release
+      url: https://pypi.org/p/topologic-core
+    steps:
+
+      # https://github.com/marketplace/actions/fetch-github-release-asset
+      - uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          version: tags/${{ github.event.release.tag_name }}
+          regex: 'true'
+          file: ".*\\.whl"
+          target: 'dist/'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show file output
+        run: ls -R dist
+
+      # First, create project manualy on PyPI website using this information:
+      # https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/
+      # (Current GitHub repository URL will be linked).
+      # It will work with below data and in environment by name 'release'.
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: all-artifacts/
+          print-hash: true

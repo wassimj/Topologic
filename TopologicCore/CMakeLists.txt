@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(TopologicCore CXX)
+project(TopologicCore VERSION ${CMAKE_PROJECT_VERSION} LANGUAGES CXX)
 set(PROJECT_NAMESPACE Topologic)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
@@ -160,7 +160,11 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 # Include dir
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Set version: for now sync manually with: TopologicCore/src/About.cpp
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "5.0.0" SOVERSION "5")
+string(REGEX MATCH "^([0-9]+)\\." CMAKE_PROJECT_VERSION_MATCH ${CMAKE_PROJECT_VERSION})
+set(BUILD_SOVERSION ${CMAKE_MATCH_1}) # Set "5" if project version is "5.0.0".
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${CMAKE_PROJECT_VERSION} SOVERSION ${BUILD_SOVERSION})
+include_directories(${CMAKE_BINARY_DIR})
+configure_file("TopologicConfig.h.in" "${CMAKE_BINARY_DIR}/TopologicConfig.h")
 
 # Dependency: OpenCASCADE
 find_package(OpenCASCADE REQUIRED)

@@ -6,7 +6,10 @@ from pathlib import Path
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
+from setuptools.dist import Distribution
 
+with open("../README.md", "r") as readme_file:
+    readme = readme_file.read()
 
 # taken from: https://github.com/pybind/cmake_example/blob/master/setup.py
 # A CMakeExtension needs a sourcedir instead of a file list.
@@ -55,6 +58,7 @@ class CMakeBuild(build_ext):
              "--source-dir", source_dir,
              "--build-dir", build_dir, "--install-to", install_to,
              "--build-target", build_target, "--install-component", install_component,
+             "--build-version", self.distribution.get_version(),
              "--extra-cmake-args", extra_cmake_args],
             check=True
         )
@@ -79,19 +83,47 @@ def build_options():
         }
     return {};
 
-setup(
-    name="topologic",
-    version="5.0.0", # for now sync manually with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
+def try_read_actual_version(default_version):
+    if "TOPOLOGIC_VERSION" in os.environ:
+        return os.environ["TOPOLOGIC_VERSION"]
+    return default_version
+
+def print_wheel_name_to_output(**kwargs):
+    if "TOPOLOGIC_OUTPUT_ID" not in os.environ:
+        return
+    output_name = os.environ["TOPOLOGIC_OUTPUT_ID"];
+    if not output_name.isalnum():
+        return
+    output_name += '.log'
+
+    dist = Distribution(attrs=kwargs)
+    command_obj = dist.get_command_obj('bdist_wheel')
+    command_obj.ensure_finalized()
+    dist_name = command_obj.wheel_dist_name
+    tag = '-'.join(command_obj.get_tag())
+    f = open(output_name, "w")
+    wheel_name = f"{dist_name}-{tag}.whl"
+    print(f"Expected wheel name is {wheel_name} (WHEEL_NAME={wheel_name})");
+    f.write(f'WHEEL_NAME={wheel_name}\n');
+    f.close()
+
+setup_kwargs = dict(
+    name="topologic-core",
+    version=try_read_actual_version(default_version="6.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="None",
     description="TopologicPythonBindings wrapper package",
-    long_description="",
-    ext_modules=[CMakeExtension("topologic.topologic")],
-    packages=["topologic"],
-    package_dir={"topologic": 'python/topologic'},
+    long_description=readme,
+    long_description_content_type="text/markdown",
+    ext_modules=[CMakeExtension("topologic_core.topologic_core")],
+    packages=["topologic_core"],
+    package_dir={"topologic_core": 'python/topologic_core'},
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False, # install as dir
     extras_require={},
     python_requires=">=3.8",
     options=build_options()
-)
+);
+
+print_wheel_name_to_output(**setup_kwargs)
+setup(**setup_kwargs)

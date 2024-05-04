@@ -43,7 +43,7 @@ set(SRC_FILES
 
 # Python module target
 pybind11_add_module(${PROJECT_NAME} MODULE ${SRC_FILES})
-set(PY_MODULE_NAME topologic)
+set(PY_MODULE_NAME topologic_core)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PY_MODULE_NAME})
 
 # Include dir
