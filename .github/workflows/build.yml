@@ -1,9 +1,8 @@
 #
-# Anything pushed into the branch `releases/*` with a tag will be published
+# Anything pushed into the branch `main` with a tag will be published
 # on GitHub Release Page as draft upon succesful build and test on three
 # operating systems and Python >= 3.8.
 #
-# Recommended branch names for releases: `releases/5.x`, `releases/6.x`.
 # Git tag specifies exact version. Example of git tags: `v5.0.0`,
 # `v6.0.0`, `v6.5.1`.
 #
@@ -11,16 +10,10 @@
 # making any release on GitHub Release Page.
 #
 # Pull Requests will be built and tested without making any release on GitHub
-# Release Page. Merge the branch 'releases/*' with the Pull Request and get
-# a new GitHub Release (draft), if git tag is set.
+# Release Page. Merge the branch 'main' with the Pull Request and get
+# a new GitHub Release (draft) ONLY if a git tag is set.
 #
-# Normally, validated Pull Requests are going into `main` branch.
-# Once it is considered that the release can be made, just place
-# any commits from `main` into `releases/*` (e.g. `releases/6.x`) and
-# set appropriate tag, e.g. `v6.0.7`, then push the releases branch to GitHub.
-# This way GitHub Release Page creation can be automated.
-#
-# If you pushed the release branch to GitHub and forgot to set tag name,
+# If you updated the main branch on GitHub and forgot to set a tag name,
 # the release won't published (as draft) on GitHub Release Page. No worries,
 # add the tag later and restart the workflow in GitHub Actions for the
 # commit which already was in the workflow.
@@ -592,7 +585,7 @@ jobs:
       - build-macos-py38
     name: Make Release
     runs-on: ubuntu-22.04
-    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && startsWith(needs.prepare-build-info.outputs.branchname, 'releases/') }}
+    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && needs.prepare-build-info.outputs.branchname == 'main' }}
     permissions:
       # IMPORTANT: mandatory for GitHub Releases
       contents: write
