@@ -109,7 +109,7 @@ def print_wheel_name_to_output(**kwargs):
 
 setup_kwargs = dict(
     name="topologic-core",
-    version=try_read_actual_version(default_version="5.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
+    version=try_read_actual_version(default_version="6.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="None",
     description="TopologicPythonBindings wrapper package",
