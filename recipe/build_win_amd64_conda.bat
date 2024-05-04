@@ -46,15 +46,34 @@ echo Ready to build the project.
 call C:\Miniconda\Scripts\activate.bat C:\Miniconda\envs\topologic_py%PYTHONVER%
 python --version || goto :ERROR
 cd TopologicPythonBindings || goto :ERROR
+
+:: By using TOPOLOGIC_OUTPUT_ID environment variable, it's possible to collect
+:: variables printed by setup.py to file "${TOPOLOGIC_OUTPUT_ID}.log".
+set TOPOLOGIC_OUTPUT_ID=%RANDOM%%RANDOM%%RANDOM%%RANDOM%%RANDOM%%RANDOM%
+set TOPOLOGIC_OUTPUT_FILE_PATH=%CD%\%TOPOLOGIC_OUTPUT_ID%.log
+
+:: Build the project.
 python build_windows.py || goto :ERROR
-pip install wheelhouse/topologic-5.0.0-cp%PYTHONVER%-cp%PYTHONVER%-win_amd64.whl || goto :ERROR
+
+:: Obtain wheel name, e.g. "topologic-5.0.0-cp312-cp312-linux_x86_64.whl"
+:: and install it.
+for /f "delims== tokens=1,2" %%G in (%TOPOLOGIC_OUTPUT_FILE_PATH%) do set %%G=%%H
+pip install "wheelhouse/%WHEEL_NAME%" || goto :ERROR
+
+:: Run tests
 cd test || goto :ERROR
 python topologictest01.py || goto :ERROR
 python topologictest02.py || goto :ERROR
 
 echo Python bindings have been built successfully.
+goto :SUCCESS
+
+:SUCCESS
+if not [%TOPOLOGIC_OUTPUT_FILE_PATH%] == [] del /f /q "%TOPOLOGIC_OUTPUT_FILE_PATH%"
 goto :EOF
 
 :ERROR
 echo Error #%errorlevel%
-exit \b 1
+if not [%TOPOLOGIC_OUTPUT_FILE_PATH%] == [] del /f /q "%TOPOLOGIC_OUTPUT_FILE_PATH%"
+echo Quit with error
+exit /b 1
