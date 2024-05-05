@@ -562,7 +562,7 @@ jobs:
   # `tagname` and `branchname` are satisfied.
   ##############################################################################
 
-  make-release:
+  publish-pypi-release:
     needs:
       - prepare-build-info
       - build-linux-py313
@@ -583,9 +583,37 @@ jobs:
       - build-macos-py310
       - build-macos-py39
       - build-macos-py38
-    name: Make Release
+    name: Consider & Publish PyPI Release
+    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && github.event_name != 'pull_request' && (needs.prepare-build-info.outputs.branchname == 'prerelease' || needs.prepare-build-info.outputs.branchname == 'main') }}
     runs-on: ubuntu-22.04
-    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && needs.prepare-build-info.outputs.branchname == 'main' }}
+    permissions:
+      # IMPORTANT: mandatory for trusted publishing
+      id-token: write
+    environment:
+      name: release
+      url: https://pypi.org/p/topologic-core
+    steps:
+      - name: Download all artifact files (.whl)
+        uses: actions/download-artifact@v4
+        with:
+          path: all-artifacts
+      - name: Display new structure of downloaded files
+        run: |
+          mkdir -p dist
+          find ./all-artifacts/ -type f -iname "*.whl" -exec mv {} ./dist/ \;
+          ls -R dist
+      - name: Publish package ${{ needs.prepare-build-info.outputs.tagname }} distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          print-hash: true
+
+  draft-github-release:
+    needs:
+      - publish-pypi-release
+    if: ${{ needs.prepare-build-info.outputs.branchname == 'main' }}
+    name: Consider & Draft GitHub Release Page
+    runs-on: ubuntu-22.04
     permissions:
       # IMPORTANT: mandatory for GitHub Releases
       contents: write
@@ -596,7 +624,7 @@ jobs:
           path: all-artifacts
       - name: Display structure of downloaded files
         run: ls -R all-artifacts
-      - name: Create release for the tag
+      - name: Draft GitHub Release Page ${{ needs.prepare-build-info.outputs.tagname }}
         uses: actions/create-release@v1
         id: create_release
         with:
