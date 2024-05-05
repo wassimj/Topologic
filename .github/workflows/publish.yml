@@ -55,5 +55,5 @@ jobs:
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: all-artifacts/
+          packages-dir: dist/
           print-hash: true
