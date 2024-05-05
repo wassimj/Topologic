@@ -54,7 +54,7 @@ jobs:
 
   build-linux-py312:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.12
     steps:
@@ -76,7 +76,7 @@ jobs:
 
   build-linux-py311:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.11
     steps:
@@ -98,7 +98,7 @@ jobs:
 
   build-linux-py310:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.10
     steps:
@@ -120,7 +120,7 @@ jobs:
 
   build-linux-py39:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.9
     steps:
@@ -142,7 +142,7 @@ jobs:
 
   build-linux-py38:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.8
     steps:
@@ -417,7 +417,7 @@ jobs:
 
   build-linux-py313:
     needs: prepare-build-info
-    if: true
+    if: false
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.13
     steps:
@@ -565,12 +565,12 @@ jobs:
   publish-pypi-release:
     needs:
       - prepare-build-info
-      - build-linux-py313
-      - build-linux-py312
-      - build-linux-py311
-      - build-linux-py310
-      - build-linux-py39
-      - build-linux-py38
+      #- build-linux-py313
+      #- build-linux-py312
+      #- build-linux-py311
+      #- build-linux-py310
+      #- build-linux-py39
+      #- build-linux-py38
       - build-windows-py313
       - build-windows-py312
       - build-windows-py311
