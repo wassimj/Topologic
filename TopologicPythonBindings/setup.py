@@ -111,7 +111,7 @@ setup_kwargs = dict(
     name="topologic-core",
     version=try_read_actual_version(default_version="6.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
-    author_email="None",
+    author_email="wassim.jabi@gmail.com",
     description="TopologicPythonBindings wrapper package",
     long_description=readme,
     long_description_content_type="text/markdown",
