@@ -6,10 +6,15 @@
 import argparse
 import subprocess
 import sysconfig
+import os
 
 
 def main(args):
-    platform_str = sysconfig.get_platform().replace('-', '_')
+    if "TOPOLOGIC_PLAT_NAME" in os.environ:
+        platform_str = os.environ['TOPOLOGIC_PLAT_NAME']
+    else:
+        platform_str = sysconfig.get_platform().replace('-', '_')
+
     subprocess.run(["auditwheel", "repair",
                     f"--plat", f"{platform_str}",
                     "--strip",
