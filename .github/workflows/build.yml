@@ -729,11 +729,11 @@ jobs:
         with:
           path: all-artifacts
       - name: Display new structure of downloaded files
-        # Skip _linux_ builds if found, PyPI rejects them; use _manylinux*.
+        # Skip '-linux_' builds if found, PyPI rejects them; use -manylinux*.
         run: |
           mkdir -p dist
           find ./all-artifacts/ -type f -iname "*.whl" -exec mv {} ./dist/ \;
-          find ./dist/ -type f -iname "*_linux_*.whl" -exec rm {} \;
+          find ./dist/ -type f -iname "*-linux_*.whl" -exec rm {} \;
           ls -R dist
       - name: Publish package ${{ needs.prepare-build-info.outputs.tagname }} distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
