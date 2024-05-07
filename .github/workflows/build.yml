@@ -49,23 +49,153 @@ jobs:
       branchname: ${{ github.head_ref || github.ref_name }}
 
   ##############################################################################
-  # All stable Linux builds.
+  # All stable Linux builds (with the help of quay.io/pypa/manylinux2014_x86_64)
   ##############################################################################
 
-  build-linux-py312:
+  build-linux-manylinux-py-all:
     needs: prepare-build-info
-    if: false
+    if: true
     runs-on: ubuntu-22.04
-    name: Build for Linux + Python 3.12
+    name: Build for Linux + Python 3.8-3.12 (manylinux*)
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           submodules: 'true'
-      - name: Build Python bindings with Miniconda
-        run: recipe/build_linux_x86_64_conda.sh 312
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup cache
+        if: github.event_name != 'workflow_dispatch' || fromJSON(github.event.inputs.useCache)
+        uses: actions/cache@v3
+        with:
+          path: .occt-cache-manylinux2014_x86_64/*
+          key: occt-cache-manylinux2014-x86_64-${{ hashFiles('recipe/build_manylinux2014_x86_64.sh') }}
+          restore-keys: occt-cache-manylinux2014-x86_64-
+
+      - name: Try to restore openCASCADE build from cache
+        id: extract-artifact
+        run: |
+          if test -f .occt-cache-manylinux2014_x86_64/occt-installed-centos.tar.gz; then
+            cp .occt-cache-manylinux2014_x86_64/occt-installed-centos.tar.gz ./
+            echo "extracted=true" >> "$GITHUB_OUTPUT"
+            tar xvfz occt-installed-centos.tar.gz
+            ls -l
+          fi
+
+      - name: Build Python v3.8-3.12 bindings for manylinux*
+        run: |
+          docker \
+            run --rm \
+              --env TOPOLOGIC_VERSION \
+              -v $(pwd)/:/repo quay.io/pypa/manylinux2014_x86_64 \
+                bash /repo/recipe/build_manylinux2014_x86_64.sh ${{ (steps.extract-artifact.outputs.extracted == 'true' && '--no-deps') || '' }}
         env:
           TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+
+      - name: Upload openCASCADE build to cache (new build only)
+        if: ${{ steps.extract-artifact.outputs.extracted != 'true' }}
+        run: |
+          if test -f ./occt-installed-centos.tar.gz; then
+            mkdir -p ./.occt-cache-manylinux2014_x86_64 || true
+            cp occt-installed-centos.tar.gz ./.occt-cache-manylinux2014_x86_64/
+            ls -l ./.occt-cache-manylinux2014_x86_64/
+          fi
+
+      - name: Upload openCASCADE build to artifacts (new or cached build)
+        uses: actions/upload-artifact@v4
+        with:
+          name: occt-installed-centos.tar.gz
+          path: ${{ github.workspace }}/occt-installed-centos.tar.gz
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload artifact v3.12
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+      - name: Upload artifact v3.11
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+      - name: Upload artifact v3.10
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+      - name: Upload artifact v3.9
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+      - name: Upload artifact v3.8
+        uses: actions/upload-artifact@v4
+        with:
+          name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          path: TopologicPythonBindings/wheelhouse/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          if-no-files-found: error
+          retention-days: 60
+
+
+  ##############################################################################
+  # All stable Linux builds (with the help of Miniconda).
+  ##############################################################################
+
+  build-linux-conda-py312:
+    needs: prepare-build-info
+    if: false
+    runs-on: ubuntu-22.04
+    name: Build for Linux + Python 3.12
+    env:
+      TOPOLOGIC_VERSION: ${{ needs.prepare-build-info.outputs.anyversion }}
+      POLICY: manylinux2014
+      PLATFORM: x86_64
+      COMMIT_SHA: ${{ github.sha }}
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup cache
+        if: github.event_name != 'workflow_dispatch' || fromJSON(github.event.inputs.useCache)
+        uses: actions/cache@v3
+        with:
+          path: .buildx-cache-manylinux2014_x86_64/*
+          key: buildx-cache-manylinux2014-x86_64-${{ hashFiles('docker/**') }}
+          restore-keys: buildx-cache-manylinux2014-x86_64-
+
+      - name: Build Python bindings with Miniconda
+        #run: recipe/build_linux_x86_64_docker.sh 312
+        # Pulling from pypa/manylinux2014_x86_64
+
+        #--load \
+        #--cache-from=type=local,src=$(pwd)/.buildx-cache-${POLICY}_${PLATFORM} \
+        #--cache-to=type=local,dest=$(pwd)/.buildx-cache-staging-${POLICY}_${PLATFORM} \
+
+        run: |
+            docker \
+              run --rm -v $(pwd)/:/repo quay.io/pypa/${POLICY}_${PLATFORM} bash /repo/recipe/build_linux_x86_64_manylinux.sh
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -74,7 +204,7 @@ jobs:
           if-no-files-found: error
           retention-days: 60
 
-  build-linux-py311:
+  build-linux-conda-py311:
     needs: prepare-build-info
     if: false
     runs-on: ubuntu-22.04
@@ -96,7 +226,7 @@ jobs:
           if-no-files-found: error
           retention-days: 60
 
-  build-linux-py310:
+  build-linux-conda-py310:
     needs: prepare-build-info
     if: false
     runs-on: ubuntu-22.04
@@ -118,7 +248,7 @@ jobs:
           if-no-files-found: error
           retention-days: 60
 
-  build-linux-py39:
+  build-linux-conda-py39:
     needs: prepare-build-info
     if: false
     runs-on: ubuntu-22.04
@@ -140,7 +270,7 @@ jobs:
           if-no-files-found: error
           retention-days: 60
 
-  build-linux-py38:
+  build-linux-conda-py38:
     needs: prepare-build-info
     if: false
     runs-on: ubuntu-22.04
@@ -417,7 +547,7 @@ jobs:
 
   build-linux-py313:
     needs: prepare-build-info
-    if: false
+    if: true
     runs-on: ubuntu-22.04
     name: Build for Linux + Python 3.13
     steps:
@@ -565,12 +695,13 @@ jobs:
   publish-pypi-release:
     needs:
       - prepare-build-info
-      #- build-linux-py313
-      #- build-linux-py312
-      #- build-linux-py311
-      #- build-linux-py310
-      #- build-linux-py39
-      #- build-linux-py38
+      - build-linux-py313
+      - build-linux-manylinux-py-all
+      #- build-linux-conda-py312
+      #- build-linux-conda-py311
+      #- build-linux-conda-py310
+      #- build-linux-conda-py39
+      #- build-linux-conda-py38
       - build-windows-py313
       - build-windows-py312
       - build-windows-py311
@@ -598,9 +729,11 @@ jobs:
         with:
           path: all-artifacts
       - name: Display new structure of downloaded files
+        # Skip _linux_ builds if found, PyPI rejects them; use _manylinux*.
         run: |
           mkdir -p dist
           find ./all-artifacts/ -type f -iname "*.whl" -exec mv {} ./dist/ \;
+          find ./dist/ -type f -iname "*_linux_*.whl" -exec rm {} \;
           ls -R dist
       - name: Publish package ${{ needs.prepare-build-info.outputs.tagname }} distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -644,6 +777,69 @@ jobs:
       # Linux #
       #########
 
+
+      # For manylinux.
+
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        if: ${{ needs.build-linux-manylinux-py-all }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        if: ${{ needs.build-linux-manylinux-py-all }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        if: ${{ needs.build-linux-manylinux-py-all }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        if: ${{ needs.build-linux-manylinux-py-all }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_content_type: application/zip
+
+      - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        if: ${{ needs.build-linux-manylinux-py-all }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: all-artifacts/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl/topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          asset_content_type: application/zip
+
+
+      # Unstable
+
+
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
         if: ${{ needs.build-linux-py313 }}
         uses: actions/upload-release-asset@v1
@@ -655,8 +851,10 @@ jobs:
           asset_name: topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp313-cp313-linux_x86_64.whl
           asset_content_type: application/zip
 
+      # with conda.
+
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp312-cp312-linux_x86_64.whl
-        if: ${{ needs.build-linux-py312 }}
+        if: ${{ needs.build-linux-conda-py312 }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -667,7 +865,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp311-cp311-linux_x86_64.whl
-        if: ${{ needs.build-linux-py311 }}
+        if: ${{ needs.build-linux-conda-py311 }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -678,7 +876,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp310-cp310-linux_x86_64.whl
-        if: ${{ needs.build-linux-py310 }}
+        if: ${{ needs.build-linux-conda-py310 }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -689,7 +887,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp39-cp39-linux_x86_64.whl
-        if: ${{ needs.build-linux-py39 }}
+        if: ${{ needs.build-linux-conda-py39 }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -700,7 +898,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Release artifact topologic_core-${{ needs.prepare-build-info.outputs.anyversion }}-cp38-cp38-linux_x86_64.whl
-        if: ${{ needs.build-linux-py38 }}
+        if: ${{ needs.build-linux-conda-py38 }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}

@@ -108,7 +108,7 @@ def print_wheel_name_to_output(**kwargs):
     f.close()
 
 setup_kwargs = dict(
-    name="topologic-core",
+    name="topologic_core",
     version=try_read_actual_version(default_version="6.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="wassim.jabi@gmail.com",

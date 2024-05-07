@@ -7,7 +7,12 @@ import sysconfig
 def find_wheel(pa_dir, name):
     # construct a glob pattern for the wheel file name using sysconfig.get_platform() as the abi tag
     py_version = f"{sys.version_info.major}{sys.version_info.minor}"
-    abi_tag = sysconfig.get_platform().replace("-", "_")
+
+    if "TOPOLOGIC_PLAT_NAME" in os.environ:
+        abi_tag = os.environ['TOPOLOGIC_PLAT_NAME']
+    else:
+        abi_tag = sysconfig.get_platform().replace('-', '_')
+
     wheel_pattern = f"{name}-*-*{py_version}-*{abi_tag}.whl"
 
     wheels = glob.glob(os.path.join(pa_dir, wheel_pattern))
