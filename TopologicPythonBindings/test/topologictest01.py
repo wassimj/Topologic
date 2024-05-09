@@ -8,6 +8,11 @@ sys.path.append(release) ; sys.path.append(".")
 
 from topologic_core import Vertex, Edge, Wire, Face, Shell, Cell, CellComplex, Cluster, Aperture, Dictionary, Topology
 
+# Check
+if str(type(Vertex.ByCoordinates(10,20,30))) != "<class 'topologic_core.Vertex'>":
+    print(f"Test failed! Type is invalid: {type(v)} (expected <class 'topologic_core.Vertex'>)")
+    sys.exit(1)
+
 def classByType(argument):
 	switcher = {
 		1: Vertex,

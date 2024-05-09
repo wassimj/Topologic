@@ -23,7 +23,7 @@ import pefile
 from machomachomangler.pe import redll
 
 
-def hash_filename(filepath):
+def hash_filename(prefix, filepath):
     hasher = hashlib.sha256()
     bufsize = 64*1024
 
@@ -34,7 +34,7 @@ def hash_filename(filepath):
             buf = f.read(bufsize)
 
     root, ext = os.path.splitext(filepath)
-    return f"{os.path.basename(root)}-{hasher.hexdigest()[:8]}{ext}"
+    return f"{prefix}{os.path.basename(root)}-{hasher.hexdigest()[:8]}{ext}"
 
 
 def mangle_dll(infile, outfile, mapping):
@@ -92,7 +92,7 @@ def main(args):
         wheel_pyds = [x for x in wheel.namelist() if x.endswith(".pyd")]
 
     pyd_basename = os.path.basename(wheel_pyds[0])
-    pyd_tmp_path = os.path.join(old_wheel_dir, package_name, os.path.basename(pyd_basename))
+    pyd_tmp_path = os.path.join(old_wheel_dir, os.path.basename(pyd_basename))
     if len(wheel_pyds) > 1:
         raise NotImplemented("can't process more than on .pyd")
     if len(wheel_pyds) == 0:
@@ -105,7 +105,7 @@ def main(args):
     # hashed names mapping
     map_hashed_names = {}
     for dll_basename in islice(map_deps.keys(), 1, None):
-        hashed_name = hash_filename(os.path.join(args.DLL_DIR, dll_basename))
+        hashed_name = hash_filename(f"{package_name}.", os.path.join(args.DLL_DIR, dll_basename))
         map_hashed_names[dll_basename] = hashed_name
 
     def mangle_or_copy(infile, outfile, mapping):
@@ -121,7 +121,7 @@ def main(args):
     for dll_basename, deps in islice(map_deps.items(), 1, None):
         old_name = os.path.join(args.DLL_DIR, dll_basename)
         hashed_name = map_hashed_names[dll_basename]
-        new_name = os.path.join(new_wheel_dir, package_name, hashed_name)
+        new_name = os.path.join(new_wheel_dir, hashed_name)
 
         if os.path.exists(new_name): continue
         mapping_mangle = { dep_basename: map_hashed_names[dep_basename] for dep_basename in deps }
@@ -129,14 +129,19 @@ def main(args):
 
     # mangle our .pyd
     old_name = pyd_tmp_path
-    new_name = os.path.join(new_wheel_dir, package_name, os.path.basename(pyd_tmp_path))
+    new_name = os.path.join(new_wheel_dir, os.path.basename(pyd_tmp_path))
     mapping_mangle = {dep_basename: map_hashed_names[dep_basename] for dep_basename in map_deps[pyd_basename]}
     mangle_or_copy(old_name, new_name, mapping_mangle)
 
     with zipfile.ZipFile(repaired_wheel, "w", zipfile.ZIP_DEFLATED) as new_wheel:
         for root, dirs, files in os.walk(new_wheel_dir):
             for f in files:
-                new_wheel.write(os.path.join(root, f), os.path.join(os.path.basename(root), f))
+                if root != new_wheel_dir:
+                    print(f"pack from '{os.path.join(root, f)}' to '{os.path.join(os.path.basename(root))}'")
+                    new_wheel.write(os.path.join(root, f), os.path.join(os.path.basename(root), f))
+                else:
+                    print(f"pack from '{os.path.join(root, f)}' to '{f}'")
+                    new_wheel.write(os.path.join(root, f), f)
 
     shutil.rmtree(old_wheel_dir)
     shutil.rmtree(new_wheel_dir)
