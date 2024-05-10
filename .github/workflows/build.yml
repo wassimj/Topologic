@@ -695,7 +695,6 @@ jobs:
   publish-pypi-release:
     needs:
       - prepare-build-info
-      #- build-linux-py313
       - build-linux-manylinux-py-all
       #- build-linux-conda-py312
       #- build-linux-conda-py311
@@ -743,8 +742,28 @@ jobs:
 
   draft-github-release:
     needs:
+      # Without succesful publishing to PyPI, there shouldn't be a Release Page.
       - publish-pypi-release
-    if: ${{ needs.prepare-build-info.outputs.branchname == 'main' }}
+      - prepare-build-info
+      - build-linux-manylinux-py-all
+      #- build-linux-conda-py312
+      #- build-linux-conda-py311
+      #- build-linux-conda-py310
+      #- build-linux-conda-py39
+      #- build-linux-conda-py38
+      - build-windows-py313
+      - build-windows-py312
+      - build-windows-py311
+      - build-windows-py310
+      - build-windows-py39
+      - build-windows-py38
+      - build-macos-py313
+      - build-macos-py312
+      - build-macos-py311
+      - build-macos-py310
+      - build-macos-py39
+      - build-macos-py38
+    if: ${{ startsWith(needs.prepare-build-info.outputs.tagname, 'v') && github.event_name != 'pull_request' && needs.prepare-build-info.outputs.branchname == 'main' }}
     name: Consider & Draft GitHub Release Page
     runs-on: ubuntu-22.04
     permissions:
