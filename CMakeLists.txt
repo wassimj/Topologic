@@ -13,3 +13,9 @@ message("CMAKE_PROJECT_VERSION=${CMAKE_PROJECT_VERSION}")
 # Sub-projects
 add_subdirectory(TopologicCore)
 add_subdirectory(TopologicPythonBindings)
+
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "Topologic-${BUILD_VERSION}")
+SET(CPACK_SOURCE_GENERATOR "ZIP")
+SET(CPACK_SOURCE_IGNORE_FILES "\\\\.git" "/build" "/BUILD")
+
+INCLUDE(CPack)
