@@ -1,6 +1,6 @@
 # Topologic
 
-[<img src="assets/Topologic-Logo-ColourOnWhite.png" width="250"/>](image.png)
+[<img src="https://github.com/wassimj/Topologic/raw/main/assets/Topologic-Logo-ColourOnWhite.png" width="250"/>](image.png)
 
 ## Introduction
 [**Topologic**](https://topologic.app/) is a FOSS software modelling library enabling hierarchical and topological representations of architectural spaces, buildings and artefacts through non-manifold topology. Topologic is designed as a core library and additional plugins to visual data flow programming (VDFP) applications and parametric modelling platforms commonly used in architectural design practice. These applications provide workspaces with visual programming nodes and connections for architects to interact with Topologic and perform architectural design and analysis tasks.

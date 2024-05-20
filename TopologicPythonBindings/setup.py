@@ -108,16 +108,14 @@ def print_wheel_name_to_output(**kwargs):
     f.close()
 
 setup_kwargs = dict(
-    name="topologic-core",
+    name="topologic_core",
     version=try_read_actual_version(default_version="6.0.0"), # Syncs with: TopologicCore/CMakeLists.txt and TopologicCore/src/About.cpp
     author="Topologic Authors",
     author_email="wassim.jabi@gmail.com",
     description="TopologicPythonBindings wrapper package",
     long_description=readme,
     long_description_content_type="text/markdown",
-    ext_modules=[CMakeExtension("topologic_core.topologic_core")],
-    packages=["topologic_core"],
-    package_dir={"topologic_core": 'python/topologic_core'},
+    ext_modules=[CMakeExtension("topologic_core")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False, # install as dir
     extras_require={},
