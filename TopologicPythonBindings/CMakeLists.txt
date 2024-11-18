@@ -6,7 +6,6 @@ set(PROJECT_NAMESPACE Topologic)
 option(USE_CONDA_PYBIND11 "Use pybind11 installed via conda" OFF)
 
 if(USE_CONDA_PYBIND11)
-    set(CMAKE_PREFIX_PATH ${CONDA_PREFIX})
     # Find pybind11 package installed via conda
     set(PYBIND11_FINDPYTHON ON) # Make sure pybind11 uses Python
     find_package(pybind11 REQUIRED) # This will look for pybind11 installed via conda
