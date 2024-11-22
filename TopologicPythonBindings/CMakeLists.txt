@@ -3,11 +3,17 @@ cmake_minimum_required(VERSION 3.24)
 project(TopologicPythonBindings CXX)
 set(PROJECT_NAMESPACE Topologic)
 
+option(USE_CONDA_PYBIND11 "Use pybind11 installed via conda" OFF)
 
-# Import pybind11
-set(PYBIND11_FINDPYTHON ON)
-add_subdirectory(pybind11)
-
+if(USE_CONDA_PYBIND11)
+    # Find pybind11 package installed via conda
+    set(PYBIND11_FINDPYTHON ON) # Make sure pybind11 uses Python
+    find_package(pybind11 REQUIRED) # This will look for pybind11 installed via conda
+else ()
+    # Import pybind11 from submodule
+    set(PYBIND11_FINDPYTHON ON)
+    add_subdirectory(pybind11)
+endif()
 
 # Source groups
 set(SRC_FILES 
