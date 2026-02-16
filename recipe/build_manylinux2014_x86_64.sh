@@ -39,7 +39,7 @@ ninja --version
 cmake --version
 
 if [[ "$NO_DEPS" -ne 1 ]]; then
-  echo "Build OpenCASCADE 7.8.1 (takes long time)."
+  echo "Build OpenCASCADE 7.9.3 (takes long time)."
   if [ ! -d "${OCCT_INSTALL_DIR}" ]; then
     yum install -y \
           rapidjson-devel \
@@ -47,8 +47,8 @@ if [[ "$NO_DEPS" -ne 1 ]]; then
           libXmu-devel mesa-libGL-devel tbb-devel \
           gl2ps-devel freetype-devel freeimage-devel
 
-    git clone --depth 1 --branch V7_8_1 \
-        https://git.dev.opencascade.org/repos/occt.git \
+    git clone --depth 1 --branch V7_9_3 \
+        https://github.com/Open-Cascade-SAS/OCCT.git \
         "${TOP_DIR}/occt-sources"
 
     cd "${TOP_DIR}/occt-sources"
@@ -82,7 +82,7 @@ if [[ "$NO_DEPS" -ne 1 ]]; then
     exit 0
   fi
 else
-  echo "Reuse prebuilt OpenCASCADE 7.8.1."
+  echo "Reuse prebuilt OpenCASCADE 7.9.3."
 fi
 
 # By using TOPOLOGIC_OUTPUT_ID environment variable, it's possible to collect
@@ -92,7 +92,7 @@ TOPOLOGIC_OUTPUT_FILE_PATH=${PWD}/TopologicPythonBindings/${TOPOLOGIC_OUTPUT_ID}
 trap '{ rm -f -- "$TOPOLOGIC_OUTPUT_FILE_PATH"; }' EXIT
 export TOPOLOGIC_PLAT_NAME=manylinux2014_x86_64
 
-for PYVER in 3.12 3.11 3.10 3.9 3.8
+for PYVER in 3.14 3.13 3.12 3.11 3.10 3.9 3.8
 do
   PYCPVER=cp${PYVER/./}
   PYDIR=/opt/python/${PYCPVER}-${PYCPVER}
