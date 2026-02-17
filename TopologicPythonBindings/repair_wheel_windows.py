@@ -2,6 +2,7 @@
 # originally based on https://github.com/vinayak-mehta/pdftopng/blob/6e4a9d589228f66dfbb6f0197740b0b7c1bef9b3/scripts/wheel_repair.py
 # https://vinayak.io/2020/10/22/day-52-bundling-dlls-with-windows-wheels-the-dll-mangling-way/
 
+import base64
 from pathlib import Path
 
 # excluding api-ms-crt from mangling (found in conda envs)
@@ -22,6 +23,40 @@ from itertools import islice
 import pefile
 from machomachomangler.pe import redll
 
+def write_record_file(wheel_dir):
+    # find dist-info directory
+    dist_info_dirs = [d for d in os.listdir(wheel_dir) if d.endswith(".dist-info")]
+    if len(dist_info_dirs) != 1:
+        raise RuntimeError("Could not uniquely determine .dist-info directory")
+
+    dist_info_dir = os.path.join(wheel_dir, dist_info_dirs[0])
+    record_path = os.path.join(dist_info_dir, "RECORD")
+
+    rows = []
+
+    for root, _, files in os.walk(wheel_dir):
+        for fname in files:
+            full_path = os.path.join(root, fname)
+            rel_path = os.path.relpath(full_path, wheel_dir).replace("\\", "/")
+
+            if rel_path.endswith("RECORD"):
+                rows.append(f"{rel_path},,")
+                continue
+
+            size = os.path.getsize(full_path)
+
+            h = hashlib.sha256()
+            with open(full_path, "rb") as f:
+                for chunk in iter(lambda: f.read(65536), b""):
+                    h.update(chunk)
+
+            digest = base64.urlsafe_b64encode(h.digest()).rstrip(b"=").decode("ascii")
+
+            rows.append(f"{rel_path},sha256={digest},{size}")
+
+    with open(record_path, "w", newline="\n") as f:
+        f.write("\n".join(rows))
+        f.write("\n")
 
 def hash_filename(prefix, filepath):
     hasher = hashlib.sha256()
@@ -132,6 +167,7 @@ def main(args):
     new_name = os.path.join(new_wheel_dir, os.path.basename(pyd_tmp_path))
     mapping_mangle = {dep_basename: map_hashed_names[dep_basename] for dep_basename in map_deps[pyd_basename]}
     mangle_or_copy(old_name, new_name, mapping_mangle)
+    write_record_file(new_wheel_dir)
 
     with zipfile.ZipFile(repaired_wheel, "w", zipfile.ZIP_DEFLATED) as new_wheel:
         for root, dirs, files in os.walk(new_wheel_dir):
