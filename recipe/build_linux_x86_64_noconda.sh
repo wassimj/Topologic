@@ -33,7 +33,7 @@ ninja --version
 cmake --version
 
 if [[ "$NO_DEPS" -ne 1 ]]; then
-  # Build OpenCASCADE 7.8.1 (takes long time).
+  # Build OpenCASCADE 7.9.3 (takes long time).
   if [ ! -d "${OCCT_INSTALL_DIR}" ]; then
     sudo apt-get install -y \
           rapidjson-dev \
@@ -42,8 +42,8 @@ if [[ "$NO_DEPS" -ne 1 ]]; then
           libxmu-dev libgl1-mesa-dev libfreeimage-dev libtbb-dev \
           libgl2ps-dev
 
-    git clone --depth 1 --branch V7_8_1 \
-        https://git.dev.opencascade.org/repos/occt.git \
+    git clone --depth 1 --branch V7_9_3 \
+        https://github.com/Open-Cascade-SAS/OCCT.git \
         "${TOP_DIR}/occt-sources"
 
     cd "${TOP_DIR}/occt-sources"
